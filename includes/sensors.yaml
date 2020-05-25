@@ -1,0 +1,28 @@
+- platform: template
+  sensors:
+    living_room_tv_source:
+      value_template: '{{ states.media_player.lg_tv.attributes["source"] }}'
+      friendly_name: 'Living Room TV Source'
+- platform: template
+  sensors:
+    gad_papier_days:
+      value_template: '{{ states.sensor.gad_papier.attributes["Days-until"] }}'
+      friendly_name: 'GAD Papier Aantal Dagen'
+- platform: template
+  sensors:
+    gad_papier_days_stringified:
+      value_template: 'Over {{ states.sensor.gad_papier.attributes["Days-until"] }} dag(en)'
+      friendly_name: 'GAD Papier Aantal Dagen Stringified'
+- platform: template
+  sensors:
+    lights_on:
+      value_template: '{{ states | selectattr("entity_id","in", ["light.globe", "light.plafondlamp","light.spot_bij_kast","light.spot_bij_raam","light.hue_globe_rechts","light.hue_globe_links"] )|selectattr("state","eq","on") | list | count }}'
+      entity_id: ["light.globe", "light.plafondlamp","light.spot_bij_kast","light.spot_bij_raam","light.hue_globe_rechts","light.hue_globe_links"]
+      friendly_name: 'Lights on'
+- platform: afvalbeheer
+  wastecollector: GAD
+  resources:
+    - papier
+  postcode: !secret postcode_home
+  streetnumber: !secret streetnumber_home
+  dateformat: '%a %D %b'

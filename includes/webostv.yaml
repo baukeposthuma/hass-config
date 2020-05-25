@@ -1,0 +1,18 @@
+host: !secret tv_ip
+name: LG TV
+turn_on_action:
+  service: wake_on_lan.send_magic_packet
+  data:
+    mac: !secret tv_mac
+customize:
+  sources:
+    - Netflix
+    - PS4
+    - YouTube
+    - Plex
+    - Rakuten TV
+    - Spotify Music - Listen free on LG TV
+    - Videoland
+
+
+      

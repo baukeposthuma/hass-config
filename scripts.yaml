@@ -1,0 +1,39 @@
+'1587604294387':
+  alias: New Script
+  sequence:
+  - brightness_pct: 20
+    device_id: 4100782795ce49b19cd95de2762208d4
+    domain: light
+    entity_id: light.spot_rechts
+    type: turn_on
+  - delay: '200'
+  - device_id: 4100782795ce49b19cd95de2762208d4
+    domain: light
+    entity_id: light.spot_rechts
+    type: turn_off
+'1587604383684':
+  alias: New Script
+  sequence:
+  - brightness_pct: 20
+    device_id: 4100782795ce49b19cd95de2762208d4
+    domain: light
+    entity_id: light.spot_rechts
+    type: turn_on
+  - delay: '200'
+  - device_id: 4100782795ce49b19cd95de2762208d4
+    domain: light
+    entity_id: light.spot_rechts
+    type: turn_off
+'1587604448614':
+  alias: New Scripthhdhd
+  sequence:
+  - brightness_pct: 20
+    device_id: 4100782795ce49b19cd95de2762208d4
+    domain: light
+    entity_id: light.spot_rechts
+    type: turn_on
+  - delay: '200'
+  - device_id: 4100782795ce49b19cd95de2762208d4
+    domain: light
+    entity_id: light.spot_rechts
+    type: turn_off

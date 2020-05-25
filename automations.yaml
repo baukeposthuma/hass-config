@@ -1,0 +1,129 @@
+- id: '1587415569504'
+  alias: Turn on 'Filmkijken' scene when watching movies of playing games
+  description: ''
+  trigger:
+  - entity_id: sensor.living_room_tv_source
+    platform: state
+    to:
+    - PS4
+    - Plex
+    - YouTube
+    - Netflix
+    - Rakuten TV
+    - Videoland
+  condition:
+  - condition: state
+    entity_id: sun.sun
+    state: below_horizon
+  action:
+  - data:
+      group_name: Woonkamer
+      scene_name: Filmkijken
+    service: hue.hue_activate_scene
+- id: '1587566605788'
+  alias: Turn off 'Filmkijken' scene when not watching movies or playing games
+  description: ''
+  trigger:
+  - entity_id: sensor.living_room_tv_source
+    from:
+    - PS4
+    - Plex
+    - YouTube
+    - Netflix
+    - Rakuten TV
+    - Videoland
+    platform: state
+  - entity_id: media_player.lg_tv
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition:
+  - condition: state
+    entity_id: sun.sun
+    state: below_horizon
+  action:
+  - data:
+      group_name: Woonkamer
+      scene_name: Avondlicht
+    service: hue.hue_activate_scene
+- id: '1588376531129'
+  alias: Turn off Espresso Machine automatically
+  description: ''
+  trigger:
+  - device_id: 0909b0a222e8404f8532e0e0306c2787
+    domain: light
+    entity_id: light.espressomachine
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+    platform: device
+    type: turned_on
+  condition:
+  - condition: device
+    device_id: 0909b0a222e8404f8532e0e0306c2787
+    domain: light
+    entity_id: light.espressomachine
+    for:
+      hours: 0
+      minutes: 30
+      seconds: 0
+    type: is_on
+  action:
+  - device_id: 0909b0a222e8404f8532e0e0306c2787
+    domain: light
+    entity_id: light.espressomachine
+    type: turn_off
+  - data:
+      message: Automatically turned off after 30 minutes.
+      title: Espresso Machine
+    service: notify.notify
+    
+# Example automations.yaml entry
+- alias: "Light theme after Sunrise"
+  trigger:
+    platform: sun
+    event: sunrise
+  action:
+    - service: frontend.set_theme
+      data:
+# Change this to the name of your light theme
+        name: clear
+
+- alias: "Dark theme after Sunset"
+  trigger:
+    platform: sun
+    event: sunset
+  action:
+    - service: frontend.set_theme
+      data:
+# Change this to the name of your dark theme
+        name: slate
+
+- alias: 'Light theme after reboot in day'
+  trigger:
+    platform: homeassistant
+    event: start
+  condition:
+    - condition: state
+      entity_id: sun.sun
+      state: 'above_horizon'
+  action:
+    service: frontend.set_theme
+    data:
+# Change this to the name of your light theme
+      name: clear
+
+- alias: 'Dark theme after reboot in night'
+  trigger:
+    platform: homeassistant
+    event: start
+  condition:
+    condition: state
+    entity_id: sun.sun
+    state: 'below_horizon'
+  action:
+    service: frontend.set_theme
+    data:
+# Change this to the name of your dark theme
+      name: slate

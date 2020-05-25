@@ -1,0 +1,17 @@
+# Core Configuration
+homeassistant: !include includes/homeassistant.yaml
+default_config:
+frontend:
+  themes: !include_dir_merge_named themes
+
+# Home Assistant
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+sensor: !include includes/sensors.yaml
+
+# Others
+vacuum: !include includes/vacuum.yaml
+webostv: !include includes/webostv.yaml
+  

@@ -1,0 +1,20 @@
+# Groups
+living_room_lights:
+    name: Living Room
+    entities:
+      - light.spot_bij_kast
+      - light.spot_bij_raam
+      - light.globe
+      - light.hue_globe_links
+      - light.hue_globe_rechts
+      - light.plafondlamp
+hall_lights:
+    name: Hall
+    entities:
+      - light.spot_links
+      - light.spot_midden
+      - light.spot_rechts
+bedroom_lights:
+    name: Bedroom
+    entities:
+      - light.plafondlamp_2

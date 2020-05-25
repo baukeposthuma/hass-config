@@ -1,0 +1,11 @@
+latitude: !secret latitude_home
+longitude: !secret longitude_home
+elevation: 0
+unit_system: metric
+time_zone: Europe/Amsterdam
+name: Home
+customize:
+  person.bauke:
+    entity_picture: !secret profile_photo_bauke
+  person.anouk:
+    entity_picture: !secret profile_photo_anouk
