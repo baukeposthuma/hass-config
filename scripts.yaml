@@ -37,3 +37,24 @@
     domain: light
     entity_id: light.spot_rechts
     type: turn_off
+'1587604448784':
+  alias: Dinner
+  icon: mdi:silverware-fork-knife
+  mode: single
+  sequence:
+  - data:
+      group_name: Woonkamer
+      scene_name: Dineren
+    service: hue.hue_activate_scene
+'1587604448785':
+  alias: Movie
+  icon: mdi:movie-open
+  mode: single
+  sequence:
+  - data: {}
+    entity_id: all
+    service: light.turn_off
+  - data:
+      group_name: Woonkamer
+      scene_name: Filmkijken
+    service: hue.hue_activate_scene
