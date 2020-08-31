@@ -18,3 +18,7 @@ bedroom_lights:
     name: Bedroom
     entities:
       - light.plafondlamp_2
+office_lights:
+    name: Office
+    entities:
+      - light.lichtschakelaar_globe
