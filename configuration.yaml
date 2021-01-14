@@ -2,7 +2,7 @@
 homeassistant: !include includes/homeassistant.yaml
 default_config:
 frontend:
-  themes: !include_dir_merge_named themes
+    themes: !include_dir_merge_named themes
 
 # Home Assistant
 group: !include groups.yaml
@@ -12,6 +12,6 @@ scene: !include scenes.yaml
 sensor: !include includes/sensors.yaml
 
 # Others
+calendar: !include includes/calendar.yaml
 vacuum: !include includes/vacuum.yaml
 webostv: !include includes/webostv.yaml
-  
