@@ -104,11 +104,7 @@ venv.bak/
 .mypy_cache/
 
 # home assistant
-
-## You can whitelist files/folders with !, these will not be ignored.
-!*.yaml
-!.gitignore
-!*.md
+backup/
 
 ## Ignore folders.
 .storage
