@@ -1,0 +1,10 @@
+{
+    "0x680ae2fffe80376e": {
+        "battery": 0,
+        "update": {
+            "state": "available"
+        },
+        "update_available": true,
+        "brightness": 20
+    }
+}

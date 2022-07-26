@@ -1,17 +1,82 @@
 # Core Configuration
-homeassistant: !include includes/homeassistant.yaml
-default_config:
-frontend:
-    themes: !include_dir_merge_named themes
+homeassistant:
+  latitude: !secret latitude_home
+  longitude: !secret longitude_home
+  elevation: 0
+  unit_system: metric
+  currency: EUR
+  time_zone: Europe/Amsterdam
+  name: Stille Steeg West
+  external_url: "https://homeassistant.baukeposthuma.nl:8123"
+  internal_url: "http://homeassistant.local:8123"
+  packages: !include_dir_named packages
+  allowlist_external_dirs:
+    - /config
+
+history: # Enable History Integration
+
+lovelace:
+  mode: yaml #use ui-lovelace.yaml
+  resources: #hacs
+    - url: /hacsfiles/button-card/button-card.js
+      type: module
+    - url: /hacsfiles/lovelace-card-mod/card-mod.js
+      type: module
+    - url: /hacsfiles/lovelace-layout-card/layout-card.js
+      type: module
+    - url: /hacsfiles/swipe-card/swipe-card.js
+      type: module
+    - url: /local/vanilla-tilt.min.js
+      type: module
 
 # Home Assistant
-group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 sensor: !include includes/sensors.yaml
 
+input_select:
+  who_moved_trash:
+    name: Who moved the trash
+    options:
+      - default
+      - Bauke
+      - Anouk
+    initial: default
+    icon: mdi:account-star
+    
+input_boolean:
+  waste_moved:
+    name: Waste has been moved
+    initial: 'off'
+    icon: mdi:delete-empty
+  waste_reminder:
+    name: Waste reminder enabled
+    initial: 'on'
+  heating_open_window_detection:
+    name: Open raam detectie
+    initial: 'on'
+  heating_geolocation:
+    name: Auto-Assist Geolocatie
+    initial: 'on'
+  movie_mode:
+    name: Movie mode
+    initial: 'off'
+    
+browser_mod: # Enable Browser Mod
+
 # Others
-calendar: !include includes/calendar.yaml
-vacuum: !include includes/vacuum.yaml
-webostv: !include includes/webostv.yaml
+# calendar: !include includes/calendar.yaml
+# vacuum: !include includes/vacuum.yaml
+# webostv: !include includes/webostv.yaml
+
+# HomeKit
+homekit:
+  filter:
+    include_domains:
+      - light
+      - cover
+      - switch
+      - media_player
+      - binary_sensor
+     

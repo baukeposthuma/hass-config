@@ -1,0 +1,16 @@
+homeassistant:
+
+    ####################################################
+    #                                                  #
+    #                    CUSTOMIZE                     #
+    #                                                  #
+    ####################################################
+
+  customize:
+    #person
+    person.bauke:
+      entity_picture: !secret profile_photo_bauke
+    device_tracker.iphone_van_bauke:
+      entity_picture: /local/device_tracker.svg
+    person.anouk:
+      entity_picture: !secret profile_photo_anouk

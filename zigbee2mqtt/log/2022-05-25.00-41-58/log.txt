@@ -1,0 +1,21 @@
+info  2022-05-25 00:42:02: Logging to console and directory: '/config/zigbee2mqtt/log/2022-05-25.00-41-58' filename: log.txt
+info  2022-05-25 00:42:02: Starting Zigbee2MQTT version 1.25.1 (commit #unknown)
+info  2022-05-25 00:42:02: Starting zigbee-herdsman (0.14.27)
+info  2022-05-25 00:42:03: zigbee-herdsman started (resumed)
+info  2022-05-25 00:42:03: Coordinator firmware version: '{"meta":{"maintrel":1,"majorrel":2,"minorrel":7,"product":1,"revision":20220219,"transportrev":2},"type":"zStack3x0"}'
+info  2022-05-25 00:42:03: Currently 0 devices are joined:
+info  2022-05-25 00:42:03: Zigbee: disabling joining new devices.
+info  2022-05-25 00:42:04: Connecting to MQTT server at mqtt://mqtt
+error 2022-05-25 00:42:07: MQTT failed to connect: getaddrinfo ENOTFOUND mqtt
+error 2022-05-25 00:42:07: Exiting...
+info  2022-05-25 00:42:07: Stopping zigbee-herdsman...
+error 2022-05-25 00:42:10: Failed to call 'Frontend' 'stop' (TypeError: Cannot read property 'clients' of null
+    at Frontend.stop (/app/lib/extension/frontend.ts:59:39)
+    at Controller.callExtensions (/app/lib/controller.ts:316:40)
+    at Controller.stop (/app/lib/controller.ts:191:9)
+    at stop (/app/index.js:114:5)
+    at process.handleQuit (/app/index.js:120:9))
+error 2022-05-25 00:42:10: Not connected to MQTT server!
+error 2022-05-25 00:42:10: Cannot send message: topic: 'zigbee2mqtt/bridge/state', payload: 'offline
+info  2022-05-25 00:42:10: Disconnecting from MQTT server
+info  2022-05-25 00:42:10: Stopping zigbee-herdsman...

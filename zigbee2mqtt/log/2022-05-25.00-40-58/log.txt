@@ -1,0 +1,12 @@
+info  2022-05-25 00:41:02: Logging to console and directory: '/config/zigbee2mqtt/log/2022-05-25.00-40-58' filename: log.txt
+info  2022-05-25 00:41:02: Starting Zigbee2MQTT version 1.25.1 (commit #unknown)
+info  2022-05-25 00:41:02: Starting zigbee-herdsman (0.14.27)
+info  2022-05-25 00:41:03: zigbee-herdsman started (resumed)
+info  2022-05-25 00:41:03: Coordinator firmware version: '{"meta":{"maintrel":1,"majorrel":2,"minorrel":7,"product":1,"revision":20220219,"transportrev":2},"type":"zStack3x0"}'
+info  2022-05-25 00:41:03: Currently 0 devices are joined:
+info  2022-05-25 00:41:03: Zigbee: disabling joining new devices.
+info  2022-05-25 00:41:03: Connecting to MQTT server at mqtt://mqtt
+error 2022-05-25 00:41:07: MQTT failed to connect: getaddrinfo ENOTFOUND mqtt
+error 2022-05-25 00:41:07: Exiting...
+info  2022-05-25 00:41:07: Stopping zigbee-herdsman...
+info  2022-05-25 00:41:18: Stopped zigbee-herdsman

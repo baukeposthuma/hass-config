@@ -1,51 +1,3 @@
-- id: '1587415569504'
-  alias: Turn on 'Filmkijken' scene when watching movies of playing games
-  description: ''
-  trigger:
-  - entity_id: sensor.living_room_tv_source
-    platform: state
-    to:
-    - PS4
-    - Plex
-    - YouTube
-    - Netflix
-    - Rakuten TV
-    - Videoland
-  condition:
-  - condition: state
-    entity_id: sun.sun
-    state: below_horizon
-  action:
-  - data:
-      group_name: Woonkamer
-      scene_name: Filmkijken
-    service: hue.hue_activate_scene
-- id: '1587566605788'
-  alias: Turn off 'Filmkijken' scene when not watching movies or playing games
-  description: ''
-  trigger:
-  - entity_id: sensor.living_room_tv_source
-    from:
-    - PS4
-    - Plex
-    - YouTube
-    - Netflix
-    - Rakuten TV
-    - Videoland
-    platform: state
-  - entity_id: media_player.lg_tv
-    from: 'on'
-    platform: state
-    to: 'off'
-  condition:
-  - condition: state
-    entity_id: sun.sun
-    state: below_horizon
-  action:
-  - data:
-      group_name: Woonkamer
-      scene_name: Avondlicht
-    service: hue.hue_activate_scene
 - alias: Light theme after Sunrise
   trigger:
     platform: sun
@@ -54,9 +6,11 @@
   - service: frontend.set_theme
     data:
       name: clear
-- alias: Dark theme after Sunset
+  id: a44cfb776ef44d2a9e75bc087cc5c161
+- id: 6783276d103946b0b5405b30bc29a855
+  alias: Dark theme after Sunset
   trigger:
-    platform: sun
+  - platform: sun
     event: sunset
   action:
   - service: frontend.set_theme
@@ -74,6 +28,7 @@
     service: frontend.set_theme
     data:
       name: clear
+  id: 98a70b4b29f84a37a61389373d34f893
 - alias: Dark theme after reboot in night
   trigger:
     platform: homeassistant
@@ -86,3 +41,471 @@
     service: frontend.set_theme
     data:
       name: slate
+  id: 74cd03b23e794ca2b7a03b7935729254
+- alias: Reset waste notification
+  trigger:
+    platform: state
+    entity_id: input_boolean.waste_moved
+    to: 'on'
+    for:
+      hours: 12
+  action:
+  - service: input_boolean.turn_off
+    entity_id: input_boolean.waste_moved
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.waste_reminder
+  id: fb01f50f6e484d7fb623365e9a0b5f52
+- id: f276d37dd7b4490d9e5212c91fdeeba0
+  alias: Mark waste as moved from notification
+  trigger:
+  - platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: MARK_WASTE_MOVED
+    id: waste_moved_by_bauke
+    context:
+      user_id:
+      - f976a4bc7f22438e93c9a9cd0b47c627
+  - platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: MARK_WASTE_MOVED
+    id: waste_moved_by_anouk
+    context:
+      user_id:
+      - 630c9bfb3f084bf1b7133da9a16ff5ec
+  - platform: event
+    event_type: ios.notification_action_fired
+    event_data:
+      actionName: MARK_WASTE_MOVED
+    context: {}
+  action:
+  - service: input_boolean.turn_on
+    entity_id: input_boolean.waste_moved
+  - choose:
+    - conditions:
+      - condition: trigger
+        id: waste_moved_by_bauke
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.who_moved_trash
+        data:
+          option: Bauke
+    - conditions:
+      - condition: trigger
+        id: waste_moved_by_anouk
+      sequence:
+      - service: input_select.select_option
+        target:
+          entity_id: input_select.who_moved_trash
+        data:
+          option: Anouk
+    default:
+    - service: input_select.select_option
+      target:
+        entity_id: input_select.who_moved_trash
+      data:
+        option: default
+  - service: notify.notify
+    data:
+      title: '{{ states.input_select.who_moved_trash.state }} heeft de {% if is_state(''sensor.afvalwijzer_tomorrow'',
+        ''Geen'') %}vuilnis{% else %}{{states.sensor.afvalwijzer_tomorrow.state}}{%
+        endif %} container buiten gezet'
+      message: Chill, dan hoef jij het niet meer te doen!
+  - service: input_select.select_option
+    target:
+      entity_id: input_select.who_moved_trash
+    data:
+      option: default
+- id: b95aa77fdde0437e9f7a65d0d7bfe860
+  alias: Waste has not been moved
+  trigger:
+  - platform: time_pattern
+    hours: /1
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: input_boolean.waste_moved
+      state: 'off'
+    - condition: state
+      entity_id: input_boolean.waste_reminder
+      state: 'on'
+    - condition: time
+      after: '18:00:00'
+      before: '23:00:00'
+    - condition: template
+      value_template: '{{ states(''sensor.afvalwijzer_tomorrow'') != ''Geen'' }}'
+  action:
+  - service: notify.notify
+    data:
+      title: Morgen wordt het {% if is_state('sensor.afvalwijzer_tomorrow', 'Geen')
+        %}vuilnis{% else %}{{states.sensor.afvalwijzer_tomorrow.state}}{% endif %}
+        opgehaald
+      message: Denk je er aan om de {% if is_state('sensor.afvalwijzer_tomorrow',
+        'Geen') %}vuilnis{% else %}{{states.sensor.afvalwijzer_tomorrow.state}}{%
+        endif %} container buiten te zetten?
+      data:
+        actions:
+        - action: MARK_WASTE_MOVED
+          title: Voltooien
+          icon: sfsymbols:checkmark.circle
+        - action: DISMISS
+          title: Herinner mij later
+          icon: sfsymbols:timer
+- alias: Turn off heating when room's window is left open
+  trigger:
+    platform: state
+    entity_id: binary_sensor.werkkamer_bauke_open_window
+    to: 'on'
+    for:
+      minutes: 1
+  action:
+  - service: notify.mobile_app_iphone_van_bauke
+    data:
+      title: Test
+      message: Window has been left open
+  id: 5915b26e208d473792ef74e0e693172c
+- id: '1636147330331'
+  alias: Schakel Tado uit als er niemand thuis is
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id: person.anouk
+    zone: zone.home
+    event: leave
+  - platform: zone
+    entity_id: person.bauke
+    zone: zone.home
+    event: leave
+  - platform: template
+    value_template: '{{ not is_state(''person.bauke'', ''home'') and not is_state(''person.anouk'',
+      ''home'') }}'
+  condition:
+  - condition: state
+    entity_id: input_boolean.heating_geolocation
+    state: 'on'
+  action:
+  - service: notify.family
+    data:
+      title: Verwarming uitgeschakeld
+      message: Je Tado is op 'afwezig' gezet omdat er niemand thuis is.
+  - service: climate.set_preset_mode
+    data:
+      preset_mode: away
+    target:
+      area_id: woonkamer
+  mode: single
+- id: '1636147330332'
+  alias: Schakel Tado in als er iemand thuis komt
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id: person.anouk
+    zone: zone.home
+    event: enter
+    id: sjdsab7yiu3h42j
+  - platform: zone
+    entity_id: person.bauke
+    zone: zone.home
+    event: enter
+    id: dasd5u76ias8ud
+  - platform: template
+    value_template: '{{ is_state(''person.bauke'', ''home'') or is_state(''person.anouk'',
+      ''home'') }}'
+  condition:
+  - condition: state
+    entity_id: input_boolean.heating_geolocation
+    state: 'on'
+  action:
+  - service: notify.family
+    data:
+      title: Verwarming ingeschakeld
+      message: Welkom thuis! Je Tado is ingeschakeld.
+  - service: climate.set_preset_mode
+    data:
+      preset_mode: none
+    target:
+      area_id: woonkamer
+  mode: single
+- id: '1647644799404'
+  alias: Vloerverwarmingspomp woonkamer inschakelen
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.woonkamer_heating
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.woonkamer_heating
+    above: '1.0'
+  action:
+  - type: turn_on
+    device_id: 4f6ed286ab4731ae415193605b8875e1
+    entity_id: light.hue_smart_plug_1
+    domain: light
+  mode: restart
+- id: '1647644895070'
+  alias: Vloerverwarmingspomp wookamer uitschakelen
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.woonkamer_heating
+  condition:
+  - condition: numeric_state
+    entity_id: sensor.woonkamer_heating
+    below: '0.5'
+  action:
+  - type: turn_off
+    device_id: 4f6ed286ab4731ae415193605b8875e1
+    entity_id: light.hue_smart_plug_1
+    domain: light
+  mode: restart
+- id: '1653434678155'
+  alias: Alarm beneden
+  description: Motion based alarm
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.woonkamer_sensor_motion
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.keuken_sensor_motion
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.hue_motion_sensor_1_motion
+    to: 'on'
+  condition: []
+  action:
+  - service: notify.persistent_notification
+    data:
+      title: Alarm beneden werd geactiveerd
+      message: test
+  - service: notify.family
+    data:
+      title: Alarm beneden werd geactiveerd
+      message: Test
+      data:
+        actions:
+        - action: ALARM
+          title: Sound Alarm
+          icon: sfsymbols:bell
+          destructive: true
+        - action: SILENCE
+          title: Silence Alarm
+          icon: sfsymbols:bell.slash
+  - alias: Set up variables for the actions
+    variables:
+      action_open: '{{ ''OPEN_'' ~ context.id }}'
+      action_close: '{{ ''CLOSE_'' ~ context.id }}'
+  - alias: Ask to close or open the blinds
+    service: notify.family
+    data:
+      message: The blinds are half-open. Do you want to adjust this?
+      data:
+        actions:
+        - action: '{{ action_open }}'
+          title: Open
+        - action: '{{ action_close }}'
+          title: Close
+  - alias: Wait for a response
+    wait_for_trigger:
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: '{{ action_open }}'
+    - platform: event
+      event_type: mobile_app_notification_action
+      event_data:
+        action: '{{ action_close }}'
+  - alias: Perform the action
+    choose:
+    - conditions: '{{ wait.trigger.event.data.action == action_open }}'
+      sequence:
+      - service: light.turn_on
+        target:
+          area_id: werkkamer_anouk
+    - conditions: '{{ wait.trigger.event.data.action == action_close }}'
+      sequence:
+      - service: light.turn_off
+        target:
+          area_id: werkkamer_anouk
+  mode: single
+- id: '1653435434932'
+  alias: Sound the alarm iOS
+  description: Motion based alarm
+  trigger:
+  - platform: event
+    event_type: mobile_app_notification_action
+    event_data:
+      action: SOUND_ALARM
+  condition: []
+  action:
+  - service: notify.persistent_notification
+    data:
+      title: Alarm gaat af
+      message: test
+  - service: notify.family
+    data:
+      title: Alarm gaat af
+      message: Test
+  mode: single
+- id: '1653684999337'
+  alias: Toggle Movie Mode with Ikea button
+  description: Toggle movie mode input_boolean when remote is clicked
+  trigger:
+  - platform: device
+    domain: mqtt
+    device_id: 508c16ba1e53972f58ff68751b6c12fa
+    type: action
+    subtype: 'on'
+    discovery_id: 0x680ae2fffe80376e action_on
+  - platform: device
+    domain: mqtt
+    device_id: 508c16ba1e53972f58ff68751b6c12fa
+    type: action
+    subtype: 'off'
+    discovery_id: 0x680ae2fffe80376e action_off
+  condition: []
+  action:
+  - service: homeassistant.toggle
+    entity_id: input_boolean.movie_mode
+  mode: single
+- id: '1653685711883'
+  alias: Turn on Movie Mode
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.movie_mode
+    to: 'on'
+  condition: []
+  action:
+  - service: light.turn_off
+    target:
+      area_id:
+      - keuken
+      - entree
+    data:
+      transition: 10
+  - service: hue.hue_activate_scene
+    data:
+      scene_name: Film kijken
+      group_name: Woonkamer
+      dynamic: true
+      transition: 10
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.hue_motion_sensor_1_motion
+      - switch.woonkamer_sensor_motion
+      - switch.keuken_sensor_motion
+  mode: single
+- id: '1653686032957'
+  alias: Turn off Movie Mode
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: input_boolean.movie_mode
+    to: 'off'
+  condition: []
+  action:
+  - service: hue.hue_activate_scene
+    data:
+      scene_name: Helder
+      group_name: Woonkamer
+      dynamic: true
+      transition: 10
+  - service: switch.turn_on
+    target:
+      entity_id:
+      - switch.woonkamer_sensor_motion
+      - switch.keuken_sensor_motion
+      - switch.hue_motion_sensor_1_motion
+  mode: single
+- id: '1654533597100'
+  alias: Slaapkamer auto lights off
+  description: Turn lights off after 30 minutes
+  trigger:
+  - device_id: 1c6a455d3533567404ec57126e82a5c8
+    domain: hue
+    platform: device
+    type: short_release
+    subtype: 1
+    unique_id: c8c805fc-a934-4da1-903e-7756a7ef261b
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 30
+      seconds: 0
+      milliseconds: 0
+  - type: turn_off
+    device_id: a74e5afe63f2bb54544c6cb68f271511
+    entity_id: light.hue_ambiance_spot_1
+    domain: light
+  - type: turn_off
+    device_id: ae08ad1e58ab9a2e3092538b629abd07
+    entity_id: light.hue_ambiance_spot_2
+    domain: light
+  - type: turn_off
+    device_id: 290589317f10ecd65fe9cb6ea6f4a903
+    entity_id: light.hue_ambiance_spot_3
+    domain: light
+  mode: single
+- id: '1658504377768'
+  alias: Turn on Sleeping Mode at night
+  description: Deactivate motion sensors on the ground floor
+  trigger:
+  - platform: time
+    at: '23:59:00'
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    target:
+      entity_id: input_boolean.sleeping_mode
+  mode: single
+- id: '1658504471642'
+  alias: Turn off Sleeping Mode in the morning
+  description: Activate motion sensors on the ground floor
+  trigger:
+  - platform: time
+    at: 07:30:00
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    target:
+      entity_id: input_boolean.sleeping_mode
+  mode: single
+- id: '1658504908669'
+  alias: Turn off motions sensor when Sleeping Mode is on
+  description: Turn off motion sensors on ground floor when Sleeping mode is on
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sleeping_mode
+    to: 'on'
+  condition: []
+  action:
+  - service: switch.turn_off
+    target:
+      entity_id:
+      - switch.hue_motion_sensor_1_motion
+      - switch.woonkamer_sensor_motion
+      - switch.keuken_sensor_motion
+    data: {}
+  mode: single
+- id: '1658505514384'
+  alias: Turn on motions sensor when Sleeping Mode is off
+  description: Turn on motion sensors on ground floor when Sleeping mode is off
+  trigger:
+  - platform: state
+    entity_id: input_boolean.sleeping_mode
+    to: 'off'
+  condition: []
+  action:
+  - service: switch.turn_on
+    target:
+      entity_id:
+      - switch.hue_motion_sensor_1_motion
+      - switch.woonkamer_sensor_motion
+      - switch.keuken_sensor_motion
+    data: {}
+  mode: single

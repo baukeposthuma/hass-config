@@ -1,0 +1,22 @@
+info  2022-05-25 00:22:21: Logging to console and directory: '/config/zigbee2mqtt/log/2022-05-25.00-22-16' filename: log.txt
+info  2022-05-25 00:22:21: Starting Zigbee2MQTT version 1.25.1 (commit #unknown)
+info  2022-05-25 00:22:21: Starting zigbee-herdsman (0.14.27)
+info  2022-05-25 00:22:33: zigbee-herdsman started (resumed)
+info  2022-05-25 00:22:33: Coordinator firmware version: '{"meta":{"maintrel":1,"majorrel":2,"minorrel":7,"product":1,"revision":20220219,"transportrev":2},"type":"zStack3x0"}'
+info  2022-05-25 00:22:33: Currently 0 devices are joined:
+info  2022-05-25 00:22:33: Zigbee: disabling joining new devices.
+info  2022-05-25 00:22:34: Connecting to MQTT server at mqtt://192.168.178.100
+info  2022-05-25 00:22:35: Connected to MQTT server
+info  2022-05-25 00:22:35: MQTT publish: topic 'zigbee2mqtt/bridge/state', payload 'online'
+info  2022-05-25 00:22:35: Started frontend on port 0.0.0.0:8099
+info  2022-05-25 00:22:35: MQTT publish: topic 'zigbee2mqtt/bridge/config', payload '{"commit":"unknown","coordinator":{"meta":{"maintrel":1,"majorrel":2,"minorrel":7,"product":1,"revision":20220219,"transportrev":2},"type":"zStack3x0"},"log_level":"info","network":{"channel":11,"extendedPanID":"0x00124b0024c2b64c","panID":6754},"permit_join":false,"version":"1.25.1"}'
+info  2022-05-25 00:22:35: MQTT publish: topic 'zigbee2mqtt/bridge/state', payload 'online'
+info  2022-05-25 00:23:19: Zigbee: allowing new devices to join.
+info  2022-05-25 00:23:19: MQTT publish: topic 'zigbee2mqtt/bridge/response/permit_join', payload '{"data":{"time":254,"value":true},"status":"ok","transaction":"xm26o-1"}'
+info  2022-05-25 00:28:13: Zigbee: allowing new devices to join.
+info  2022-05-25 00:28:13: MQTT publish: topic 'zigbee2mqtt/bridge/response/permit_join', payload '{"data":{"time":254,"value":true},"status":"ok","transaction":"xm26o-2"}'
+info  2022-05-25 00:32:36: Zigbee: allowing new devices to join.
+info  2022-05-25 00:32:36: MQTT publish: topic 'zigbee2mqtt/bridge/response/permit_join', payload '{"data":{"time":254,"value":true},"status":"ok","transaction":"xm26o-3"}'
+info  2022-05-25 00:39:38: MQTT publish: topic 'zigbee2mqtt/bridge/state', payload 'offline'
+info  2022-05-25 00:39:38: Disconnecting from MQTT server
+info  2022-05-25 00:39:38: Stopping zigbee-herdsman...

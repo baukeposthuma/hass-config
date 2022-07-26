@@ -1,0 +1,205 @@
+2022-07-26 23:59:36 WARNING (SyncWorker_0) [homeassistant.loader] We found a custom integration afvalbeheer which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2022-07-26 23:59:36 ERROR (SyncWorker_0) [homeassistant.loader] The custom integration 'afvalbeheer' does not have a version key in the manifest file and was blocked from loading. See https://developers.home-assistant.io/blog/2021/01/29/custom-integration-changes#versions for more details
+2022-07-26 23:59:36 WARNING (SyncWorker_3) [homeassistant.loader] We found a custom integration hacs which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2022-07-26 23:59:36 WARNING (SyncWorker_1) [homeassistant.loader] We found a custom integration browser_mod which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2022-07-26 23:59:36 WARNING (SyncWorker_2) [homeassistant.loader] We found a custom integration afvalwijzer which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you experience issues with Home Assistant
+2022-07-27 00:00:00 WARNING (MainThread) [homeassistant.setup] Setup of input_select is taking over 10 seconds.
+2022-07-27 00:00:00 WARNING (MainThread) [homeassistant.setup] Setup of input_boolean is taking over 10 seconds.
+2022-07-27 00:00:02 WARNING (MainThread) [homeassistant.components.binary_sensor] Setup of binary_sensor platform rpi_power is taking over 10 seconds.
+2022-07-27 00:00:02 WARNING (MainThread) [homeassistant.setup] Setup of script is taking over 10 seconds.
+2022-07-27 00:00:07 ERROR (MainThread) [homeassistant.components.sensor] command_line: Error on device update!
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 446, in _async_add_entity
+    await entity.async_device_update(warning=False)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 702, in async_device_update
+    await task
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/src/homeassistant/homeassistant/components/command_line/sensor.py", line 112, in update
+    self._attr_extra_state_attributes = {
+  File "/usr/src/homeassistant/homeassistant/components/command_line/sensor.py", line 115, in <dictcomp>
+    if k in json_dict
+TypeError: unhashable type: 'collections.OrderedDict'
+2022-07-27 00:00:09 ERROR (MainThread) [homeassistant.components.sensor] command_line: Error on device update!
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 1414, in forgiving_round
+    value = round(float(value), precision)
+ValueError: could not convert string to float: ''
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/entity_platform.py", line 446, in _async_add_entity
+    await entity.async_device_update(warning=False)
+  File "/usr/src/homeassistant/homeassistant/helpers/entity.py", line 702, in async_device_update
+    await task
+  File "/usr/local/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/src/homeassistant/homeassistant/components/command_line/sensor.py", line 128, in update
+    self._value_template.render_with_possible_json_value(
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 559, in render_with_possible_json_value
+    ).result()
+  File "/usr/local/lib/python3.10/concurrent/futures/_base.py", line 446, in result
+    return self.__get_result()
+  File "/usr/local/lib/python3.10/concurrent/futures/_base.py", line 391, in __get_result
+    raise self._exception
+  File "/usr/src/homeassistant/homeassistant/util/async_.py", line 64, in run_callback
+    future.set_result(callback(*args))
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 584, in async_render_with_possible_json_value
+    return _render_with_context(
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 1906, in _render_with_context
+    return template.render(**kwargs)
+  File "/usr/local/lib/python3.10/site-packages/jinja2/environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "/usr/local/lib/python3.10/site-packages/jinja2/environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "<template>", line 1, in top-level template code
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 1419, in forgiving_round
+    raise_no_default("round", value)
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 1395, in raise_no_default
+    raise ValueError(
+ValueError: Template error: round got invalid input '' when rendering template '{{ value | round(1) }}' but no default was specified
+2022-07-27 00:00:10 ERROR (SyncWorker_3) [homeassistant.components.command_line] Command failed: ssh -q -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa [REDACTED USER@IP] uptime -s 2>/dev/null
+2022-07-27 00:00:12 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'homeassistant.util.read_only_dict.ReadOnlyDict object' has no attribute 'source' when rendering '{{ states.media_player.lg_tv.attributes["source"] }}'
+2022-07-27 00:00:12 WARNING (MainThread) [homeassistant.helpers.template] Template variable warning: 'homeassistant.util.read_only_dict.ReadOnlyDict object' has no attribute 'source' when rendering '{{ states.media_player.lg_tv.attributes["source"] }}'
+2022-07-27 00:00:12 ERROR (MainThread) [homeassistant.helpers.event] Error while processing template: Template("{{ states.weather.lange_heul_502.attributes["temperature"] }}")
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 421, in async_render
+    render_result = _render_with_context(self.template, compiled, **kwargs)
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 1906, in _render_with_context
+    return template.render(**kwargs)
+  File "/usr/local/lib/python3.10/site-packages/jinja2/environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "/usr/local/lib/python3.10/site-packages/jinja2/environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "<template>", line 1, in top-level template code
+  File "/usr/local/lib/python3.10/site-packages/jinja2/sandbox.py", line 303, in getitem
+    return obj[argument]
+jinja2.exceptions.UndefinedError: 'None' has no attribute 'attributes'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 537, in async_render_to_info
+    render_info._result = self.async_render(variables, strict=strict, **kwargs)
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 423, in async_render
+    raise TemplateError(err) from err
+homeassistant.exceptions.TemplateError: UndefinedError: 'None' has no attribute 'attributes'
+2022-07-27 00:00:12 ERROR (MainThread) [homeassistant.helpers.template_entity] TemplateError('UndefinedError: 'None' has no attribute 'attributes'') while processing template 'Template("{{ states.weather.lange_heul_502.attributes["temperature"] }}")' for attribute '_attr_native_value' in entity 'sensor.outside_temperature'
+2022-07-27 00:00:12 ERROR (MainThread) [homeassistant.helpers.event] Error while processing template: Template("{% set temperature = states('sensor.dark_sky_temperature') %} {% set apparent = states('sensor.dark_sky_apparent_temperature') | round %} {% set precip = states('sensor.dark_sky_precip_probability') | round %} {% if not is_state('sensor.dark_sky_temperature', 'unknown') %}
+  {% if temperature | float(default=0) <= 0.0 %}
+    Känns som {{ apparent }}° med {{ precip }}% risk för snö {{'\u2744\uFE0F'}}
+  {% elif temperature | float(default=0) > 0.0 %}
+    Känns som {{ apparent}}° med {{ precip }}% risk för regn {{ '\u2614\uFE0F' if precip > 30 }}
+  {% endif %}
+{% else %}
+  Kan inte läsa in väderinformation...
+{% endif %}")
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 1414, in forgiving_round
+    value = round(float(value), precision)
+ValueError: could not convert string to float: 'unknown'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 421, in async_render
+    render_result = _render_with_context(self.template, compiled, **kwargs)
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 1906, in _render_with_context
+    return template.render(**kwargs)
+  File "/usr/local/lib/python3.10/site-packages/jinja2/environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "/usr/local/lib/python3.10/site-packages/jinja2/environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "<template>", line 1, in top-level template code
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 1419, in forgiving_round
+    raise_no_default("round", value)
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 1395, in raise_no_default
+    raise ValueError(
+ValueError: Template error: round got invalid input 'unknown' when rendering template '{% set temperature = states('sensor.dark_sky_temperature') %} {% set apparent = states('sensor.dark_sky_apparent_temperature') | round %} {% set precip = states('sensor.dark_sky_precip_probability') | round %} {% if not is_state('sensor.dark_sky_temperature', 'unknown') %}
+  {% if temperature | float(default=0) <= 0.0 %}
+    Känns som {{ apparent }}° med {{ precip }}% risk för snö {{'\u2744\uFE0F'}}
+  {% elif temperature | float(default=0) > 0.0 %}
+    Känns som {{ apparent}}° med {{ precip }}% risk för regn {{ '\u2614\uFE0F' if precip > 30 }}
+  {% endif %}
+{% else %}
+  Kan inte läsa in väderinformation...
+{% endif %}' but no default was specified
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 537, in async_render_to_info
+    render_info._result = self.async_render(variables, strict=strict, **kwargs)
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 423, in async_render
+    raise TemplateError(err) from err
+homeassistant.exceptions.TemplateError: ValueError: Template error: round got invalid input 'unknown' when rendering template '{% set temperature = states('sensor.dark_sky_temperature') %} {% set apparent = states('sensor.dark_sky_apparent_temperature') | round %} {% set precip = states('sensor.dark_sky_precip_probability') | round %} {% if not is_state('sensor.dark_sky_temperature', 'unknown') %}
+  {% if temperature | float(default=0) <= 0.0 %}
+    Känns som {{ apparent }}° med {{ precip }}% risk för snö {{'\u2744\uFE0F'}}
+  {% elif temperature | float(default=0) > 0.0 %}
+    Känns som {{ apparent}}° med {{ precip }}% risk för regn {{ '\u2614\uFE0F' if precip > 30 }}
+  {% endif %}
+{% else %}
+  Kan inte läsa in väderinformation...
+{% endif %}' but no default was specified
+2022-07-27 00:00:12 ERROR (MainThread) [homeassistant.helpers.template_entity] TemplateError('ValueError: Template error: round got invalid input 'unknown' when rendering template '{% set temperature = states('sensor.dark_sky_temperature') %} {% set apparent = states('sensor.dark_sky_apparent_temperature') | round %} {% set precip = states('sensor.dark_sky_precip_probability') | round %} {% if not is_state('sensor.dark_sky_temperature', 'unknown') %}
+  {% if temperature | float(default=0) <= 0.0 %}
+    Känns som {{ apparent }}° med {{ precip }}% risk för snö {{'\u2744\uFE0F'}}
+  {% elif temperature | float(default=0) > 0.0 %}
+    Känns som {{ apparent}}° med {{ precip }}% risk för regn {{ '\u2614\uFE0F' if precip > 30 }}
+  {% endif %}
+{% else %}
+  Kan inte läsa in väderinformation...
+{% endif %}' but no default was specified') while processing template 'Template("{% set temperature = states('sensor.dark_sky_temperature') %} {% set apparent = states('sensor.dark_sky_apparent_temperature') | round %} {% set precip = states('sensor.dark_sky_precip_probability') | round %} {% if not is_state('sensor.dark_sky_temperature', 'unknown') %}
+  {% if temperature | float(default=0) <= 0.0 %}
+    Känns som {{ apparent }}° med {{ precip }}% risk för snö {{'\u2744\uFE0F'}}
+  {% elif temperature | float(default=0) > 0.0 %}
+    Känns som {{ apparent}}° med {{ precip }}% risk för regn {{ '\u2614\uFE0F' if precip > 30 }}
+  {% endif %}
+{% else %}
+  Kan inte läsa in väderinformation...
+{% endif %}")' for attribute 'weather' in entity 'sensor.template_sidebar'
+2022-07-27 00:00:12 ERROR (MainThread) [homeassistant.helpers.event] Error while processing template: Template("{{ 100 - states('sensor.mattias_imac_storage') | float }}")
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 1679, in forgiving_float_filter
+    return float(value)
+ValueError: could not convert string to float: 'unknown'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 421, in async_render
+    render_result = _render_with_context(self.template, compiled, **kwargs)
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 1906, in _render_with_context
+    return template.render(**kwargs)
+  File "/usr/local/lib/python3.10/site-packages/jinja2/environment.py", line 1301, in render
+    self.environment.handle_exception()
+  File "/usr/local/lib/python3.10/site-packages/jinja2/environment.py", line 936, in handle_exception
+    raise rewrite_traceback_stack(source=source)
+  File "<template>", line 1, in top-level template code
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 1682, in forgiving_float_filter
+    raise_no_default("float", value)
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 1395, in raise_no_default
+    raise ValueError(
+ValueError: Template error: float got invalid input 'unknown' when rendering template '{{ 100 - states('sensor.mattias_imac_storage') | float }}' but no default was specified
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 537, in async_render_to_info
+    render_info._result = self.async_render(variables, strict=strict, **kwargs)
+  File "/usr/src/homeassistant/homeassistant/helpers/template.py", line 423, in async_render
+    raise TemplateError(err) from err
+homeassistant.exceptions.TemplateError: ValueError: Template error: float got invalid input 'unknown' when rendering template '{{ 100 - states('sensor.mattias_imac_storage') | float }}' but no default was specified
+2022-07-27 00:00:12 ERROR (MainThread) [homeassistant.helpers.template_entity] TemplateError('ValueError: Template error: float got invalid input 'unknown' when rendering template '{{ 100 - states('sensor.mattias_imac_storage') | float }}' but no default was specified') while processing template 'Template("{{ 100 - states('sensor.mattias_imac_storage') | float }}")' for attribute '_attr_native_value' in entity 'sensor.template_imac_macintosh_hd'
+2022-07-27 00:00:13 WARNING (MainThread) [homeassistant.components.frontend] Theme slate not found
+2022-07-27 00:00:14 WARNING (MainThread) [homeassistant.components.homekit] The bridge Home Assistant Bridge has entity media_player.lg_tv. For best performance, and to prevent unexpected unavailability, create and pair a separate HomeKit instance in accessory mode for this entity
+2022-07-27 00:04:41 ERROR (MainThread) [frontend.js.latest.202207071] http://192.168.178.100:8123/frontend_latest/core.2895f1d4.js:1:10024 3
+2022-07-27 00:04:42 ERROR (MainThread) [frontend.js.latest.202207071] :0:0 Script error.
+2022-07-27 00:05:14 ERROR (SyncWorker_6) [homeassistant.components.command_line] Command failed: ssh -q -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa [REDACTED USER@IP] uptime -s 2>/dev/null
+2022-07-27 00:09:54 ERROR (MainThread) [homeassistant.components.hassio.handler] /addons/a0d7b954_ssh/changelog return code 500
+2022-07-27 00:09:54 WARNING (MainThread) [homeassistant.components.hassio] Could not fetch changelog for a0d7b954_ssh: 
+2022-07-27 00:09:54 ERROR (MainThread) [homeassistant.components.hassio.handler] /addons/a0d7b954_ftp/changelog return code 500
+2022-07-27 00:09:54 WARNING (MainThread) [homeassistant.components.hassio] Could not fetch changelog for a0d7b954_ftp: 
+2022-07-27 00:10:14 ERROR (SyncWorker_6) [homeassistant.components.command_line] Command failed: ssh -q -o StrictHostKeyChecking=no -i /config/.ssh/id_rsa [REDACTED USER@IP] uptime -s 2>/dev/null
+2022-07-27 00:12:59 ERROR (MainThread) [homeassistant.components.hassio.handler] Timeout on /homeassistant/restart request
