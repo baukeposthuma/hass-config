@@ -1,34 +1,41 @@
 # Core Configuration
 homeassistant:
-  latitude: !secret latitude_home
-  longitude: !secret longitude_home
+  latitude: !secret home_latitude_home
+  longitude: !secret home_longitude_home
   elevation: 0
   unit_system: metric
   currency: EUR
   time_zone: Europe/Amsterdam
-  name: Stille Steeg West
+  name: Thuis
   external_url: "https://homeassistant.baukeposthuma.nl:8123"
   internal_url: "http://homeassistant.local:8123"
   packages: !include_dir_named packages
   allowlist_external_dirs:
     - /config
 
-history: # Enable History Integration
+default_config:
 
-lovelace:
-  mode: yaml #use ui-lovelace.yaml
-  resources: #hacs
-    - url: /hacsfiles/button-card/button-card.js
-      type: module
-    - url: /hacsfiles/lovelace-card-mod/card-mod.js
-      type: module
-    - url: /hacsfiles/lovelace-layout-card/layout-card.js
-      type: module
-    - url: /hacsfiles/swipe-card/swipe-card.js
-      type: module
-    - url: /local/vanilla-tilt.min.js
-      type: module
-
+lovelace: # Lovelace Resources
+  mode: yaml
+  resources:
+    [
+      { url: /hacsfiles/apexcharts-card/apexcharts-card.js,                         type: module },
+      { url: /hacsfiles/bar-card/bar-card.js,                                       type: module },
+      { url: /hacsfiles/button-card/button-card.js,                                 type: module },
+      { url: /hacsfiles/custom-icons/custom-icons.js,                               type: module },
+      { url: /hacsfiles/lovelace-layout-card/layout-card.js,                        type: module },
+      { url: /hacsfiles/lovelace-more-info-card/more-info-card.js,                  type: module },
+      { url: /hacsfiles/lovelace-mushroom/mushroom.js,                              type: module },
+      { url: /hacsfiles/lovelace-slider-entity-row/slider-entity-row.js,            type: module },
+      { url: /hacsfiles/swipe-card/swipe-card.js,                                   type: module },
+      { url: /hacsfiles/lovelace-auto-entities/auto-entities.js,                    type: module },
+    
+      { url: '/local/marked.min.js?v=4.1.0',                                        type: module },
+      { url: '/local/vanilla-tilt.min.js?v=1.7.2',                                  type: module },
+      { url: '/local/browser_mod_icon.js?v=0.3',                                    type: module },
+      { url: '/local/fonts.css?v=2.1',                                              type: css }
+    ]
+      
 # Home Assistant
 automation: !include automations.yaml
 script: !include scripts.yaml
@@ -69,6 +76,20 @@ browser_mod: # Enable Browser Mod
 # calendar: !include includes/calendar.yaml
 # vacuum: !include includes/vacuum.yaml
 # webostv: !include includes/webostv.yaml
+
+switch:
+  - platform: template
+    switches:
+     lg_tv:
+       value_template: "{{ is_state('media_player.lg_tv', 'on') }}"
+       turn_on:
+         - service: wake_on_lan.send_magic_packet
+           data:
+               broadcast_address: 192.168.178.28
+               mac: 74:40:BE:B6:8B:E8
+       turn_off:
+         service: media_player.turn_off
+         entity_id: media_player.lg_tv
 
 # HomeKit
 homekit:

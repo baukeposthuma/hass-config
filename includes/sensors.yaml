@@ -11,11 +11,11 @@
 - platform: template
   sensors:
     outside_temperature:
-      value_template: '{{ states.weather.lange_heul_502.attributes["temperature"] }}'
+      value_template: '{{ states.weather.stille_steeg_west_12.attributes["temperature"] }}'
       friendly_name: 'Outside Temperature'
 - platform: rova
-  zip_code: !secret zip_code
-  house_number: !secret house_number
+  zip_code: !secret home_zip_code
+  house_number: !secret home_house_number
   name: Rova
   monitored_conditions:
     - bio
@@ -23,8 +23,8 @@
     - plastic
 - platform: afvalwijzer
   provider: rova        # (required, default = mijnafvalwijzer) either choose mijnafvalwijzer, afvalstoffendienstkalender or rova
-  postal_code: !secret zip_code              # (required, default = '')
-  street_number:  !secret house_number                # (required, default = '')
+  postal_code: !secret home_zip_code              # (required, default = '')
+  street_number:  !secret home_house_number                # (required, default = '')
   exclude_pickup_today: true        # (optional, default = false) to take or not to take Today into account in the next pickup.
   default_label: Geen              # (optional, default = Geen) label if no date found
   exclude_list: ''                 # (optional, default = '') comma separated list of wast types (case ignored). F.e. "papier, gft"

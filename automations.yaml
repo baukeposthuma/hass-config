@@ -154,19 +154,22 @@
         - action: DISMISS
           title: Herinner mij later
           icon: sfsymbols:timer
-- alias: Turn off heating when room's window is left open
+- id: 5915b26e208d473792ef74e0e693172c
+  alias: Turn off heating when room's window is left open
   trigger:
-    platform: state
-    entity_id: binary_sensor.werkkamer_bauke_open_window
+  - platform: state
+    entity_id:
+    - binary_sensor.werkkamer_bauke_open_window
     to: 'on'
     for:
-      minutes: 1
+      hours: 0
+      minutes: 0
+      seconds: 0
   action:
   - service: notify.mobile_app_iphone_van_bauke
     data:
       title: Test
       message: Window has been left open
-  id: 5915b26e208d473792ef74e0e693172c
 - id: '1636147330331'
   alias: Schakel Tado uit als er niemand thuis is
   description: ''
@@ -228,107 +231,6 @@
       preset_mode: none
     target:
       area_id: woonkamer
-  mode: single
-- id: '1647644799404'
-  alias: Vloerverwarmingspomp woonkamer inschakelen
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: sensor.woonkamer_heating
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.woonkamer_heating
-    above: '1.0'
-  action:
-  - type: turn_on
-    device_id: 4f6ed286ab4731ae415193605b8875e1
-    entity_id: light.hue_smart_plug_1
-    domain: light
-  mode: restart
-- id: '1647644895070'
-  alias: Vloerverwarmingspomp wookamer uitschakelen
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: sensor.woonkamer_heating
-  condition:
-  - condition: numeric_state
-    entity_id: sensor.woonkamer_heating
-    below: '0.5'
-  action:
-  - type: turn_off
-    device_id: 4f6ed286ab4731ae415193605b8875e1
-    entity_id: light.hue_smart_plug_1
-    domain: light
-  mode: restart
-- id: '1653434678155'
-  alias: Alarm beneden
-  description: Motion based alarm
-  trigger:
-  - platform: state
-    entity_id: binary_sensor.woonkamer_sensor_motion
-    to: 'on'
-  - platform: state
-    entity_id: binary_sensor.keuken_sensor_motion
-    to: 'on'
-  - platform: state
-    entity_id: binary_sensor.hue_motion_sensor_1_motion
-    to: 'on'
-  condition: []
-  action:
-  - service: notify.persistent_notification
-    data:
-      title: Alarm beneden werd geactiveerd
-      message: test
-  - service: notify.family
-    data:
-      title: Alarm beneden werd geactiveerd
-      message: Test
-      data:
-        actions:
-        - action: ALARM
-          title: Sound Alarm
-          icon: sfsymbols:bell
-          destructive: true
-        - action: SILENCE
-          title: Silence Alarm
-          icon: sfsymbols:bell.slash
-  - alias: Set up variables for the actions
-    variables:
-      action_open: '{{ ''OPEN_'' ~ context.id }}'
-      action_close: '{{ ''CLOSE_'' ~ context.id }}'
-  - alias: Ask to close or open the blinds
-    service: notify.family
-    data:
-      message: The blinds are half-open. Do you want to adjust this?
-      data:
-        actions:
-        - action: '{{ action_open }}'
-          title: Open
-        - action: '{{ action_close }}'
-          title: Close
-  - alias: Wait for a response
-    wait_for_trigger:
-    - platform: event
-      event_type: mobile_app_notification_action
-      event_data:
-        action: '{{ action_open }}'
-    - platform: event
-      event_type: mobile_app_notification_action
-      event_data:
-        action: '{{ action_close }}'
-  - alias: Perform the action
-    choose:
-    - conditions: '{{ wait.trigger.event.data.action == action_open }}'
-      sequence:
-      - service: light.turn_on
-        target:
-          area_id: werkkamer_anouk
-    - conditions: '{{ wait.trigger.event.data.action == action_close }}'
-      sequence:
-      - service: light.turn_off
-        target:
-          area_id: werkkamer_anouk
   mode: single
 - id: '1653435434932'
   alias: Sound the alarm iOS
@@ -398,6 +300,7 @@
       - switch.hue_motion_sensor_1_motion
       - switch.woonkamer_sensor_motion
       - switch.keuken_sensor_motion
+    data: {}
   mode: single
 - id: '1653686032957'
   alias: Turn off Movie Mode
@@ -451,30 +354,6 @@
     entity_id: light.hue_ambiance_spot_3
     domain: light
   mode: single
-- id: '1658504377768'
-  alias: Turn on Sleeping Mode at night
-  description: Deactivate motion sensors on the ground floor
-  trigger:
-  - platform: time
-    at: '23:59:00'
-  condition: []
-  action:
-  - service: input_boolean.turn_on
-    target:
-      entity_id: input_boolean.sleeping_mode
-  mode: single
-- id: '1658504471642'
-  alias: Turn off Sleeping Mode in the morning
-  description: Activate motion sensors on the ground floor
-  trigger:
-  - platform: time
-    at: 07:30:00
-  condition: []
-  action:
-  - service: input_boolean.turn_off
-    target:
-      entity_id: input_boolean.sleeping_mode
-  mode: single
 - id: '1658504908669'
   alias: Turn off motions sensor when Sleeping Mode is on
   description: Turn off motion sensors on ground floor when Sleeping mode is on
@@ -490,6 +369,7 @@
       - switch.hue_motion_sensor_1_motion
       - switch.woonkamer_sensor_motion
       - switch.keuken_sensor_motion
+      - switch.hue_motion_sensor_1_motion_2
     data: {}
   mode: single
 - id: '1658505514384'
@@ -502,10 +382,265 @@
   condition: []
   action:
   - service: switch.turn_on
+    data: {}
     target:
       entity_id:
       - switch.hue_motion_sensor_1_motion
       - switch.woonkamer_sensor_motion
       - switch.keuken_sensor_motion
+  mode: single
+- id: '1663687898960'
+  alias: Livingroom Music Schedule
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - schedule.livingroom_music_schedule
+  condition: []
+  action:
+  - if:
+    - condition: state
+      entity_id: schedule.livingroom_music
+      state: 'on'
+    then:
+    - service: media_player.media_play
+      data: {}
+      target:
+        entity_id: media_player.living_room
+    else:
+    - service: media_player.media_stop
+      data: {}
+      target:
+        entity_id: media_player.living_room
+  mode: single
+- id: '1664198952463'
+  alias: Vloerverwarmingspomp
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.woonkamer_heating
+  condition: []
+  action:
+  - if:
+    - condition: numeric_state
+      entity_id: sensor.woonkamer_heating
+      above: 1
+    then:
+    - type: turn_on
+      device_id: d5a3700f94c3754f3d601c79ffdcaabd
+      entity_id: switch.vloerverwarmingspomp
+      domain: switch
+    else:
+    - type: turn_off
+      device_id: d5a3700f94c3754f3d601c79ffdcaabd
+      entity_id: switch.vloerverwarmingspomp
+      domain: switch
+  mode: restart
+- id: '1664400231614'
+  alias: Turn on Slaapkamer Motion sensor in the morning
+  description: Turn on motion sensor Slaapkamer
+  trigger:
+  - platform: time
+    at: 09:00:00
+  condition: []
+  action:
+  - service: switch.turn_on
     data: {}
+    target:
+      entity_id: switch.hue_motion_sensor_1_motion_2
+  mode: single
+- id: '1664453910816'
+  alias: Turn on Espresso Machine when enough PV overproduction
+  description: ''
+  trigger:
+  - type: power
+    platform: device
+    device_id: ca489ceb3372a21d9b413f76f07d26c2
+    entity_id: sensor.energy_active_power
+    domain: sensor
+    below: -1400
+    for:
+      hours: 0
+      minutes: 1
+      seconds: 0
+  condition:
+  - condition: time
+    after: 09:00:00
+    before: '12:00:00'
+    enabled: true
+  - condition: device
+    type: is_off
+    device_id: 29d22d3df71910ad86405bb7d5154123
+    entity_id: light.espressomachine
+    domain: light
+  - condition: or
+    conditions:
+    - condition: zone
+      entity_id: person.bauke
+      zone: zone.home
+    - condition: zone
+      entity_id: person.anouk
+      zone: zone.home
+  action:
+  - service: notify.notify
+    data:
+      message: Er is genoeg overproductie ☀️
+      title: Espresso Machine ingeschakeld
+  - type: turn_on
+    device_id: 29d22d3df71910ad86405bb7d5154123
+    entity_id: light.espressomachine
+    domain: light
+  mode: single
+- id: '1664454667785'
+  alias: Notify when there is a lot of overproduction
+  description: ''
+  trigger:
+  - type: power
+    platform: device
+    device_id: ca489ceb3372a21d9b413f76f07d26c2
+    entity_id: sensor.energy_active_power
+    domain: sensor
+    below: -1500
+    for:
+      hours: 0
+      minutes: 10
+      seconds: 0
+  condition:
+  - condition: template
+    value_template: '{{(as_timestamp(now()) - as_timestamp(state_attr("automation.notify_overproduction",
+      "last_triggered") | default(0)) | int > 28800 )}}'
+  action:
+  - service: notify.notify
+    data:
+      title: Let the sun shine! ⚡️
+      message: Je produceert nu veel stroom, tijd om een wasje te draaien?
+  mode: single
+- id: '1664540486301'
+  alias: Turn on Schuurverwarming when enough PV overproduction
+  description: ''
+  trigger:
+  - type: power
+    platform: device
+    device_id: ca489ceb3372a21d9b413f76f07d26c2
+    entity_id: sensor.energy_active_power
+    domain: sensor
+    below: -750
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition:
+  - condition: device
+    type: is_off
+    device_id: 524e63a9251c50afcac3f73c6e8866bb
+    entity_id: light.elektrische_verwarming
+    domain: light
+  - condition: or
+    conditions:
+    - condition: zone
+      entity_id: person.bauke
+      zone: zone.home
+    - condition: zone
+      entity_id: person.anouk
+      zone: zone.home
+  - condition: not
+    conditions:
+    - condition: time
+      after: 09:00:00
+      before: '13:00:00'
+  action:
+  - service: notify.mobile_app_iphone
+    data:
+      title: Schuurverwarming ingeschakeld
+      message: Er is genoeg overproductie ☀️
+  - type: turn_on
+    device_id: 524e63a9251c50afcac3f73c6e8866bb
+    entity_id: light.elektrische_verwarming
+    domain: light
+  mode: single
+- id: '1664540770914'
+  alias: Turn off Schuurverwarming when not enough PV overproduction or at sunset
+  description: ''
+  trigger:
+  - type: power
+    platform: device
+    device_id: ca489ceb3372a21d9b413f76f07d26c2
+    entity_id: sensor.energy_active_power
+    domain: sensor
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
+    above: 0
+  - platform: sun
+    event: sunset
+    offset: 0
+  condition:
+  - condition: state
+    entity_id: light.elektrische_verwarming
+    state: 'on'
+  action:
+  - service: notify.mobile_app_iphone
+    data:
+      title: Schuurverwarming uitgeschakeld
+      message: Te weinig overproductie
+  - type: turn_off
+    device_id: 524e63a9251c50afcac3f73c6e8866bb
+    entity_id: light.elektrische_verwarming
+    domain: light
+  mode: single
+- id: '1664802828599'
+  alias: Turn on Espresso Machine at 12:00 when not enough PV production
+  description: ''
+  trigger:
+  - platform: time
+    at: '11:59:55'
+  condition:
+  - condition: device
+    type: is_off
+    device_id: 29d22d3df71910ad86405bb7d5154123
+    entity_id: light.espressomachine
+    domain: light
+  - condition: or
+    conditions:
+    - condition: zone
+      entity_id: person.bauke
+      zone: zone.home
+    - condition: zone
+      entity_id: person.anouk
+      zone: zone.home
+  action:
+  - service: notify.notify
+    data:
+      message: "Er is te weinig zonne energie \U0001F976"
+      title: Espresso Machine ingeschakeld
+  - type: turn_on
+    device_id: 29d22d3df71910ad86405bb7d5154123
+    entity_id: light.espressomachine
+    domain: light
+  mode: single
+- id: '1664815772089'
+  alias: Sleep schedule
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - schedule.sleep_schedule
+  condition: []
+  action:
+  - if:
+    - condition: state
+      entity_id: schedule.sleep_schedule
+      state: 'on'
+    then:
+    - service: input_boolean.turn_on
+      data: {}
+      target:
+        entity_id: input_boolean.sleeping_mode
+    else:
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.sleeping_mode
   mode: single
