@@ -1,4 +1,4 @@
-button_card_templates: !include button_card_templates.yaml
+button_card_templates: !include_dir_merge_named button_card_templates
 
 views:
   - type: custom:grid-layout
@@ -79,11 +79,11 @@ views:
         view_layout:
           grid-area: sidebar
         cards:
-        
+
           - type: custom:button-card
             entity: sensor.template_sidebar
             template: sidebar
-            
+
           - type: conditional
             conditions:
               - entity: input_boolean.laundry_display
@@ -91,7 +91,7 @@ views:
             card:
               type: custom:button-card
               entity: timer.laundry
-              hold_action:
+              double_tap_action:
                 action: call-service
                 service: input_boolean.turn_off
                 service_data:
@@ -123,7 +123,7 @@ views:
                   return variables.translate_unknown;
                 }
               ]]]
-            hold_action:
+            double_tap_action:
               !include popup/livingroom_tv.yaml
             template:
               - base
@@ -131,21 +131,21 @@ views:
               - loader
 
           - type: custom:button-card
-            entity: light.group_woonkamer
+            entity: light.woonkamer_group
             name: Woonkamer
             template:
               - light
               - icon_hue
 
           - type: custom:button-card
-            entity: light.group_keuken
+            entity: light.keuken_group
             name: Keuken
             template:
               - light
               - icon_spot
 
           - type: custom:button-card
-            entity: light.group_entree
+            entity: light.entree_group
             name: Entree
             template:
               - light
@@ -165,7 +165,7 @@ views:
         cards:
 
           - type: custom:button-card
-            entity: light.group_werkkamer_anouk
+            entity: light.werkkamer_anouk_group
             name: Kamer
             template:
               - light
@@ -181,7 +181,7 @@ views:
           - type: custom:button-card
             entity: switch.playstation_5
             name: Playstation
-            hold_action:
+            double_tap_action:
               !include popup/livingroom_playstation.yaml
             template:
               - base
@@ -191,7 +191,7 @@ views:
           # - type: custom:button-card
           #   entity: switch.computer_imac
           #   name: Dator
-          #   hold_action:
+          #   double_tap_action:
           #     !include popup/studio_dator.yaml
           #   template:
           #     - base
@@ -233,7 +233,7 @@ views:
           - type: custom:button-card
             entity: climate.woonkamer
             name: Woonkamer
-            hold_action:
+            double_tap_action:
               !include popup/livingroom_climate.yaml
             template:
               - base
@@ -310,7 +310,7 @@ views:
         cards:
 
           - type: custom:button-card
-            entity: light.group_toilet
+            entity: light.toilet_group
             name: Toilet
             template:
               - light
@@ -319,7 +319,7 @@ views:
           - type: custom:button-card
             entity: switch.gosund_fan_switch
             name: Ventilator
-            hold_action:
+            double_tap_action:
               !include popup/studio_flakt.yaml
             template:
               - base
@@ -327,14 +327,14 @@ views:
               - loader
 
           - type: custom:button-card
-            entity: light.group_voordeur
+            entity: light.voordeur_group
             name: Voordeur
             template:
               - light
               - icon_closet
 
           - type: custom:button-card
-            entity: light.group_tuin
+            entity: light.tuin_group
             name: Tuin
             template:
               - light
@@ -378,7 +378,7 @@ views:
           - type: custom:button-card
             entity: script.home_leave
             name: Alles uit
-            hold_action:
+            double_tap_action:
               action: none
             template:
               - base
@@ -387,7 +387,7 @@ views:
           - type: custom:button-card
             entity: script.home_arrive
             name: Thuis
-            hold_action:
+            double_tap_action:
               action: none
             template:
               - base

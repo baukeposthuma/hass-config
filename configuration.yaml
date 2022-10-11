@@ -1,8 +1,8 @@
-# Core Configuration
+# Home Assistant Configuration
 homeassistant:
-  latitude: !secret home_latitude_home
-  longitude: !secret home_longitude_home
-  elevation: 0
+  latitude: !secret home_latitude
+  longitude: !secret home_longitude
+  elevation: !secret home_elevation
   unit_system: metric
   currency: EUR
   time_zone: Europe/Amsterdam
@@ -14,6 +14,9 @@ homeassistant:
     - /config
 
 default_config:
+
+frontend: !include themes.yaml
+template: !include sidebar.yaml
 
 lovelace: # Lovelace Resources
   mode: yaml
@@ -36,11 +39,7 @@ lovelace: # Lovelace Resources
       { url: '/local/fonts.css?v=2.1',                                              type: css }
     ]
       
-# Home Assistant
-automation: !include automations.yaml
-script: !include scripts.yaml
-scene: !include scenes.yaml
-sensor: !include includes/sensors.yaml
+wake_on_lan: # enables `wake_on_lan` integration
 
 input_select:
   who_moved_trash:
@@ -69,13 +68,6 @@ input_boolean:
   movie_mode:
     name: Movie mode
     initial: 'off'
-    
-browser_mod: # Enable Browser Mod
-
-# Others
-# calendar: !include includes/calendar.yaml
-# vacuum: !include includes/vacuum.yaml
-# webostv: !include includes/webostv.yaml
 
 switch:
   - platform: template
@@ -101,3 +93,49 @@ homekit:
       - media_player
       - binary_sensor
      
+sensor:
+  - platform: time_date
+    display_options:
+      - time
+      - date
+  - platform: template
+    sensors:
+      living_room_tv_source:
+        value_template: '{{ states.media_player.lg_tv.attributes["source"] }}'
+        friendly_name: 'Living Room TV Source'
+  - platform: template
+    sensors:
+      lights_on:
+        value_template: '{{ states | selectattr("entity_id","in", ["light.globe", "light.plafondlamp","light.spot_bij_kast","light.spot_bij_raam","light.hue_globe_rechts","light.hue_globe_links"] )|selectattr("state","eq","on") | list | count }}'
+        friendly_name: 'Lights on'
+  - platform: template
+    sensors:
+      outside_temperature:
+        value_template: '{{ states.weather.stille_steeg_west_12.attributes["temperature"] }}'
+        friendly_name: 'Outside Temperature'
+  - platform: rova
+    zip_code: !secret home_zip_code
+    house_number: !secret home_house_number
+    name: Rova
+    monitored_conditions:
+      - bio
+      - paper
+      - plastic
+  - platform: afvalwijzer
+    provider: rova        # (required, default = mijnafvalwijzer) either choose mijnafvalwijzer, afvalstoffendienstkalender or rova
+    postal_code: !secret home_zip_code              # (required, default = '')
+    street_number:  !secret home_house_number                # (required, default = '')
+    exclude_pickup_today: true        # (optional, default = false) to take or not to take Today into account in the next pickup.
+    default_label: Geen              # (optional, default = Geen) label if no date found
+    exclude_list: ''                 # (optional, default = '') comma separated list of wast types (case ignored). F.e. "papier, gft"
+    
+  ## Neerslag Card
+  - platform: command_line
+    command: python3 -c "import requests; import json; import random; dataRequest = requests.get('https://cdn-secure.buienalarm.nl/api/3.4/forecast.php?lat=<lat-3-decimals>&lon=<lon-3-decimals>&region=nl&unit=mm%2Fu&c='+str(random.randint(0,999999999999999)) ).text; dataRequest = dataRequest.replace('\r\n',' '); data = '{\"data\":'+dataRequest+'}';    print(data);"
+    name: Neerslag_Buienalarm_Regen_Data
+    json_attributes:
+      - data:
+        value_template: 'last_changed: {{states.sensor.neerslag_buienalarm_regen_data.last_changed | default(now())}}'
+        scan_interval: 240
+
+

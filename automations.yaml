@@ -1,48 +1,5 @@
-- alias: Light theme after Sunrise
-  trigger:
-    platform: sun
-    event: sunrise
-  action:
-  - service: frontend.set_theme
-    data:
-      name: clear
-  id: a44cfb776ef44d2a9e75bc087cc5c161
-- id: 6783276d103946b0b5405b30bc29a855
-  alias: Dark theme after Sunset
-  trigger:
-  - platform: sun
-    event: sunset
-  action:
-  - service: frontend.set_theme
-    data:
-      name: slate
-- alias: Light theme after reboot in day
-  trigger:
-    platform: homeassistant
-    event: start
-  condition:
-  - condition: state
-    entity_id: sun.sun
-    state: above_horizon
-  action:
-    service: frontend.set_theme
-    data:
-      name: clear
-  id: 98a70b4b29f84a37a61389373d34f893
-- alias: Dark theme after reboot in night
-  trigger:
-    platform: homeassistant
-    event: start
-  condition:
-    condition: state
-    entity_id: sun.sun
-    state: below_horizon
-  action:
-    service: frontend.set_theme
-    data:
-      name: slate
-  id: 74cd03b23e794ca2b7a03b7935729254
-- alias: Reset waste notification
+- id: fb01f50f6e484d7fb623365e9a0b5f52
+  alias: Reset waste notification
   trigger:
     platform: state
     entity_id: input_boolean.waste_moved
@@ -54,7 +11,6 @@
     entity_id: input_boolean.waste_moved
   - service: input_boolean.turn_on
     entity_id: input_boolean.waste_reminder
-  id: fb01f50f6e484d7fb623365e9a0b5f52
 - id: f276d37dd7b4490d9e5212c91fdeeba0
   alias: Mark waste as moved from notification
   trigger:
@@ -644,3 +600,12 @@
       target:
         entity_id: input_boolean.sleeping_mode
   mode: single
+- id: '16884829476049'
+  alias: "Turn On Living Room TV with WakeOnLan"
+  trigger:
+    - platform: webostv.turn_on
+      entity_id: media_player.lg_tv
+  action:
+    - service: wake_on_lan.send_magic_packet
+      data:
+        mac: 74:40:BE:B6:8B:E8

@@ -1,0 +1,57 @@
+homeassistant:
+  customize:
+    person.bauke:
+      entity_picture: !secret profile_photo_bauke
+    device_tracker.iphone_van_bauke:
+      entity_picture: /local/device_tracker.svg
+    person.anouk:
+      entity_picture: !secret profile_photo_anouk
+    device_tracker.iphone_van_anouk:
+      entity_picture: /local/device_tracker.svg
+
+person:
+  - name: Bauke
+    id: bauke
+    device_trackers:
+      - device_tracker.iphone_van_bauke
+
+  - name: Anouk
+    id: anouk
+    device_trackers:
+      - device_tracker.iphone_van_anouk
+
+mqtt:
+  sensor:
+    - name: bauke_last_changed
+      state_topic: homeassistant/persistence/bauke
+      value_template: >
+        {{ value | replace(' ', 'T') }}
+
+    - name: anouk_last_changed
+      state_topic: homeassistant/persistence/anouk
+      value_template: >
+        {{ value | replace(' ', 'T') }}
+
+automation:
+  - alias: person_home
+    id: '8423590985012'
+    mode: parallel
+    trigger:
+      platform: state
+      entity_id:
+        - person.bauke
+        - person.anouk
+      from:
+        - home
+        - not_home
+      to:
+        - home
+        - not_home
+    action:
+      service: mqtt.publish
+      data:
+        topic_template: >
+          homeassistant/persistence/{{ trigger.to_state.name | lower }}
+        payload_template: >
+          {{ now() }}
+        retain: true
