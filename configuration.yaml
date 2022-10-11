@@ -54,20 +54,20 @@ input_select:
 input_boolean:
   waste_moved:
     name: Waste has been moved
-    initial: 'off'
+    initial: false
     icon: mdi:delete-empty
   waste_reminder:
     name: Waste reminder enabled
-    initial: 'on'
+    initial: true
   heating_open_window_detection:
     name: Open raam detectie
-    initial: 'on'
+    initial: true
   heating_geolocation:
     name: Auto-Assist Geolocatie
-    initial: 'on'
+    initial: true
   movie_mode:
     name: Movie mode
-    initial: 'off'
+    initial: false
 
 switch:
   - platform: template
