@@ -1,12 +1,13 @@
 # Home Assistant Configuration
 homeassistant:
+  name: Thuis
   latitude: !secret home_latitude
   longitude: !secret home_longitude
   elevation: !secret home_elevation
   unit_system: metric
-  currency: EUR
+  temperature_unit: C
   time_zone: Europe/Amsterdam
-  name: Thuis
+  currency: EUR
   external_url: "https://homeassistant.baukeposthuma.nl:8123"
   internal_url: "http://homeassistant.local:8123"
   packages: !include_dir_named packages
