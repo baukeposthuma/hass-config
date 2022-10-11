@@ -1,0 +1,145 @@
+homeassistant:
+  customize:
+    light.badkamer_group:
+      friendly_name: Badkamer
+    light.keuken_group:
+      friendly_name: Keuken
+    light.woonkamer_group:
+      friendly_name: Woonkamer
+    light.entree_group:
+      friendly_name: Entree
+    light.slaapkamer_group:
+      friendly_name: Slaapkamer
+    light.werkkamer_bauke_group:
+      friendly_name: Werkkamer
+    light.werkkamer_anouk_group:
+      friendly_name: Studio
+    light.logeerkamer_group:
+      friendly_name: Logeerkamer
+    light.hal_group:
+      friendly_name: Hal
+    light.overloop_group:
+      friendly_name: Overloop
+    light.toilet_group:
+      friendly_name: Toilet
+    light.tuin_group:
+      friendly_name: Tuin
+    light.voordeur_group:
+      friendly_name: Voordeur
+
+light:
+  - platform: group
+    name: badkamer_group
+    entities:
+      - light.on_off_plug_1
+      - light.hue_ambiance_spot_10
+      - light.hue_ambiance_spot_11
+      - light.hue_ambiance_spot_12
+      - light.hue_ambiance_spot_13
+
+  - platform: group
+    name: keuken_group
+    entities:
+      - light.dimmable_light_1
+      - light.hue_ambiance_spot_21
+      - light.hue_ambiance_spot_22
+      - light.hue_ambiance_spot_23
+
+  - platform: group
+    name: woonkamer_group
+    entities:
+      - light.hue_go_1
+      - light.hue_ambiance_spot_7
+      - light.hue_ambiance_spot_8
+      - light.hue_ambiance_spot_9
+      - light.hue_color_candle_1
+      - light.hue_filament_bulb_1
+      - light.hue_filament_bulb_2
+
+  - platform: group
+    name: entree_group
+    entities:
+      - light.hue_ambiance_spot_17
+      - light.hue_ambiance_spot_18
+
+  - platform: group
+    name: slaapkamer_group
+    entities:
+      - light.hue_ambiance_spot_1
+      - light.hue_ambiance_spot_2
+      - light.hue_ambiance_spot_3
+
+  - platform: group
+    name: werkkamer_bauke_group
+    entities:
+      - light.hue_ambiance_spot_4
+      - light.hue_ambiance_spot_5
+      - light.hue_ambiance_spot_6
+      - light.hue_ambiance_lamp_5
+
+  - platform: group
+    name: werkkamer_anouk_group
+    entities:
+      - light.hue_ambiance_spot_14
+      - light.hue_ambiance_spot_15
+      - light.hue_ambiance_spot_16
+      - light.hue_on_off_plug_1_2
+      - light.hue_ambiance_candle_1
+      - light.hue_ambiance_candle_3
+
+  - platform: group
+    name: logeerkamer_group
+    entities:
+      - light.color_temperature_light_1
+      - light.color_temperature_light_2
+      - light.color_temperature_light_3
+
+  - platform: group
+    name: hal_group
+    entities:
+      - light.hue_ambiance_lamp_2
+
+  - platform: group
+    name: overloop_group
+    entities:
+      - light.hue_ambiance_lamp_4
+
+  - platform: group
+    name: toilet_group
+    entities:
+      - light.hue_ambiance_lamp_3
+
+  - platform: group
+    name: tuin_group
+    entities:
+      - light.hue_ambiance_spot_19
+      - light.hue_ambiance_spot_20
+
+  - platform: group
+    name: voordeur_group
+    entities:
+      - light.hue_ambiance_lamp_6
+
+  - platform: group
+    name: all_beneden_group
+    entities:
+      - light.woonkamer
+      - light.keuken
+      - light.entree
+
+  - platform: group
+    name: all_group
+    entities:
+      - light.woonkamer
+      - light.keuken
+      - light.entree
+      - light.badkamer
+      - light.slaapkamer
+      - light.werkkamer_bauke
+      - light.werkkamer_anouk
+      - light.logeerkamer
+      - light.hal
+      - light.overloop
+      - light.toilet
+      - light.tuin
+      - light.voordeur
