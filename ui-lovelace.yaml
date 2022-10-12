@@ -509,7 +509,7 @@ views:
 
           - type: custom:button-card
             name: >
-              <ha-icon icon="mdi:tablet"></ha-icon> iPad
+              <ha-icon icon="mdi:tablet"></ha-icon> Tablet
             tap_action:
               !include popup/footer/tablet.yaml
             variables:
