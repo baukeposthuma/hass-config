@@ -1,4 +1,5 @@
-button_card_templates: !include_dir_merge_named button_card_templates
+button_card_templates:
+  !include_dir_merge_named button_card_templates
 
 views:
   - type: custom:grid-layout
@@ -84,19 +85,19 @@ views:
             entity: sensor.template_sidebar
             template: sidebar
 
-          - type: conditional
-            conditions:
-              - entity: input_boolean.laundry_display
-                state: 'on'
-            card:
-              type: custom:button-card
-              entity: timer.laundry
-              double_tap_action:
-                action: call-service
-                service: input_boolean.turn_off
-                service_data:
-                  entity_id: input_boolean.laundry_display
-              template: laundry
+          # - type: conditional
+          #   conditions:
+          #     - entity: input_boolean.laundry_display
+          #       state: 'on'
+          #   card:
+          #     type: custom:button-card
+          #     entity: timer.laundry
+          #     double_tap_action:
+          #       action: call-service
+          #       service: input_boolean.turn_off
+          #       service_data:
+          #         entity_id: input_boolean.laundry_display
+          #     template: laundry
 
       #################################################
       #                                               #
@@ -188,28 +189,6 @@ views:
               - icon_ps5
               - loader
 
-          # - type: custom:button-card
-          #   entity: switch.computer_imac
-          #   name: Dator
-          #   double_tap_action:
-          #     !include popup/studio_dator.yaml
-          #   template:
-          #     - base
-          #     - icon_imac
-          #     - loader
-          #     - lock
-          #   variables:
-          #     lock: >
-          #       [[[
-          #         let lock = states['lock.dator'];
-          #         return lock === undefined || lock.state;
-          #       ]]]
-          #     trigger: >
-          #       [[[
-          #         let trigger = states['script.home_leave'];
-          #         return trigger === undefined || trigger;
-          #       ]]]
-
       #################################################
       #                                               #
       #                  CLIMATE                      #
@@ -238,16 +217,17 @@ views:
             template:
               - base
               - icon_climate
-              - climate
+              - circle
             variables:
               circle_input: >
                 [[[
                   if (entity) {
-                    return entity.state === 'cool' ?
-                      entity.attributes.temperature :
-                      entity.attributes.current_temperature;
+                      return entity.state === 'cool'
+                          ? Math.round(entity.attributes.temperature).toString()
+                          : Math.round(entity.attributes.current_temperature).toString();
                   }
                 ]]]
+              circle_input_unit: '°C'
 
       #################################################
       #                                               #
@@ -358,7 +338,7 @@ views:
             name: Bauke
             triggers_update:
               - sensor.matte_last_changed
-            tap_action:
+            double_tap_action:
               !include popup/home_bauke.yaml
             variables:
               retain: sensor.matte_last_changed
@@ -369,7 +349,7 @@ views:
             name: Anouk
             triggers_update:
               - sensor.sanja_last_changed
-            tap_action:
+            double_tap_action:
               !include popup/home_anouk.yaml
             variables:
               retain: sensor.sanja_last_changed
@@ -430,24 +410,26 @@ views:
             name: >
               <ha-icon icon="mdi:arrow-up-bold-circle-outline"></ha-icon> Update
             tap_action:
-              !include popup/footer/updater.yaml
+              !include popup/footer_updates.yaml
+            triggers_update:
+              - sensor.hacs
+              - sensor.docker_hub_beta
+              - sensor.docker_hub
+              - sensor.template_updates
             variables:
               notify: >
                 [[[
-                  let hass_installed = hass.config.version,
-                    hass_version_latest = states['sensor.hass_version_latest'],
-                    hass_version_latest_beta = states['sensor.hass_version_latest_beta'],
-                    hacs = states['sensor.hacs'];
+                  let id = this._config.triggers_update;
+                  if (id.every(e => states[e])) {
+                      let hacs = parseInt(states[id[0]].state),
+                          other = parseInt(states[id[3]].state),
+                          installed = hass.config.version,
+                          latest = installed.includes('b')
+                              ? states[id[1]].state
+                              : states[id[2]].state;
 
-                  if (hass_version_latest && hass_version_latest.state.includes('.')
-                    && hass_version_latest_beta && hass_version_latest_beta.state.includes('.')
-                    && hacs && Number.isInteger(parseInt(hacs.state))) {
-
-                    let hass_latest = hass_installed.includes('b')
-                        ? hass_version_latest_beta.state
-                        : hass_version_latest.state,
-                      hass_count = hass_installed !== hass_latest ? 1 : 0;
-                    return hass_count + parseInt(hacs.state);
+                      if (latest.includes('.') && Number.isInteger(hacs))
+                          return hacs + other + (installed !== latest ? 1 : 0);
                   }
                   return 0;
                 ]]]
@@ -464,14 +446,14 @@ views:
             name: >
               <ha-icon icon="mdi:chart-line-variant"></ha-icon> Energie
             tap_action:
-              !include popup/footer/energy.yaml
+              !include popup/footer_history.yaml
             template: footer
             
           - type: custom:button-card
             name: >
               <ha-icon icon="mdi:trash-can-outline"></ha-icon> Afvalschema
             tap_action:
-              !include popup/footer/waste.yaml
+              !include popup/footer_waste.yaml
             variables:
               notify: >
                 [[[
