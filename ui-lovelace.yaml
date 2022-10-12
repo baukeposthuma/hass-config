@@ -252,11 +252,31 @@ views:
               - type: horizontal-stack
                 cards:
 
-                  - type: custom:button-card
-                    entity: media_player.living_room
-                    template:
-                      - conditional_media
-                      - icon_monitors
+                  - type: conditional
+                    conditions:
+                      - entity: select.conditional_media
+                        state_not: Sonos
+
+                    card:
+                      type: custom:button-card
+                      entity: media_player.spotify
+                      name: Spotify
+                      tap_action:
+                        action: none
+                      template:
+                        - conditional_media
+                        - icon_spotify
+
+                  - type: conditional
+                    conditions:
+                      - entity: select.conditional_media
+                        state: Sonos
+                    card:
+                      type: custom:button-card
+                      entity: media_player.living_room
+                      template:
+                        - conditional_media
+                        - icon_monitors
 
               - type: grid
                 columns: 2
