@@ -2,11 +2,11 @@ settings:
   variables:
     entity_tablet: switch.galaxy_tab_a_screensaver
     entity_browser_mod: media_player.tablet
-    translate_unknown: Okänt
-    translate_idle: Inaktiv
+    translate_unknown: Onbekend
+    translate_idle: Inactief
     translate_home: Ja
-    translate_not_home: Nej
-    translate_available: tillgänglig
-    translate_no_updates: Inga uppdateringar
-    translate_update_available: uppdatering tillgänglig
-    translate_updates_available: uppdateringar tillgängliga
+    translate_not_home: Nee
+    translate_available: beschikbaar
+    translate_no_updates: Geen updates
+    translate_update_available: update beschikbaar
+    translate_updates_available: updates beschikbaar
