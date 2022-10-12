@@ -8,7 +8,7 @@ homeassistant:
   temperature_unit: C
   time_zone: Europe/Amsterdam
   currency: EUR
-  external_url: "https://homeassistant.baukeposthuma.nl:8123"
+  external_url: !secret hass_external_url
   internal_url: "http://homeassistant.local:8123"
   packages: !include_dir_named packages
   allowlist_external_dirs:
@@ -80,8 +80,8 @@ switch:
        turn_on:
          - service: wake_on_lan.send_magic_packet
            data:
-               broadcast_address: 192.168.178.28
-               mac: 74:40:BE:B6:8B:E8
+               broadcast_address: !secret tv_ip
+               mac: !secret tv_mac
        turn_off:
          service: media_player.turn_off
          entity_id: media_player.lg_tv
