@@ -39,7 +39,7 @@ lovelace: # Lovelace Resources
       { url: '/local/browser_mod_icon.js?v=0.3',                                    type: module },
       { url: '/local/fonts.css?v=2.1',                                              type: css }
     ]
-      
+
 automation: !include automations.yaml
 
 wake_on_lan: # enables `wake_on_lan` integration
