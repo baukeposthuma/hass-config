@@ -104,7 +104,7 @@ browser_mod:
                 [[[
                   return `[[[
                     hass.callService('browser_mod', 'toast', {
-                      message: 'Laddar om startsidan...'
+                      message: 'Homepage opnieuw laden...'
                     });
                     hass.callService('button', 'press', {
                       entity_id: 'button.galaxy_tab_a8_load_start_url'
