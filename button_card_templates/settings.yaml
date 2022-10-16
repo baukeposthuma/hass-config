@@ -1,6 +1,6 @@
 settings:
   variables:
-    entity_tablet: switch.galaxy_tab_a_screensaver
+    entity_tablet: switch.galaxy_tab_a8_screensaver
     entity_browser_mod: media_player.tablet
     translate_unknown: Onbekend
     translate_idle: Inactief
