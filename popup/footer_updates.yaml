@@ -1,0 +1,103 @@
+action: fire-dom-event
+browser_mod:
+  service: browser_mod.popup
+  data:
+    title: Updates
+    card_mod:
+      style:
+        #popup header
+        .:
+    content:
+      type: custom:mod-card
+      card_mod:
+        style:
+          hui-grid-card:
+            $: |
+              button-card:nth-child(2),
+              button-card:nth-child(4) {
+                margin: 0.6em 0 2.1em 0.8em;
+              }
+              button-card:nth-child(6) {
+                margin: 0.6em 0 0.5em 0.8em;
+              }
+              #root {
+                grid-gap: 0 !important;
+                padding: var(--tablet-popup-content-padding);
+              }
+      card:
+        type: grid
+        columns: 1
+        square: false
+        cards:
+          - type: custom:button-card
+            entity: sensor.current_version
+            template: updates_hass
+            variables:
+              latest: sensor.docker_hub
+              latest_beta: sensor.docker_hub_beta
+              release_notes: sensor.hass_release_notes
+              release_notes_beta: sensor.hass_release_notes_beta
+
+          - type: custom:button-card
+            entity: sensor.current_version
+            name: HASS updaten
+            variables:
+              latest: sensor.docker_hub
+              latest_beta: sensor.docker_hub_beta
+            tap_action:
+              action: call-service
+              service: browser_mod.sequence
+              service_data:
+                sequence:
+                  - service: browser_mod.notification
+                    data:
+                      message: Startar watchtower...
+                  - service: switch.turn_on
+                    data:
+                      entity_id: switch.docker_watchtower
+            template: updates_hass_icon_name
+
+          - type: custom:button-card
+            entity: sensor.hacs
+            variables:
+              installed: sensor.hacs_installed
+            template: updates_hacs
+
+          - type: custom:button-card
+            entity: sensor.hacs
+            name: Open HACS
+            template:
+              - updates_hacs_icon_name
+              - >
+                [[[
+                  return window.navigator.userAgent.match(/iPhone/i)
+                    ? 'hacs_navigate_ios'
+                    : 'hacs_iframe';
+                ]]]
+
+          - type: custom:button-card
+            entity: sensor.template_updates
+            template: updates_other
+
+          - type: custom:button-card
+            entity: sensor.template_updates
+            name: Controleren
+            tap_action:
+              action: call-service
+              service: browser_mod.sequence
+              service_data:
+                sequence:
+                  - service: browser_mod.notification
+                    data:
+                      message: Controleren op updates...
+                  - service: homeassistant.update_entity
+                    data:
+                      entity_id:
+                        - sensor.gosund_monitors_esphome_version
+                        - sensor.gosund_ac_esphome_version
+                        - sensor.gosund_fan_esphome_version
+                        - sensor.updates_esphome_latest
+                        - sensor.updates_kemper
+                        - sensor.udm_unifios
+                        - update.nas_dsm_update
+            template: updates_other_icon_name
