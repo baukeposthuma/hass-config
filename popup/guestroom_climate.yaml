@@ -12,15 +12,15 @@ browser_mod:
       cards:
 
         - type: thermostat
-          entity: climate.woonkamer
+          entity: climate.logeerkamer
 
         - type: entities
           card_mod:
             class: content
           entities:
-            - entity: sensor.woonkamer_temperature
+            - entity: sensor.logeerkamer_temperature
               name: Kamertemperatuur
-            - entity: sensor.woonkamer_humidity
+            - entity: sensor.logeerkamer_humidity
               name: Luchtvochtigheid
 
         - type: custom:apexcharts-card
@@ -60,7 +60,7 @@ browser_mod:
               crosshairs:
                 show: false
           series:
-            - entity: sensor.woonkamer_temperature
+            - entity: sensor.logeerkamer_temperature
               name: Temp
               color: '#385581'
               type: area

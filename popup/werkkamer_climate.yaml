@@ -25,7 +25,7 @@ browser_mod:
 
         - type: custom:apexcharts-card
           layout: minimal
-          locale: se
+          locale: nl
           graph_span: 8h
           show:
             loading: false

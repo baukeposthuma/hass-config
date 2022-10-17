@@ -206,75 +206,150 @@ views:
         title: Klimaat
         view_layout:
           grid-area: climate
-        columns: 2
+        columns: 1
         cards:
 
-          - type: custom:button-card
-            entity: switch.vloerverwarmingspomp
-            name: Vloerverwarmingspomp
-            template:
-              - base
-              - icon_fan2
+          - type: custom:swipe-card
+            parameters:
+              speed: 550
+              spaceBetween: 40
+              threshold: 5
+            cards:
 
-          - type: custom:button-card
-            entity: climate.woonkamer
-            name: Woonkamer
-            double_tap_action:
-              !include popup/livingroom_climate.yaml
-            template:
-              - base
-              - icon_climate
-              - circle
-            variables:
-              circle_input: >
-                [[[
-                  if (entity) {
-                      return entity.state === 'cool'
-                          ? Math.round(entity.attributes.temperature).toString()
-                          : Math.round(entity.attributes.current_temperature).toString();
-                  }
-                ]]]
-              circle_input_unit: '°C'
+              - type: grid
+                columns: 2
+                cards:
 
-          - type: custom:button-card
-            entity: climate.werkkamer_anouk
-            name: Studio
-            double_tap_action:
-              !include popup/studio_climate.yaml
-            template:
-              - base
-              - icon_climate
-              - circle
-            variables:
-              circle_input: >
-                [[[
-                  if (entity) {
-                      return entity.state === 'cool'
-                          ? Math.round(entity.attributes.temperature).toString()
-                          : Math.round(entity.attributes.current_temperature).toString();
-                  }
-                ]]]
-              circle_input_unit: '°C'
+                  - type: custom:button-card
+                    entity: switch.vloerverwarmingspomp
+                    name: Vloerverwarmingspomp
+                    template:
+                      - base
+                      - icon_fan2
 
-          - type: custom:button-card
-            entity: climate.werkkamer_bauke
-            name: Werkkamer Bauke
-            double_tap_action:
-              !include popup/werkkamer_climate.yaml
-            template:
-              - base
-              - icon_climate
-              - circle
-            variables:
-              circle_input: >
-                [[[
-                  if (entity) {
-                      return entity.state === 'cool'
-                          ? Math.round(entity.attributes.temperature).toString()
-                          : Math.round(entity.attributes.current_temperature).toString();
-                  }
-                ]]]
-              circle_input_unit: '°C'
+                  - type: custom:button-card
+                    entity: climate.woonkamer
+                    name: Woonkamer
+                    double_tap_action:
+                      !include popup/livingroom_climate.yaml
+                    template:
+                      - base
+                      - icon_climate
+                      - circle
+                    variables:
+                      circle_input: >
+                        [[[
+                          if (entity) {
+                              return entity.state === 'cool'
+                                  ? Math.round(entity.attributes.temperature).toString()
+                                  : Math.round(entity.attributes.current_temperature).toString();
+                          }
+                        ]]]
+                      circle_input_unit: '°C'
+
+                  - type: custom:button-card
+                    entity: climate.werkkamer_anouk
+                    name: Studio
+                    double_tap_action:
+                      !include popup/studio_climate.yaml
+                    template:
+                      - base
+                      - icon_climate
+                      - circle
+                    variables:
+                      circle_input: >
+                        [[[
+                          if (entity) {
+                              return entity.state === 'cool'
+                                  ? Math.round(entity.attributes.temperature).toString()
+                                  : Math.round(entity.attributes.current_temperature).toString();
+                          }
+                        ]]]
+                      circle_input_unit: '°C'
+
+                  - type: custom:button-card
+                    entity: climate.werkkamer_bauke
+                    name: Werkkamer Bauke
+                    double_tap_action:
+                      !include popup/werkkamer_climate.yaml
+                    template:
+                      - base
+                      - icon_climate
+                      - circle
+                    variables:
+                      circle_input: >
+                        [[[
+                          if (entity) {
+                              return entity.state === 'cool'
+                                  ? Math.round(entity.attributes.temperature).toString()
+                                  : Math.round(entity.attributes.current_temperature).toString();
+                          }
+                        ]]]
+                      circle_input_unit: '°C'
+
+              - type: grid
+                columns: 2
+                cards:
+
+                  - type: custom:button-card
+                    entity: climate.logeerkamer
+                    name: Logeerkamer
+                    double_tap_action:
+                      !include popup/guestroom_climate.yaml
+                    template:
+                      - base
+                      - icon_climate
+                      - circle
+                    variables:
+                      circle_input: >
+                        [[[
+                          if (entity) {
+                              return entity.state === 'cool'
+                                  ? Math.round(entity.attributes.temperature).toString()
+                                  : Math.round(entity.attributes.current_temperature).toString();
+                          }
+                        ]]]
+                      circle_input_unit: '°C'
+
+                  - type: custom:button-card
+                    entity: climate.slaapkamer
+                    name: Slaapkamer
+                    double_tap_action:
+                      !include popup/bedroom_climate.yaml
+                    template:
+                      - base
+                      - icon_climate
+                      - circle
+                    variables:
+                      circle_input: >
+                        [[[
+                          if (entity) {
+                              return entity.state === 'cool'
+                                  ? Math.round(entity.attributes.temperature).toString()
+                                  : Math.round(entity.attributes.current_temperature).toString();
+                          }
+                        ]]]
+                      circle_input_unit: '°C'
+
+                  - type: custom:button-card
+                    entity: climate.badkamer
+                    name: Badkamer
+                    double_tap_action:
+                      !include popup/bathroom_climate.yaml
+                    template:
+                      - base
+                      - icon_climate
+                      - circle
+                    variables:
+                      circle_input: >
+                        [[[
+                          if (entity) {
+                              return entity.state === 'cool'
+                                  ? Math.round(entity.attributes.temperature).toString()
+                                  : Math.round(entity.attributes.current_temperature).toString();
+                          }
+                        ]]]
+                      circle_input_unit: '°C'
 
               
 
