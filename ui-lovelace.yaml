@@ -118,7 +118,7 @@ views:
             state_display: >
               [[[
                 if (variables.state === 'playing') {
-                  return 'Afspelen';
+                  return variables.translate_playing;
                 }
                 if (variables.state === true) {
                   return variables.translate_unknown;
@@ -350,8 +350,6 @@ views:
                           }
                         ]]]
                       circle_input_unit: '°C'
-
-              
 
       #################################################
       #                                               #
