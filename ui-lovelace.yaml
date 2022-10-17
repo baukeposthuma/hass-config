@@ -229,6 +229,48 @@ views:
                 ]]]
               circle_input_unit: '°C'
 
+          - type: custom:button-card
+            entity: climate.werkkamer_anouk
+            name: Studio
+            double_tap_action:
+              !include popup/studio_climate.yaml
+            template:
+              - base
+              - icon_climate
+              - circle
+            variables:
+              circle_input: >
+                [[[
+                  if (entity) {
+                      return entity.state === 'cool'
+                          ? Math.round(entity.attributes.temperature).toString()
+                          : Math.round(entity.attributes.current_temperature).toString();
+                  }
+                ]]]
+              circle_input_unit: '°C'
+
+          - type: custom:button-card
+            entity: climate.werkkamer_bauke
+            name: Werkkamer Bauke
+            double_tap_action:
+              !include popup/werkkamer_climate.yaml
+            template:
+              - base
+              - icon_climate
+              - circle
+            variables:
+              circle_input: >
+                [[[
+                  if (entity) {
+                      return entity.state === 'cool'
+                          ? Math.round(entity.attributes.temperature).toString()
+                          : Math.round(entity.attributes.current_temperature).toString();
+                  }
+                ]]]
+              circle_input_unit: '°C'
+
+              
+
       #################################################
       #                                               #
       #                     MEDIA                     #
