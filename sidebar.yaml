@@ -164,6 +164,6 @@
             | map(attribute = 'entity_id') | list %}
           {% for sensor in entities if states(sensor) != 'unknown' and states(sensor) !=
           'unavailable' and states(sensor) != 'None' and states(sensor) | int(default=0) <= 5 %}
-            {% if loop.first %} {{'\u26A0\uFE0F'}} Batteri {% else %}, {% endif %}
+            {% if loop.first %} {{'\u26A0\uFE0F'}} Batterij {% else %}, {% endif %}
             {{ state_attr(sensor, 'friendly_name') }} {{ states(sensor) }}%
           {% endfor %}
