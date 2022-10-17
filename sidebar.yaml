@@ -124,14 +124,14 @@
             <b>Morty är färdig</b>
           {% endif %}
         weather: >
-          {% set entity = 'weather.smhi_home' %}
+          {% set entity = 'weather.stille_steeg_west_12' %}
           {% if not is_state(entity, 'unknown') %}
             {% set temp = state_attr(entity, 'temperature') | round %}
             {% set precip = state_attr(entity, 'forecast')[0]['precipitation'] | round %}
-              Känns som {{ temp }}° med {{ 'ingen risk för regn' if precip == 0
-              else precip | string + 'mm regn \u2614\uFE0F' }}
+              Voelt als {{ temp }}° en {{ 'geen kans op regen' if precip == 0
+              else precip | string + 'mm regen \u2614\uFE0F' }}
           {% else %}
-            Kan inte läsa in väder...
+            Kan het weer niet lezen...
           {% endif %}
         laundry: >
           {% set start_time = state_attr('calendar.tvatta', 'start_time') %}
