@@ -465,6 +465,8 @@ views:
                   - type: custom:button-card
                     entity: light.espressomachine
                     name: Espressomachine
+                    double_tap_action:
+                      !include popup/kitchen_espressomachine.yaml
                     template:
                       - base
 
