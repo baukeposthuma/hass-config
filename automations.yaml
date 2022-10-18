@@ -413,7 +413,7 @@
   - type: power
     platform: device
     device_id: ca489ceb3372a21d9b413f76f07d26c2
-    entity_id: sensor.energy_active_power
+    entity_id: sensor.p1_meter_active_power
     domain: sensor
     below: -1400
     for:
@@ -455,7 +455,7 @@
   - type: power
     platform: device
     device_id: ca489ceb3372a21d9b413f76f07d26c2
-    entity_id: sensor.energy_active_power
+    entity_id: sensor.p1_meter_active_power
     domain: sensor
     below: -1500
     for:
@@ -479,7 +479,7 @@
   - type: power
     platform: device
     device_id: ca489ceb3372a21d9b413f76f07d26c2
-    entity_id: sensor.energy_active_power
+    entity_id: sensor.p1_meter_active_power
     domain: sensor
     below: -750
     for:
@@ -522,7 +522,7 @@
   - type: power
     platform: device
     device_id: ca489ceb3372a21d9b413f76f07d26c2
-    entity_id: sensor.energy_active_power
+    entity_id: sensor.p1_meter_active_power
     domain: sensor
     for:
       hours: 0
