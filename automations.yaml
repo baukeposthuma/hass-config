@@ -356,8 +356,8 @@
   action:
   - if:
     - condition: state
-      entity_id: schedule.livingroom_music
       state: 'on'
+      entity_id: schedule.livingroom_music_schedule
     then:
     - service: media_player.media_play
       data: {}
@@ -603,9 +603,71 @@
 - id: '16884829476049'
   alias: Turn On Living Room TV with WakeOnLan
   trigger:
-    - platform: webostv.turn_on
-      entity_id: media_player.lg_tv
+  - platform: webostv.turn_on
+    entity_id: media_player.lg_tv
   action:
-    - service: wake_on_lan.send_magic_packet
-      data:
-        mac: 74:40:BE:B6:8B:E8
+  - service: wake_on_lan.send_magic_packet
+    data:
+      mac: 74:40:BE:B6:8B:E8
+- id: '1666040838664'
+  alias: Send a notification when washer starts a new program
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.wasmachine_washer_job_state
+    from: none
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      title: Wasmachine
+      message: Wasprogramma is klaar om {{ as_timestamp(states('sensor.wasmachine_washer_completion_time'))
+        | timestamp_custom('%H:%M')}}
+  mode: single
+- id: '1666040852645'
+  alias: Send a notification when dryer starts a new program
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.droger_dryer_job_state
+    from: none
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      title: Droger
+      message: Droogprogramma is klaar om {{ as_timestamp(states('sensor.droger_dryer_completion_time'))
+        | timestamp_custom('%H:%M')}}
+  mode: single
+- id: '1666088801762'
+  alias: Send a notification when washer completed a cycle
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.wasmachine_washer_job_state
+    to: none
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      title: Wasmachine
+      message: De was is klaar en kan worden gedroogd
+  mode: single
+- id: '1666088989921'
+  alias: Send a notification when dryer has completed a cycle
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.droger_dryer_job_state
+    to: none
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      title: Droger
+      message: De was is droog en kan worden opgevouwen 🧺
+  mode: single

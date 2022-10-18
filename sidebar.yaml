@@ -134,19 +134,19 @@
             Kan het weer niet lezen...
           {% endif %}
         laundry: >
-          {% set start_time = state_attr('calendar.tvatta', 'start_time') %}
+          {% set start_time = state_attr('calendar.laundry', 'start_time') %}
           {% if start_time != None %}
             {% set time = as_timestamp(start_time) | timestamp_custom('%H:%M') %}
             {% set hours = as_timestamp(start_time) | timestamp_custom('%H') | int(default=0) / 24 %}
             {% set count = (as_timestamp(start_time) - as_timestamp(now())) / 86400 - hours %}
             {% set day = strptime(start_time, '%Y-%m-%d %H:%M:%S').strftime('%A')
-            | replace('Monday', 'Måndag')
-            | replace('Tuesday', 'Tisdag')
-            | replace('Wednesday', 'Onsdag')
-            | replace('Thursday', 'Torsdag')
-            | replace('Friday', 'Fredag')
-            | replace('Saturday', 'Lördag')
-            | replace('Sunday', 'Söndag') %}
+            | replace('Monday', 'Maandag')
+            | replace('Tuesday', 'Dinsdag')
+            | replace('Wednesday', 'Woensdag')
+            | replace('Thursday', 'Donderdag')
+            | replace('Friday', 'Vrijdag')
+            | replace('Saturday', 'Zaterdag')
+            | replace('Sunday', 'Zondag') %}
             {% if count <= 0.0 %}
               {{'\U0001F4A6'}} Tvätt idag {{ time }}
             {% elif count <= 1.0 %}
