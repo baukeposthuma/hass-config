@@ -9,12 +9,16 @@ homeassistant:
   time_zone: Europe/Amsterdam
   currency: EUR
   external_url: !secret hass_external_url
-  internal_url: "http://homeassistant.local:8123"
+  internal_url: https://homeassistant.local:8123
   packages: !include_dir_named packages
   allowlist_external_dirs:
     - /config
 
 default_config:
+
+http:
+  ssl_certificate: /ssl/certificate.pem
+  ssl_key: /ssl/privkey.pem
 
 frontend: !include themes.yaml
 template: !include sidebar.yaml
