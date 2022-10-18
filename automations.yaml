@@ -601,7 +601,7 @@
         entity_id: input_boolean.sleeping_mode
   mode: single
 - id: '16884829476049'
-  alias: "Turn On Living Room TV with WakeOnLan"
+  alias: Turn On Living Room TV with WakeOnLan
   trigger:
     - platform: webostv.turn_on
       entity_id: media_player.lg_tv
