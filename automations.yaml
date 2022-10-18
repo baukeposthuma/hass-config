@@ -146,7 +146,7 @@
     entity_id: input_boolean.heating_geolocation
     state: 'on'
   action:
-  - service: notify.family
+  - service: notify.notify
     data:
       title: Verwarming uitgeschakeld
       message: Je Tado is op 'afwezig' gezet omdat er niemand thuis is.
@@ -178,7 +178,7 @@
     entity_id: input_boolean.heating_geolocation
     state: 'on'
   action:
-  - service: notify.family
+  - service: notify.notify
     data:
       title: Verwarming ingeschakeld
       message: Welkom thuis! Je Tado is ingeschakeld.
@@ -202,7 +202,7 @@
     data:
       title: Alarm gaat af
       message: test
-  - service: notify.family
+  - service: notify.notify
     data:
       title: Alarm gaat af
       message: Test
