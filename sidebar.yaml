@@ -133,29 +133,19 @@
           {% else %}
             Kan het weer niet lezen...
           {% endif %}
-        laundry: >
-          {% set start_time = state_attr('calendar.laundry', 'start_time') %}
-          {% if start_time != None %}
-            {% set time = as_timestamp(start_time) | timestamp_custom('%H:%M') %}
-            {% set hours = as_timestamp(start_time) | timestamp_custom('%H') | int(default=0) / 24 %}
-            {% set count = (as_timestamp(start_time) - as_timestamp(now())) / 86400 - hours %}
-            {% set day = strptime(start_time, '%Y-%m-%d %H:%M:%S').strftime('%A')
-            | replace('Monday', 'Maandag')
-            | replace('Tuesday', 'Dinsdag')
-            | replace('Wednesday', 'Woensdag')
-            | replace('Thursday', 'Donderdag')
-            | replace('Friday', 'Vrijdag')
-            | replace('Saturday', 'Zaterdag')
-            | replace('Sunday', 'Zondag') %}
-            {% if count <= 0.0 %}
-              {{'\U0001F4A6'}} Tvätt idag {{ time }}
-            {% elif count <= 1.0 %}
-              Tvätt imorgon klockan {{ time }}
-            {% elif count <= 2.0 %}
-              Tvätt i övermorgon klockan {{ time }}
-            {% else %}
-              Tvätt om {{ (count + hours) | round }} dagar på {{ day }} kl {{ time }}
-            {% endif %}
+        washer: >
+          {% set washer_job_state = states('sensor.wasmachine_washer_job_state') %}
+          {% set washer_completion_time = states('sensor.wasmachine_washer_completion_time') %}          
+          {% if washer_job_state != 'none' %}
+            {% set completion_time = as_timestamp(washer_completion_time) | timestamp_custom('%H:%M') %}
+            {{'\U0001F4A6'}} Wasmachine klaar om {{ completion_time }}
+          {% endif %}
+        dryer: >
+          {% set dryer_job_state = states('sensor.droger_dryer_job_state') %}
+          {% set dryer_completion_time = states('sensor.droger_dryer_completion_time') %}
+          {% if dryer_job_state != 'none' %}
+            {% set completion_time = as_timestamp(dryer_completion_time) | timestamp_custom('%H:%M') %}
+            {{'\U0001F9FA'}} Droger klaar om {{ completion_time }}
           {% endif %}
         battery: >
           {% set entities = states.sensor 
