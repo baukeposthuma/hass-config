@@ -145,6 +145,14 @@
   - condition: state
     entity_id: input_boolean.heating_geolocation
     state: 'on'
+  - condition: not
+    conditions:
+    - condition: zone
+      entity_id: person.bauke
+      zone: zone.home
+    - condition: zone
+      entity_id: person.anouk
+      zone: zone.home
   action:
   - service: notify.notify
     data:
@@ -177,6 +185,10 @@
   - condition: state
     entity_id: input_boolean.heating_geolocation
     state: 'on'
+  - condition: state
+    entity_id: climate.woonkamer
+    state: away
+    attribute: preset_mode
   action:
   - service: notify.notify
     data:
@@ -184,7 +196,7 @@
       message: Welkom thuis! Je Tado is ingeschakeld.
   - service: climate.set_preset_mode
     data:
-      preset_mode: none
+      preset_mode: home
     target:
       area_id: woonkamer
   mode: single
@@ -669,5 +681,5 @@
   - service: notify.notify
     data:
       title: Droger
-      message: De was is droog en kan worden opgevouwen 🧺
+      message: "De was is droog en kan worden opgevouwen \U0001F9FA"
   mode: single
