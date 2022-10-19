@@ -85,20 +85,6 @@ views:
             entity: sensor.template_sidebar
             template: sidebar
 
-          # - type: conditional
-          #   conditions:
-          #     - entity: input_boolean.laundry_display
-          #       state: 'on'
-          #   card:
-          #     type: custom:button-card
-          #     entity: timer.laundry
-          #     double_tap_action:
-          #       action: call-service
-          #       service: input_boolean.turn_off
-          #       service_data:
-          #         entity_id: input_boolean.laundry_display
-          #     template: laundry
-
       #################################################
       #                                               #
       #                  LIVINGROOM                   #
@@ -596,7 +582,7 @@ views:
             name: >
               <ha-icon icon="mdi:chart-line-variant"></ha-icon> Energie
             tap_action:
-              !include popup/footer_history.yaml
+              !include popup/footer_energy.yaml
             template: footer
             
           - type: custom:button-card

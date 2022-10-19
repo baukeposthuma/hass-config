@@ -1,0 +1,79 @@
+automation:
+  - alias: washer_started_alert
+    id: '1666040838664'
+    description: ''
+    trigger:
+    - platform: state
+      entity_id:
+      - sensor.wasmachine_washer_job_state
+      from: none
+    condition: []
+    action:
+    - service: notify.notify
+      data:
+        title: Wasmachine
+        message: De was is klaar om {{ as_timestamp(states('sensor.wasmachine_washer_completion_time'))
+          | timestamp_custom('%H:%M')}}
+    mode: single
+  - alias: dryer_started_alert
+    id: '1666040852645'
+    description: ''
+    trigger:
+    - platform: state
+      entity_id:
+      - sensor.droger_dryer_job_state
+      from: none
+    condition: []
+    action:
+    - service: notify.notify
+      data:
+        title: Droger
+        message: Droogprogramma is klaar om {{ as_timestamp(states('sensor.droger_dryer_completion_time'))
+          | timestamp_custom('%H:%M')}}
+    mode: single
+  - alias: washer_finished_alert
+    id: '1666088801762'
+    description: ''
+    trigger:
+    - platform: state
+      entity_id:
+      - sensor.wasmachine_washer_job_state
+      to: none
+    condition: []
+    action:
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.galaxy_tab_a8
+      data:
+        media_content_id: /local/sound/timer.mp3
+        media_content_type: music
+    - service: notify.notify
+      data:
+        title: Wasmachine
+        message: >
+          {% set message = ['De was is klaar', 'De was is gedaan', 'Tijd om naar de was te gaan', 'De was is klaar en kan worden gedroogd'] %}
+          {{'\U0001F9FA ' + message | random }}
+    mode: single
+  - alias: dryer_finished_alert
+    id: '1666088989921'
+    description: ''
+    trigger:
+    - platform: state
+      entity_id:
+      - sensor.droger_dryer_job_state
+      to: none
+    condition: []
+    action:
+    - service: media_player.play_media
+      target:
+        entity_id: media_player.galaxy_tab_a8
+      data:
+        media_content_id: /local/sound/timer.mp3
+        media_content_type: music
+    - service: notify.notify
+      data:
+        title: Droger
+        message: >
+          {% set message = ['De was is droog', 'De was is droog en kan worden opgevouwen'] %}
+          {{'\U0001F9FA ' + message | random }}
+    mode: single
