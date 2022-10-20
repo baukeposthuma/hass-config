@@ -59,13 +59,6 @@ input_select:
     icon: mdi:account-star
     
 input_boolean:
-  waste_moved:
-    name: Waste has been moved
-    initial: false
-    icon: mdi:delete-empty
-  waste_reminder:
-    name: Waste reminder enabled
-    initial: true
   heating_open_window_detection:
     name: Open raam detectie
     initial: true

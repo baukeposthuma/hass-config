@@ -8,112 +8,67 @@ browser_mod:
         #popup header
         .:
     content:
-      type: grid
-      columns: 1
-      square: false
+      type: vertical-stack
       cards:
-        
-        - type: grid
-          square: false
-          columns: 1
-          cards:
-            - type: custom:mushroom-template-card
-              primary: >-
-                Vandaag wordt het {{ states.sensor.afvalwijzer_today.state }} afval opgehaald!
-              secondary: Wie heeft het afval naar buiten gezet?
-              icon: mdi:trash-can-outline
-              entity: sensor.afvalwijzer_today
-              badge_icon: mdi:arrow-top-right-thick
-              badge_color: green
-              icon_color: blue
-              multiline_secondary: false
-              fill_container: false
+        - type: entities
+          state_color: true
+          card_mod:
+            class: content
+          entities:
+            - type: custom:mushroom-entity-card
+              name: Is de afvalcontainer buitengezet?
+              entity: input_boolean.waste_moved
+              icon_color: green
               tap_action:
-                action: none
-              hold_action:
-                action: none
-              double_tap_action:
-                action: none
-            - square: false
-              columns: 2
-              type: grid
-              cards:
-                - type: custom:mushroom-person-card
-                  entity: person.bauke
-                  fill_container: false
-                  secondary_info: state
-                  hold_action:
-                    action: none
-                  double_tap_action:
-                    action: none
-                  tap_action:
-                    action: call-service
-                    service: input_boolean.turn_on
-                    data: {}
-                    target:
-                      entity_id: input_boolean.waste_moved
-                  icon_type: entity-picture
-                  card_mod:
-                    style: |
-                      ha-card {
-                        background-color: rgba(115, 115, 115, 0.1);
-                      }
-                      ha-card:hover {
-                        background-color: rgba(115, 115, 115, 0.2);
-                      }
-                - type: custom:mushroom-person-card
-                  entity: person.anouk
-                  fill_container: false
-                  secondary_info: state
-                  hold_action:
-                    action: none
-                  double_tap_action:
-                    action: none
-                  tap_action:
-                    action: call-service
-                    service: input_boolean.turn_on
-                    data: {}
-                    target:
-                      entity_id: input_boolean.waste_moved
-                  icon_type: entity-picture
-                  card_mod:
-                    style: |
-                      ha-card {
-                        background-color: rgba(115, 115, 115, 0.1);
-                      }
-                      ha-card:hover {
-                        background-color: rgba(115, 115, 115, 0.2);
-                      }
+                action: call-service
+                service: input_boolean.toggle
+                target:
+                  entity_id: input_boolean.waste_moved
+              card_mod:
+                style: |
+                  ha-card {
+                    background-color: rgba(115, 115, 115, 0.1);
+                    border: 0.12vw solid rgba(115, 115, 115, 0.2);
+                  }
+                  ha-card:hover {
+                    background-color: rgba(115, 115, 115, 0.2);
+                  }
+            - type: custom:mushroom-entity-card
+              name: Afval meldingen ontvangen
+              entity: input_boolean.waste_reminder
+              icon_color: orange
+              tap_action:
+                action: call-service
+                service: input_boolean.toggle
+                target:
+                  entity_id: input_boolean.waste_reminder
+              card_mod:
+                style: |
+                  ha-card {
+                    background-color: rgba(115, 115, 115, 0.1);
+                    border: 0.12vw solid rgba(115, 115, 115, 0.2);
+                  }
+                  ha-card:hover {
+                    background-color: rgba(115, 115, 115, 0.2);
+                  }
 
-        #afval
-        - type: custom:auto-entities
-          card:
-            type: vertical-stack
-          card_param: cards
-          filter:
-            include:
-              - entity_id: sensor.afvalwijzer_papier
-                options:
-                  type: entity
-                  name: Papier
-                  icon: mdi:package-variant
-                  # attribute: days_until_collection_date
-                  # unit: dagen
-              - entity_id: sensor.afvalwijzer_pmd
-                options:
-                  type: entity
-                  name: PMD
-                  icon: mdi:food
-                  # attribute: days_until_collection_date
-                  # unit: dagen
-              - entity_id: sensor.afvalwijzer_gft
-                options:
-                  type: entity
-                  name: GFT
-                  icon: mdi:leaf
-                  # attribute: days_until_collection_date
-                  # unit: dagen
-          sort:
-            method: state
-            numeric: true
+            - type: custom:mushroom-entity-card
+              name: Papier
+              entity: sensor.afvalwijzer_papier
+              icon: mdi:package-variant
+              icon_color: blue
+              tap_action: none
 
+            - type: custom:mushroom-entity-card
+              name: PMD
+              entity: sensor.afvalwijzer_pmd
+              icon: mdi:food
+              icon_color: orange
+              tap_action: none
+
+            - type: custom:mushroom-entity-card
+              name: GFT
+              entity: sensor.afvalwijzer_gft
+              icon: mdi:leaf
+              icon_color: green
+              tap_action: none

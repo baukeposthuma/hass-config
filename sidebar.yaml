@@ -133,6 +133,14 @@
           {% else %}
             Kan het weer niet lezen...
           {% endif %}
+        waste: >
+          {% set waste_collection_today = states('sensor.afvalwijzer_today') %}
+          {% set waste_collection_tomorrow = states('sensor.afvalwijzer_tomorrow') %}
+          {% set waste_type = states('sensor.afvalwijzer_next_type') %}
+          {% set collection_day_string = (waste_collection_today != 'Geen') | iif('vandaag', 'morgen', '') %}
+          {% if waste_collection_today != 'Geen' or waste_collection_tomorrow != 'Geen' %}
+            {{ '\u267B' }} {{ waste_type.capitalize() }} wordt {{ collection_day_string }} opgehaald
+          {% endif %}
         washer: >
           {% set washer_job_state = states('sensor.wasmachine_washer_job_state') %}
           {% set washer_completion_time = states('sensor.wasmachine_washer_completion_time') %}          
