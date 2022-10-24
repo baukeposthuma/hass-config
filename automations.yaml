@@ -406,10 +406,10 @@
       after: 09:00:00
       before: '13:00:00'
   action:
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_iphone_van_bauke
     data:
       title: Schuurverwarming ingeschakeld
-      message: Er is genoeg overproductie ☀️
+      message: Genoeg overproductie ☀️
   - type: turn_on
     device_id: 524e63a9251c50afcac3f73c6e8866bb
     entity_id: light.elektrische_verwarming
@@ -437,7 +437,7 @@
     entity_id: light.elektrische_verwarming
     state: 'on'
   action:
-  - service: notify.mobile_app_iphone
+  - service: notify.mobile_app_iphone_van_bauke
     data:
       title: Schuurverwarming uitgeschakeld
       message: Te weinig overproductie
