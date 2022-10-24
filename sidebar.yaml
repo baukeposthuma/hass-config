@@ -77,7 +77,9 @@
           {% set devices = [
             states.switch.playstation_5,
             states.media_player.lg_tv,
-            states.media_player.living_room
+            states.media_player.living_room,
+            states.light.espressomachine,
+            states.light.elektrische_verwarming
           ] %}
 
           {% set lights_on = lights | selectattr('state','eq','on') | list %}
@@ -87,19 +89,19 @@
           {% set devices_name = devices_on | map(attribute='name') | join(', ') %}
 
           {% if (lights_on | length == 0) and (devices_on | length > 0) %}
-            {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} staat aan
+            {{ devices_name | regex_replace(',([^,]*)$',' en\\1') }} staat aan
 
           {% elif (lights_on | length == 1) and (devices_on | length == 1) %}
             {{ lights_name }} en {{devices_name }} staat aan
 
           {% elif (lights_on | length == 1) and (devices_on | length > 1) %}
-            {{ lights_name }}, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} staan aan
+            {{ lights_name }}, {{ devices_name | regex_replace(',([^,]*)$',' en\\1') }} staan aan
 
           {% elif (lights_on | length > 1) and (devices_on | length == 1) %}
             {{ lights_on | length }} lampen en {{ devices_name }} staan aan
 
           {% elif (lights_on | length > 1) and (devices_on | length > 1) %}
-            {{ lights_on | length }} lampen, {{ devices_name | regex_replace(',([^,]*)$',' och\\1') }} staan aan
+            {{ lights_on | length }} lampen, {{ devices_name | regex_replace(',([^,]*)$',' en\\1') }} staan aan
 
           {% elif (lights_on | length == 1) and (devices_on | length == 0) %}
             {{ lights_name }} staat aan
