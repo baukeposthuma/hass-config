@@ -19,6 +19,7 @@ default_config:
 http:
   ssl_certificate: /ssl/certificate.pem
   ssl_key: /ssl/privkey.pem
+  login_attempts_threshold: 15
 
 frontend: !include themes.yaml
 template: !include sidebar.yaml
