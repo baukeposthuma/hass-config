@@ -7,7 +7,7 @@ input_boolean:
 automation:
   - id: '1667039262391'
     alias: halloween_entree
-    description: ''
+    description: 'Play a sound effect on the Sonos as jumpscare'
     trigger:
     - platform: state
       entity_id:
