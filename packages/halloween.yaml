@@ -1,0 +1,86 @@
+input_boolean:
+  halloween_mode:
+    name: Halloween mode
+    initial: false
+    icon: mdi:halloween
+
+automation:
+  - id: '1667039262391'
+    alias: halloween_entree
+    description: ''
+    trigger:
+    - platform: state
+      entity_id:
+      - binary_sensor.hue_motion_sensor_1_motion
+      to: 'on'
+    condition:
+    - condition: state
+      entity_id: input_boolean.halloween_mode
+      state: 'on'
+    action:
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 2
+        milliseconds: 0
+    - service: media_player.volume_set
+      data:
+        volume_level: 0.9
+      target:
+        entity_id: media_player.living_room
+    - service: media_player.play_media
+      target:
+        entity_id:
+        - media_player.living_room
+      data:
+        media_content_id: >
+          {% set soundName = ['witch.mp3', 'witch-2.mp3', 'growl.mp3', 'high-laugh.mp3', 'dark-laugh.mp3', 'jumpscare-a.mp3', 'halloween-impact.mp3' ] %} 
+          {{'/local/sound/halloween/' + soundName | random }}
+        media_content_type: music
+        enqueue: replace
+    mode: single
+
+script:
+  haunted_house:
+    sequence:
+    - repeat:
+        while:
+          - condition: state
+            entity_id: input_boolean.halloween_mode
+            state: 'on'
+        sequence:
+        # Take a snap shot of current state
+        - service: scene.create
+          data:
+            scene_id: before_haunting
+            snapshot_entities:
+            - light.hue_ambiance_spot_7
+            - light.hue_ambiance_spot_8
+            - light.hue_ambiance_spot_9
+            - light.hue_color_candle_1
+            - light.hue_filament_bulb_1
+            - light.hue_filament_bulb_2
+
+
+            
+        # Change a random Random Light              
+        - service: light.toggle
+          data:
+            entity_id: >
+              {{['light.hue_ambiance_spot_7',
+                'light.hue_ambiance_spot_8',
+                'light.hue_ambiance_spot_9',
+                'light.hue_color_candle_1',
+                'light.hue_filament_bulb_1',
+                'light.hue_filament_bulb_2'] 
+                 | random}}
+       
+        # Then another delay. This one is a random delay between 2 and 5 minutes. A delay of at least 2 minutes ensures the previous effect is done before the next one.
+        - delay: '00:0{{ range(2,5) | random | int }}:00'
+        # After the delay, change the state of the lights back to what they were 
+        - service: scene.turn_on
+          target:
+            entity_id: scene.before_haunting
+        # Then delay again, and when that is done start over.
+        - delay: '00:0{{ range(2,5) | random | int }}:00'
+        
