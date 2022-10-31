@@ -136,16 +136,16 @@ light:
   - platform: group
     name: all_group
     entities:
-      - light.woonkamer
-      - light.keuken
-      - light.entree
-      - light.badkamer
-      - light.slaapkamer
-      - light.werkkamer_bauke
-      - light.werkkamer_anouk
-      - light.logeerkamer
-      - light.hal
-      - light.overloop
-      - light.toilet
-      - light.tuin
-      - light.voordeur
+      - light.woonkamer_group
+      - light.keuken_group
+      - light.entree_group
+      - light.badkamer_group
+      - light.slaapkamer_group
+      - light.werkkamer_bauke_group
+      - light.werkkamer_anouk_group
+      - light.logeerkamer_group
+      - light.hal_group
+      - light.overloop_group
+      - light.toilet_group
+      - light.tuin_group
+      - light.voordeur_group
