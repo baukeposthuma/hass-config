@@ -211,7 +211,7 @@
     domain: light
   mode: single
 - id: '1658504908669'
-  alias: Turn off motions sensor when Sleeping Mode is on
+  alias: sleep_mode_on
   description: Turn off motion sensors on ground floor when Sleeping mode is on
   trigger:
   - platform: state
@@ -227,9 +227,14 @@
       - switch.keuken_sensor_motion
       - switch.hue_motion_sensor_1_motion_2
     data: {}
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id:
+      - light.all_group
   mode: single
 - id: '1658505514384'
-  alias: Turn on motions sensor when Sleeping Mode is off
+  alias: sleep_mode_off
   description: Turn on motion sensors on ground floor when Sleeping mode is off
   trigger:
   - platform: state
@@ -477,7 +482,7 @@
     domain: light
   mode: single
 - id: '1664815772089'
-  alias: Sleep schedule
+  alias: sleep_mode_schedule
   description: ''
   trigger:
   - platform: state
