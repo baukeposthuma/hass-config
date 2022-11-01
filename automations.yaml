@@ -514,3 +514,66 @@
   - service: wake_on_lan.send_magic_packet
     data:
       mac: 74:40:BE:B6:8B:E8
+- id: '1666642536617'
+  alias: security_garden_motion_detected
+  description: Send a notification when motion is detected in the garden during the
+    night
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.hue_outdoor_motion_sensor_1_motion
+    to: 'on'
+  condition:
+  - condition: time
+    after: '22:00:00'
+    before: 08:00:00
+  - condition: state
+    entity_id: input_boolean.sleeping_mode
+    state: 'on'
+  action:
+  - service: notify.notify
+    data:
+      message: Beweging gedetecteerd in de tuin
+      title: Beveiliging
+  mode: single
+- id: '1667243249878'
+  alias: sleep_mode_turn_off_mobile_activity
+  description: Turn off Sleep Mode based on iPhone's activity
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.iphone_van_anouk_focus
+    - binary_sensor.iphone_van_bauke_focus
+    from: 'on'
+    to: 'off'
+  condition:
+  - condition: time
+    after: 07:30:00
+    before: '10:30:00'
+  - condition: state
+    entity_id: input_boolean.sleeping_mode
+    state: 'on'
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.sleeping_mode
+  mode: single
+- id: '1667244491244'
+  alias: tv_livingroom_pause_music
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.lg_tv
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: media_player.living_room
+    state: playing
+  action:
+  - service: media_player.media_pause
+    data: {}
+    target:
+      entity_id: media_player.living_room
+  mode: single
