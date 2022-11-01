@@ -1,0 +1,73 @@
+automation:
+  - alias: Turn on Espresso Machine when enough PV overproduction
+    id: '1664453910816'
+    description: ''
+    trigger:
+    - type: power
+      platform: device
+      device_id: ca489ceb3372a21d9b413f76f07d26c2
+      entity_id: sensor.p1_meter_active_power
+      domain: sensor
+      below: -1400
+      for:
+        hours: 0
+        minutes: 1
+        seconds: 0
+    condition:
+    - condition: time
+      after: 09:00:00
+      before: '12:00:00'
+      enabled: true
+    - condition: device
+      type: is_off
+      device_id: 29d22d3df71910ad86405bb7d5154123
+      entity_id: light.espressomachine
+      domain: light
+    - condition: or
+      conditions:
+      - condition: zone
+        entity_id: person.bauke
+        zone: zone.home
+      - condition: zone
+        entity_id: person.anouk
+        zone: zone.home
+    action:
+    - service: notify.notify
+      data:
+        message: Er is genoeg overproductie ☀️
+        title: Espresso Machine ingeschakeld
+    - type: turn_on
+      device_id: 29d22d3df71910ad86405bb7d5154123
+      entity_id: light.espressomachine
+      domain: light
+    mode: single
+  - alias: Turn on Espresso Machine at 12:00 when not enough PV production
+    id: '1664802828599'
+    description: ''
+    trigger:
+    - platform: time
+      at: '12:00:00'
+    condition:
+    - condition: device
+      type: is_off
+      device_id: 29d22d3df71910ad86405bb7d5154123
+      entity_id: light.espressomachine
+      domain: light
+    - condition: or
+      conditions:
+      - condition: zone
+        entity_id: person.bauke
+        zone: zone.home
+      - condition: zone
+        entity_id: person.anouk
+        zone: zone.home
+    action:
+    - service: notify.notify
+      data:
+        message: "Er is te weinig zonne energie \U0001F976"
+        title: Espresso Machine ingeschakeld
+    - type: turn_on
+      device_id: 29d22d3df71910ad86405bb7d5154123
+      entity_id: light.espressomachine
+      domain: light
+    mode: single

@@ -311,48 +311,6 @@
     target:
       entity_id: switch.hue_motion_sensor_1_motion_2
   mode: single
-- id: '1664453910816'
-  alias: Turn on Espresso Machine when enough PV overproduction
-  description: ''
-  trigger:
-  - type: power
-    platform: device
-    device_id: ca489ceb3372a21d9b413f76f07d26c2
-    entity_id: sensor.p1_meter_active_power
-    domain: sensor
-    below: -1400
-    for:
-      hours: 0
-      minutes: 1
-      seconds: 0
-  condition:
-  - condition: time
-    after: 09:00:00
-    before: '12:00:00'
-    enabled: true
-  - condition: device
-    type: is_off
-    device_id: 29d22d3df71910ad86405bb7d5154123
-    entity_id: light.espressomachine
-    domain: light
-  - condition: or
-    conditions:
-    - condition: zone
-      entity_id: person.bauke
-      zone: zone.home
-    - condition: zone
-      entity_id: person.anouk
-      zone: zone.home
-  action:
-  - service: notify.notify
-    data:
-      message: Er is genoeg overproductie ☀️
-      title: Espresso Machine ingeschakeld
-  - type: turn_on
-    device_id: 29d22d3df71910ad86405bb7d5154123
-    entity_id: light.espressomachine
-    domain: light
-  mode: single
 - id: '1664454667785'
   alias: Notify when there is a lot of overproduction
   description: ''
@@ -449,36 +407,6 @@
   - type: turn_off
     device_id: 524e63a9251c50afcac3f73c6e8866bb
     entity_id: light.elektrische_verwarming
-    domain: light
-  mode: single
-- id: '1664802828599'
-  alias: Turn on Espresso Machine at 12:00 when not enough PV production
-  description: ''
-  trigger:
-  - platform: time
-    at: '11:59:55'
-  condition:
-  - condition: device
-    type: is_off
-    device_id: 29d22d3df71910ad86405bb7d5154123
-    entity_id: light.espressomachine
-    domain: light
-  - condition: or
-    conditions:
-    - condition: zone
-      entity_id: person.bauke
-      zone: zone.home
-    - condition: zone
-      entity_id: person.anouk
-      zone: zone.home
-  action:
-  - service: notify.notify
-    data:
-      message: "Er is te weinig zonne energie \U0001F976"
-      title: Espresso Machine ingeschakeld
-  - type: turn_on
-    device_id: 29d22d3df71910ad86405bb7d5154123
-    entity_id: light.espressomachine
     domain: light
   mode: single
 - id: '1664815772089'
