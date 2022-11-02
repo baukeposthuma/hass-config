@@ -19,7 +19,8 @@ default_config:
 http:
   ssl_certificate: /ssl/certificate.pem
   ssl_key: /ssl/privkey.pem
-  login_attempts_threshold: 15
+  login_attempts_threshold: 5
+  ip_ban_enabled: true
 
 frontend: !include themes.yaml
 template: !include sidebar.yaml
@@ -129,7 +130,18 @@ sensor:
     exclude_pickup_today: true        # (optional, default = false) to take or not to take Today into account in the next pickup.
     default_label: Geen              # (optional, default = Geen) label if no date found
     exclude_list: ''                 # (optional, default = '') comma separated list of wast types (case ignored). F.e. "papier, gft"
-    
+  - platform: template
+    sensors:
+      solar_overproduction:
+        friendly_name: 'Solar overproduction'
+        value_template: >
+          {% set overproduction = -(states('sensor.p1_meter_active_power')  | float) + (states('sensor.kwh_meter_active_power') | float) %}
+          {% if overproduction < 0 %}
+            0
+          {% else %}
+            {{ overproduction }}
+          {% endif %}
+        unit_of_measurement: 'W'
   ## Neerslag Card
   - platform: command_line
     command: python3 -c "import requests; import json; import random; dataRequest = requests.get('https://cdn-secure.buienalarm.nl/api/3.4/forecast.php?lat=<lat-3-decimals>&lon=<lon-3-decimals>&region=nl&unit=mm%2Fu&c='+str(random.randint(0,999999999999999)) ).text; dataRequest = dataRequest.replace('\r\n',' '); data = '{\"data\":'+dataRequest+'}';    print(data);"
@@ -138,5 +150,3 @@ sensor:
       - data:
         value_template: 'last_changed: {{states.sensor.neerslag_buienalarm_regen_data.last_changed | default(now())}}'
         scan_interval: 240
-
-
