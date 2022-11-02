@@ -129,9 +129,9 @@ light:
   - platform: group
     name: all_beneden_group
     entities:
-      - light.woonkamer
-      - light.keuken
-      - light.entree
+      - light.woonkamer_group
+      - light.keuken_group
+      - light.entree_group
 
   - platform: group
     name: all_group
