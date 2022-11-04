@@ -369,7 +369,7 @@ views:
                       entity: media_player.living_room
                       template:
                         - conditional_media
-                        - icon_monitors
+                        - icon_sonos
 
                   - type: conditional
                     conditions:
@@ -392,7 +392,7 @@ views:
                     name: Sonos
                     template:
                       - media
-                      - icon_monitors
+                      - icon_sonos
 
                   - type: custom:button-card
                     entity: media_player.spotify
