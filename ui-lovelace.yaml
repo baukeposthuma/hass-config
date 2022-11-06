@@ -504,6 +504,13 @@ views:
                 cards:
 
                   - type: custom:button-card
+                    entity: light.slaapkamer_group
+                    name: Slaapkamer
+                    template:
+                      - light
+                      - icon_spot
+
+                  - type: custom:button-card
                     entity: light.voordeur_group
                     name: Voordeur
                     template:
@@ -523,6 +530,10 @@ views:
                     template:
                       - light
                       - icon_bathroom
+
+              - type: grid
+                columns: 2
+                cards:
 
                   - type: custom:button-card
                     entity: switch.gosund_fan_switch
