@@ -21,7 +21,9 @@ browser_mod:
               name: LG TV
               secondary_info: last-changed
 
-            - entity: automation.tv_on_lights
+            - entity: automation.lg_tv_movie_mode_on
+
+            - entity: automation.lg_tv_movie_mode_off
 
             - type: custom:more-info-card
               entity: media_player.lg_tv

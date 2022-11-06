@@ -364,6 +364,8 @@ views:
                     conditions:
                       - entity: select.conditional_media
                         state_not: Spotify
+                      - entity: select.conditional_media
+                        state_not: LG TV
                     card:
                       type: custom:button-card
                       entity: media_player.living_room
@@ -382,6 +384,29 @@ views:
                       template:
                         - conditional_media
                         - icon_spotify
+                  - type: conditional
+                    conditions:
+                      - entity: select.conditional_media
+                        state: LG TV
+                    card:
+                      type: custom:button-card
+                      entity: media_player.lg_tv
+                      name: TV
+                      state_display: >
+                        [[[
+                          if (variables.state === 'playing') {
+                            return variables.translate_playing;
+                          }
+                          if (variables.state === true) {
+                            return variables.translate_unknown;
+                          }
+                        ]]]
+                      double_tap_action:
+                        !include popup/livingroom_tv.yaml
+                      template:
+                        - conditional_media
+                        - icon_tv
+                        - loader
 
               - type: grid
                 columns: 2
@@ -400,6 +425,25 @@ views:
                     template:
                       - media
                       - icon_spotify
+
+                  - type: custom:button-card
+                    entity: media_player.lg_tv
+                    name: TV
+                    state_display: >
+                      [[[
+                        if (variables.state === 'playing') {
+                          return variables.translate_playing;
+                        }
+                        if (variables.state === true) {
+                          return variables.translate_unknown;
+                        }
+                      ]]]
+                    double_tap_action:
+                      !include popup/livingroom_tv.yaml
+                    template:
+                      - base
+                      - icon_tv
+                      - loader
 
       #################################################
       #                                               #

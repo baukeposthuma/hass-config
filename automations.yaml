@@ -433,15 +433,6 @@
       target:
         entity_id: input_boolean.sleeping_mode
   mode: single
-- id: '16884829476049'
-  alias: Turn On Living Room TV with WakeOnLan
-  trigger:
-  - platform: webostv.turn_on
-    entity_id: media_player.lg_tv
-  action:
-  - service: wake_on_lan.send_magic_packet
-    data:
-      mac: 74:40:BE:B6:8B:E8
 - id: '1666642536617'
   alias: security_garden_motion_detected
   description: Send a notification when motion is detected in the garden during the

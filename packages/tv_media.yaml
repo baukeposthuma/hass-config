@@ -1,0 +1,102 @@
+homeassistant:
+  customize:
+    automation.lg_tv_movie_mode_on:
+      friendly_name: Movie Mode automatisch aan wanneer ik een film kijk
+    automation.lg_tv_movie_mode_off:
+      friendly_name: Movie Mode automatisch uit wanneer ik LG TV uitzet
+    media_player.media_player.lg_tv:
+      friendly_name: LG TV
+      device_class: tv
+
+template:
+  - select:
+      - name: conditional_media
+        state: >
+          {% set recently_added = 'Recent toegevoegd' %}
+          {% set paused_timeout_minutes = 15 %}
+          {% set media_players = [
+            states.media_player.living_room,
+            states.media_player.lg_tv,
+            states.media_player.spotify ] %}
+
+          {% macro media(state) %}
+          {% set state = media_players | selectattr('state','eq',state) | list %}
+          {% set last_changed = recently_added if state | length == 0 else state | map(attribute='last_changed') | list | max %}
+            {{ state | selectattr('last_changed','eq', last_changed) | map(attribute='name') | list | join }}
+          {% endmacro %}
+
+          {% set playing = media_players | selectattr('state','eq','playing') | list %}
+          {% set timeout_playing = False if playing | length == 0 else
+            (as_timestamp(now()) - as_timestamp(playing | map(attribute='last_changed') | list | max)) < paused_timeout_minutes * 60 %}
+
+          {% set paused = media_players | selectattr('state','eq','paused') | list %}
+          {% set timeout_paused = False if paused | length == 0 else
+            (as_timestamp(now()) - as_timestamp(paused | map(attribute='last_changed') | list | max)) < paused_timeout_minutes * 60 %}
+
+          {% if playing %}
+            {{ media('playing') if timeout_playing else media('paused') if timeout_paused else media('playing') }}
+          {% elif paused %}
+            {{ media('paused') if timeout_paused else recently_added }}
+          {% else %}
+            {{ recently_added }}
+          {% endif %}
+        options: >
+          {% set recently_added = ['Recent toegevoegd'] %}
+          {% set media_players = [
+            states.media_player.living_room,
+            states.media_player.lg_tv,
+            states.media_player.spotify ] %}
+          {{ recently_added + media_players | map(attribute='name') | list }}
+        select_option:
+          service: select.select_option
+          target:
+            entity_id: select.conditional_media
+          data:
+            option: >
+              {{ option }}
+
+automation:
+  - id: '1667600127731'
+    alias: Turn Movie Mode on from LG TV
+    description: 'Turn Movie Mode when I watch a movie on LG TV'
+    trigger:
+    - platform: state
+      entity_id:
+      - media_player.lg_tv
+      attribute: source
+      to:
+      - Netflix
+      - Hayu - Watch Reality TV
+      - Videoland
+    condition:
+    - condition: state
+      entity_id: sun.sun
+      state: below_horizon
+    - condition: state
+      entity_id: input_boolean.movie_mode
+      state: 'off'
+    action:
+    - service: input_boolean.turn_on
+      data: {}
+      target:
+        entity_id: input_boolean.movie_mode
+    mode: single
+  - id: '1667576538398'
+    alias: Turn off Movie Mode when LG TV turns off
+    description: 'Turn off Movie Mode when I shutdown LG TV'
+    trigger:
+    - platform: device
+      device_id: 63ad37a040bcf1dd4051339c6e304d52
+      domain: media_player
+      entity_id: media_player.lg_tv
+      type: turned_off
+    condition:
+    - condition: state
+      entity_id: input_boolean.movie_mode
+      state: 'on'
+    action:
+    - service: input_boolean.turn_off
+      data: {}
+      target:
+        entity_id: input_boolean.movie_mode
+    mode: single
