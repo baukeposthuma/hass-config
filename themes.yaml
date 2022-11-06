@@ -284,6 +284,10 @@ themes:
       }
 
     card-mod-more-info-yaml: |
+      .: |
+        :host {
+          --ha-card-border-width: 0;
+        }
       ha-header-bar$: |
         header {
           background: var(--tablet-popup-header-color) !important;
