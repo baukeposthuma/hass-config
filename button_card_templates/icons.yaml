@@ -756,6 +756,77 @@ icon_fan2:
         }
       ]]]
 
+icon_movie:
+  styles:
+    custom_fields:
+      icon:
+        - width: 75%
+        - margin-left: -3%
+  custom_fields:
+    icon: >
+      [[[
+        let path = `
+          <path d="M25,-4.4408921e-16 C31.6304122,-4.4408921e-16 37.9892601,2.63392101 42.6776695,7.32233047 C47.366079,12.0107399 50,18.3695878 50,25 C50,38.8071187 38.8071187,50 25,50 C18.3695878,50 12.0107399,47.366079 7.32233047,42.6776695 C2.63392101,37.9892601 -4.4408921e-16,31.6304122 -4.4408921e-16,25 C-4.4408921e-16,18.3695878 2.63392101,12.0107399 7.32233047,7.32233047 C12.0107399,2.63392101 18.3695878,-4.4408921e-16 25,-4.4408921e-16 M25,5 C21.5482203,5 18.75,7.79822031 18.75,11.25 C18.75,14.7017797 21.5482203,17.5 25,17.5 C28.4517797,17.5 31.25,14.7017797 31.25,11.25 C31.25,7.79822031 28.4517797,5 25,5 M6,18.825 C4.925,22.1 6.725,25.625 10,26.7 C13.3,27.75 16.825,25.975 17.875,22.675 C18.95,19.4 17.15,15.875 13.875,14.8 C10.6,13.75 7.05,15.525 6,18.825 M44.025,18.75 C42.95,15.525 39.425,13.75 36.15,14.8 C32.85,15.85 31.05,19.375 32.125,22.675 C33.2,25.95 36.725,27.75 40,26.675 C43.275,25.625 45.075,22.075 44.025,18.75 M13.275,41.15 C16.05,43.2 20,42.575 22,39.775 C24.025,36.975 23.4,33.075 20.6,31.05 C17.825,29.025 13.9,29.65 11.875,32.425 C9.85,35.225 10.475,39.125 13.275,41.15 M36.75,41.15 C39.55,39.125 40.175,35.225 38.15,32.425 C36.125,29.625 32.2,29 29.425,31.05 C26.625,33.075 26,36.975 28.025,39.775 C30,42.575 33.975,43.175 36.75,41.15 M25,21.25 C22.9289322,21.25 21.25,22.9289322 21.25,25 C21.25,27.0710678 22.9289322,28.75 25,28.75 C27.0710678,28.75 28.75,27.0710678 28.75,25 C28.75,22.9289322 27.0710678,21.25 25,21.25 Z"></path>
+        `,
+        style = `
+          <svg viewBox="0 0 50 50">
+            <style>
+              @keyframes rotate {
+                0% {
+                  visibility: visible;
+                  transform: rotate(0deg) translateZ(0);
+                }
+                100% {
+                  transform: rotate(1080deg) translateZ(0);
+                }
+              }
+              .start {
+                animation: rotate 2.8s ease-in;
+                transform-origin: center;
+                fill: #5daeea;
+                visibility: hidden;
+                will-change: transform;
+              }
+              .on {
+                animation: rotate 5s linear infinite;
+                transform-origin: center;
+                fill: #5daeea;
+                animation-delay: 2.8s;
+                visibility: hidden;
+                will-change: transform;
+              }
+              .end {
+                animation: rotate 2.8s;
+                transform-origin: center;
+                fill: #9ca2a5;
+                animation-timing-function: cubic-bezier(0.61, 1, 0.88, 1);
+                will-change: transform;
+              }
+              .start_timeout {
+                animation: rotate 5s linear infinite;
+                transform-origin: center;
+                fill: #5daeea;
+                visibility: hidden;
+                will-change: transform;
+              }
+              .end_timeout {
+                fill: #9ca2a5;
+              }
+            </style>
+        `;
+        if (variables.state_on && variables.timeout < 2000) {
+          return `${style}<g class="start">${path}</g><g class="on">${path}</g></svg>`;
+        }
+        if (variables.state === 'off' && variables.timeout < 2000) {
+          return `${style}<g class="end">${path}</g></svg>`;
+        }
+        if (variables.state_on && variables.timeout > 2000) {
+          return `${style}<g class="start_timeout">${path}</g></svg>`;
+        } else {
+          return `${style}<g class="end_timeout">${path}</g></svg>`;
+        }
+      ]]]
+
 icon_closet:
   styles:
     custom_fields:

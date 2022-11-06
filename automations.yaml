@@ -496,3 +496,53 @@
     target:
       entity_id: media_player.living_room
   mode: single
+- id: '1667575666527'
+  alias: Movie Mode Toggle on/off
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_boolean.movie_mode
+  condition: []
+  action:
+  - if:
+    - condition: state
+      entity_id: input_boolean.movie_mode
+      state: 'on'
+    then:
+    - service: light.turn_off
+      target:
+        area_id:
+        - keuken
+        - entree
+        - hal
+      data:
+        transition: 10
+    - service: hue.hue_activate_scene
+      data:
+        scene_name: Film kijken
+        group_name: Woonkamer
+        dynamic: true
+        transition: 10
+    - service: switch.turn_off
+      target:
+        entity_id:
+        - switch.hue_motion_sensor_1_motion
+        - switch.woonkamer_sensor_motion
+        - switch.keuken_sensor_motion
+      data: {}
+    else:
+    - service: hue.hue_activate_scene
+      data:
+        scene_name: Helder
+        group_name: Woonkamer
+        dynamic: true
+        transition: 20
+    - service: switch.turn_on
+      target:
+        entity_id:
+        - switch.woonkamer_sensor_motion
+        - switch.keuken_sensor_motion
+        - switch.hue_motion_sensor_1_motion
+      data: {}
+  mode: single

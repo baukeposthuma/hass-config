@@ -569,11 +569,12 @@ views:
             template: person
 
           - type: custom:button-card
-            entity: script.home_leave
-            name: Alles uit
+            entity: input_boolean.movie_mode
+            name: Filmkijken
             template:
               - base
-              - icon_away
+              - icon_movie
+
 
           - type: custom:button-card
             entity: script.home_arrive
