@@ -106,7 +106,7 @@ browser_mod:
             type: horizontal-stack
             cards:
               - type: custom:button-card
-                name: Startsidan
+                name: Startpagina
                 icon: mdi:reload
                 tap_action:
                   action: call-service
@@ -115,14 +115,14 @@ browser_mod:
                     sequence:
                       - service: browser_mod.notification
                         data:
-                          message: Laddar om startsidan...
+                          message: De startpagina opnieuw laden...
                       - service: button.press
                         data:
                           entity_id: button.galaxy_tab_a8_load_start_url
                 template: icon_name
 
               - type: custom:button-card
-                name: Hela appen
+                name: De hele app
                 icon: mdi:reload
                 tap_action:
                   action: call-service
@@ -131,7 +131,7 @@ browser_mod:
                     sequence:
                       - service: browser_mod.notification
                         data:
-                          message: Startar om Fully Kiosk Browser...
+                          message: Fully Kiosk Browser opnieuw opstarten...
                       - service: button.press
                         data:
                           entity_id: button.galaxy_tab_a8_restart_browser
