@@ -1,46 +1,67 @@
+schedule:
+  espressomachine_schedule:
+    name: "Espressomachine schedule"
+    monday:
+      - from: "09:00:00"
+        to: "20:00:00"
+    tuesday:
+      - from: "09:00:00"
+        to: "20:00:00"
+    wednesday:
+      - from: "09:00:00"
+        to: "20:00:00"
+    thursday:
+      - from: "09:00:00"
+        to: "20:00:00"
+    friday:
+      - from: "09:00:00"
+        to: "20:00:00"
+    saturday:
+      - from: "10:00:00"
+        to: "20:00:00"
+    sunday:
+      - from: "10:00:00"
+        to: "20:00:00"
 automation:
-  - alias: Turn on Espresso Machine when enough PV overproduction
-    id: '1664453910816'
-    description: ''
+  - alias: Espressomachine schedule
+    description: 'Turn on espresso machine based on schedule and current solar production'
+    id: '3846283537458'
     trigger:
-    - type: power
-      platform: device
-      device_id: ca489ceb3372a21d9b413f76f07d26c2
-      entity_id: sensor.p1_meter_active_power
-      domain: sensor
-      below: -1400
-      for:
-        hours: 0
-        minutes: 1
-        seconds: 0
+      - platform: numeric_state
+        entity_id: sensor.power_production_now
+        above: 1400
+        for:
+          hours: 0
+          minutes: 1
+          seconds: 0
+      - platform: state
+        entity_id: schedule.espressomachine_schedule
     condition:
-    - condition: time
-      after: 09:00:00
-      before: '12:00:00'
-      enabled: true
-    - condition: device
-      type: is_off
-      device_id: 29d22d3df71910ad86405bb7d5154123
-      entity_id: light.espressomachine
-      domain: light
-    - condition: or
-      conditions:
-      - condition: zone
-        entity_id: person.bauke
-        zone: zone.home
-      - condition: zone
-        entity_id: person.anouk
-        zone: zone.home
+      - condition: state
+        entity_id: schedule.espressomachine_schedule
+        state: 'on'
+      - condition: device
+        type: is_off
+        device_id: 29d22d3df71910ad86405bb7d5154123
+        entity_id: light.espressomachine
+        domain: light
+      - condition: or
+        conditions:
+        - condition: zone
+          entity_id: person.bauke
+          zone: zone.home
+        - condition: zone
+          entity_id: person.anouk
+          zone: zone.home
     action:
-    - service: notify.notify
-      data:
-        message: Er is genoeg overproductie ☀️
-        title: Espresso Machine ingeschakeld
-    - type: turn_on
-      device_id: 29d22d3df71910ad86405bb7d5154123
-      entity_id: light.espressomachine
-      domain: light
-    mode: single
+      - service: notify.notify
+        data:
+          message: Er is genoeg overproductie ☀️
+          title: Espresso Machine ingeschakeld
+      - type: turn_on
+        device_id: 29d22d3df71910ad86405bb7d5154123
+        entity_id: light.espressomachine
+        domain: light
   - alias: Turn on Espresso Machine at 12:00 when not enough PV production
     id: '1664802828599'
     description: ''
@@ -53,6 +74,9 @@ automation:
       device_id: 29d22d3df71910ad86405bb7d5154123
       entity_id: light.espressomachine
       domain: light
+    - condition: state
+      entity_id: schedule.espressomachine_schedule
+      state: 'on'
     - condition: or
       conditions:
       - condition: zone

@@ -21,3 +21,7 @@ browser_mod:
               secondary_info: last-changed
 
             - entity: automation.espressomachine_schedule
+              name: Automatisch Schema (bij genoeg eigen productie)
+
+            - entity: automation.turn_on_espresso_machine_when_not_enough_pv_production
+              name: Automatisch inschakelen om 12:00 (ook bij te weinig productie)

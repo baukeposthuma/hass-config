@@ -497,6 +497,7 @@ views:
                       !include popup/kitchen_espressomachine.yaml
                     template:
                       - base
+                      - icon_coffee
 
               - type: grid
                 columns: 2

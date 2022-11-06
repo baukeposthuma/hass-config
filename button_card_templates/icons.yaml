@@ -188,7 +188,7 @@ icon_shade:
           </svg>
         `;
       ]]]
-
+      
 icon_tv:
   styles:
     custom_fields:
@@ -550,6 +550,19 @@ icon_monitors:
               </svg>
             `;
       ]]]
+
+icon_coffee:
+  styles:
+    custom_fields:
+      icon:
+        - width: 68%
+        - margin-left: 1%
+        - margin-top: 4%
+  custom_fields:
+    icon: >
+      <svg viewBox="0 0 50 50">
+        <path fill="#9da0a2" d="M0,45 L45,45 L45,40 L0,40 M45,12.5 L40,12.5 L40,5 L45,5 M45,0 L5,0 L5,25 C5,30.5228475 9.4771525,35 15,35 L30,35 C35.5228475,35 40,30.5228475 40,25 L40,17.5 L45,17.5 C47.7614237,17.5 50,15.2614237 50,12.5 L50,5 C50,2.225 47.75,0 45,0 Z"></path>
+      </svg>
 
 icon_lamp:
   styles:
