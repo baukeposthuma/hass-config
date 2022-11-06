@@ -58,6 +58,21 @@ sidebar:
     p > b {
       color: rgba(255, 255, 255, 0.8);
     }
+    .notification {
+      color: rgba(255, 255, 255, 0.8);
+      line-height: 1;
+      padding: 6%;
+      border-radius: 0.75vw;
+      background: rgba(115, 115, 115, 0.25);
+    }
+    . notification > b {
+      color: rgba(255, 255, 255, 0.8);
+    }
+    .notification-header {
+      color: rgba(255, 255, 255, 0.8);
+      margin: 0 0 4px 0;
+      font-size: inherit;
+    }
     /* portrait */
     @media screen and (max-width: 1200px) {
       .time {

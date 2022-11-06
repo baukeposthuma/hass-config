@@ -141,21 +141,30 @@
           {% set waste_type = states('sensor.afvalwijzer_next_type') %}
           {% set collection_day_string = (waste_collection_today != 'Geen') | iif('vandaag', 'morgen', '') %}
           {% if waste_collection_today != 'Geen' or waste_collection_tomorrow != 'Geen' %}
-            {{ '\u267B' }} {{ waste_type.capitalize() }} wordt {{ collection_day_string }} opgehaald
+            <div class='notification'>
+              <h3 class='notification-header'>{{'\u267B'}} Afvalcollectie</h3>
+              {{ waste_type.capitalize() }} wordt {{ collection_day_string }} opgehaald
+            </div>
           {% endif %}
         washer: >
           {% set washer_job_state = states('sensor.wasmachine_washer_job_state') %}
           {% set washer_completion_time = states('sensor.wasmachine_washer_completion_time') %}          
+          {% set completion_time = as_timestamp(washer_completion_time) | timestamp_custom('%H:%M') %}
           {% if washer_job_state != 'none' %}
-            {% set completion_time = as_timestamp(washer_completion_time) | timestamp_custom('%H:%M') %}
-            {{'\U0001F4A6'}} Wasmachine klaar om {{ completion_time }}
+            <div class='notification'>
+              <h3 class='notification-header'>{{'\U0001F4A6'}} Wasmachine</h3>
+              Klaar om {{ completion_time }}
+            </div>
           {% endif %}
         dryer: >
           {% set dryer_job_state = states('sensor.droger_dryer_job_state') %}
-          {% set dryer_completion_time = states('sensor.droger_dryer_completion_time') %}
+          {% set dryer_completion_time = states('sensor.droger_dryer_completion_time') %}          
+          {% set completion_time = as_timestamp(dryer_completion_time) | timestamp_custom('%H:%M') %}
           {% if dryer_job_state != 'none' %}
-            {% set completion_time = as_timestamp(dryer_completion_time) | timestamp_custom('%H:%M') %}
-            {{'\U0001F9FA'}} Droger klaar om {{ completion_time }}
+            <div class='notification'>
+              <h3 class='notification-header'>{{'\U0001F9FA'}} Droger</h3>
+              Klaar om {{ completion_time }}
+            </div>
           {% endif %}
         battery: >
           {% set entities = states.sensor 
