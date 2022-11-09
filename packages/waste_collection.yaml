@@ -16,7 +16,7 @@ automation:
       entity_id: input_boolean.waste_moved
       to: 'on'
       for:
-        hours: 12
+        hours: 16
     action:
     - service: input_boolean.turn_off
       entity_id: input_boolean.waste_moved
