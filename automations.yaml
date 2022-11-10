@@ -107,27 +107,6 @@
       title: Alarm gaat af
       message: Test
   mode: single
-- id: '1653684999337'
-  alias: Toggle Movie Mode with Ikea button
-  description: Toggle movie mode input_boolean when remote is clicked
-  trigger:
-  - platform: device
-    domain: mqtt
-    device_id: 508c16ba1e53972f58ff68751b6c12fa
-    type: action
-    subtype: 'on'
-    discovery_id: 0x680ae2fffe80376e action_on
-  - platform: device
-    domain: mqtt
-    device_id: 508c16ba1e53972f58ff68751b6c12fa
-    type: action
-    subtype: 'off'
-    discovery_id: 0x680ae2fffe80376e action_off
-  condition: []
-  action:
-  - service: homeassistant.toggle
-    entity_id: input_boolean.movie_mode
-  mode: single
 - id: '1653685711883'
   alias: Turn on Movie Mode
   description: ''
