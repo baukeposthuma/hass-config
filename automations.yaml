@@ -246,12 +246,12 @@
     - service: media_player.media_play
       data: {}
       target:
-        entity_id: media_player.living_room
+        entity_id: media_player.woonkamer
     else:
     - service: media_player.media_stop
       data: {}
       target:
-        entity_id: media_player.living_room
+        entity_id: media_player.woonkamer
   mode: single
 - id: '1664198952463'
   alias: Vloerverwarmingspomp
@@ -467,13 +467,13 @@
     to: 'on'
   condition:
   - condition: state
-    entity_id: media_player.living_room
+    entity_id: media_player.woonkamer
     state: playing
   action:
   - service: media_player.media_pause
     data: {}
     target:
-      entity_id: media_player.living_room
+      entity_id: media_player.woonkamer
   mode: single
 - id: '1667575666527'
   alias: Movie Mode Toggle on/off

@@ -15,7 +15,7 @@ template:
           {% set recently_added = 'Recent toegevoegd' %}
           {% set paused_timeout_minutes = 15 %}
           {% set media_players = [
-            states.media_player.living_room,
+            states.media_player.woonkamer,
             states.media_player.lg_tv,
             states.media_player.spotify ] %}
 
@@ -43,7 +43,7 @@ template:
         options: >
           {% set recently_added = ['Recent toegevoegd'] %}
           {% set media_players = [
-            states.media_player.living_room,
+            states.media_player.woonkamer,
             states.media_player.lg_tv,
             states.media_player.spotify ] %}
           {{ recently_added + media_players | map(attribute='name') | list }}
@@ -68,6 +68,10 @@ automation:
       - Netflix
       - Hayu - Watch Reality TV
       - Videoland
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 15
     condition:
     - condition: state
       entity_id: sun.sun

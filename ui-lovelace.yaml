@@ -363,27 +363,27 @@ views:
                   - type: conditional
                     conditions:
                       - entity: select.conditional_media
-                        state_not: Spotify
+                        state_not: Sonos
                       - entity: select.conditional_media
                         state_not: LG TV
                     card:
                       type: custom:button-card
-                      entity: media_player.living_room
+                      entity: media_player.spotify
                       template:
                         - conditional_media
-                        - icon_sonos
+                        - icon_spotify
 
                   - type: conditional
                     conditions:
                       - entity: select.conditional_media
-                        state: Spotify
+                        state: Sonos
                     card:
                       type: custom:button-card
-                      entity: media_player.spotify
-                      name: Spotify
+                      entity: media_player.woonkamer
+                      name: Sonos
                       template:
                         - conditional_media
-                        - icon_spotify
+                        - icon_sonos
                   - type: conditional
                     conditions:
                       - entity: select.conditional_media
@@ -413,7 +413,7 @@ views:
                 cards:
 
                   - type: custom:button-card
-                    entity: media_player.living_room
+                    entity: media_player.woonkamer
                     name: Sonos
                     template:
                       - media
@@ -586,7 +586,6 @@ views:
             template:
               - base
               - icon_movie
-
 
           - type: custom:button-card
             entity: script.home_arrive
