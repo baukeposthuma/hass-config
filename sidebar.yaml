@@ -127,10 +127,12 @@
           {% endif %}
         weather: >
           {% set entity = 'weather.stille_steeg_west_12' %}
+          {% set rain_forecast = 'sensor.buienalarm_precipitation_forecast_total' %}
+          {% set temp_forecast = 'sensor.buienalarm_temperature' %}
           {% if not is_state(entity, 'unknown') %}
             {% set temp = state_attr(entity, 'temperature') | round %}
-            {% set precip = state_attr(entity, 'forecast')[0]['precipitation'] | round %}
-              Voelt als {{ temp }}° en {{ 'geen kans op regen' if precip == 0
+            {% set precip = states(rain_forecast) | round %}
+              Voelt als <b>{{ temp }}°</b> en {{ 'het blijft droog' if precip == 0
               else precip | string + 'mm regen \u2614\uFE0F' }}
           {% else %}
             Kan het weer niet lezen...
