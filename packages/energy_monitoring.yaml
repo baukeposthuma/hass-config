@@ -1,0 +1,28 @@
+template:
+  - sensor:
+      - name: 'Solar production'
+        unit_of_measurement: 'W'
+        state_class: measurement
+        icon: mdi:white-balance-sunny
+        state: >
+          {% set production = (states('sensor.kwh_meter_active_power') | float | round(default=0)) *-1 %}
+
+          {{ 0 if production < 0 else production }}
+      - name: 'Solar overproduction'
+        unit_of_measurement: 'W'
+        state_class: measurement
+        icon: mdi:transmission-tower
+        # icon: mdi:transmission-tower
+        state: >
+          {% set overproduction = -(states('sensor.p1_meter_active_power')  | float) + (states('sensor.kwh_meter_active_power') | float) %}
+
+          {{ 0 if overproduction < 0 else overproduction }}
+      - name: 'Energy netto consumption'
+        unit_of_measurement: 'W'
+        state_class: measurement
+        icon: mdi:power-plug
+        state: >
+          {% set consumption = states('sensor.p1_meter_active_power') | float %}
+          {% set production = states('sensor.solar_production') | float %}
+
+          {{ (consumption - production) | round(default=0) }}
