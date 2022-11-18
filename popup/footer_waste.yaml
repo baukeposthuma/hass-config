@@ -51,24 +51,22 @@ browser_mod:
                   ha-card:hover {
                     background-color: rgba(115, 115, 115, 0.2);
                   }
-
-            - type: custom:mushroom-entity-card
-              name: Papier
-              entity: sensor.afvalwijzer_papier
-              icon: mdi:package-variant
+        - type: custom:auto-entities
+          card:
+            type: entities
+          entities:
+            - entity: sensor.afvalwijzer_papier
+              type: custom:mushroom-entity-card
               icon_color: blue
               tap_action: none
-
-            - type: custom:mushroom-entity-card
-              name: PMD
-              entity: sensor.afvalwijzer_pmd
-              icon: mdi:food
+            - entity: sensor.afvalwijzer_pmd
+              type: custom:mushroom-entity-card
               icon_color: orange
               tap_action: none
-
-            - type: custom:mushroom-entity-card
-              name: GFT
-              entity: sensor.afvalwijzer_gft
-              icon: mdi:leaf
+            - entity: sensor.afvalwijzer_gft
+              type: custom:mushroom-entity-card
               icon_color: green
               tap_action: none
+          sort:
+            method: attribute
+            attribute: days_until_collection_date
