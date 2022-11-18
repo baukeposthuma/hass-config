@@ -1,0 +1,45 @@
+automation:
+  - alias: floor_pump_malfunction_alert
+    id: d7f9w48fq0429fe29ehf01dkm2kdaj82
+    trigger:
+      - platform: state
+        entity_id:
+          - climate.werkkamer_bauke
+        to: heat
+        for:
+          hours: 0
+          minutes: 5
+          seconds: 0
+    condition:
+      - condition: state
+        entity_id: switch.vloerverwarmingspomp
+        state: "off"
+    action:
+      - service: notify.mobile_app_iphone_van_bauke
+        data:
+          title: Vloerverwarming
+          message: Er is een probleem met de vloerverwarmingspomp
+  - id: '1664198952463'
+    alias: Vloerverwarmingspomp
+    description: ''
+    trigger:
+    - platform: state
+      entity_id:
+      - sensor.woonkamer_heating
+    condition: []
+    action:
+    - if:
+      - condition: numeric_state
+        entity_id: sensor.woonkamer_heating
+        above: 1
+      then:
+      - type: turn_on
+        device_id: d5a3700f94c3754f3d601c79ffdcaabd
+        entity_id: switch.vloerverwarmingspomp
+        domain: switch
+      else:
+      - type: turn_off
+        device_id: d5a3700f94c3754f3d601c79ffdcaabd
+        entity_id: switch.vloerverwarmingspomp
+        domain: switch
+    mode: restart

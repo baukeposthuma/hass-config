@@ -207,13 +207,6 @@ views:
                 cards:
 
                   - type: custom:button-card
-                    entity: switch.vloerverwarmingspomp
-                    name: Vloerverwarmingspomp
-                    template:
-                      - base
-                      - icon_fan2
-
-                  - type: custom:button-card
                     entity: climate.woonkamer
                     name: Woonkamer
                     double_tap_action:
@@ -273,15 +266,11 @@ views:
                         ]]]
                       circle_input_unit: '°C'
 
-              - type: grid
-                columns: 2
-                cards:
-
                   - type: custom:button-card
-                    entity: climate.logeerkamer
-                    name: Logeerkamer
+                    entity: climate.slaapkamer
+                    name: Slaapkamer
                     double_tap_action:
-                      !include popup/guestroom_climate.yaml
+                      !include popup/bedroom_climate.yaml
                     template:
                       - base
                       - icon_climate
@@ -297,11 +286,15 @@ views:
                         ]]]
                       circle_input_unit: '°C'
 
+              - type: grid
+                columns: 2
+                cards:
+
                   - type: custom:button-card
-                    entity: climate.slaapkamer
-                    name: Slaapkamer
+                    entity: climate.logeerkamer
+                    name: Logeerkamer
                     double_tap_action:
-                      !include popup/bedroom_climate.yaml
+                      !include popup/guestroom_climate.yaml
                     template:
                       - base
                       - icon_climate
