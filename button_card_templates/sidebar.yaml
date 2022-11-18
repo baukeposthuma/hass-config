@@ -27,6 +27,7 @@ sidebar:
       padding: 1vw 2.5vw 0 var(--custom-layout-card-padding);
       white-space: normal;
       text-align: left;
+      flex: auto;
     }
     .iphone {
       font-size: 1.5em;
