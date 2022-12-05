@@ -4,7 +4,7 @@ automation:
     trigger:
       - platform: state
         entity_id:
-          - climate.werkkamer_bauke
+          - climate.woonkamer
         to: heat
         for:
           hours: 0
