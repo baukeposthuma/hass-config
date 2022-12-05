@@ -344,15 +344,13 @@ views:
                   - type: conditional
                     conditions:
                       - entity: select.conditional_media
-                        state_not: Sonos
-                      - entity: select.conditional_media
                         state_not: LG TV
                     card:
                       type: custom:button-card
-                      entity: media_player.spotify
+                      entity: media_player.woonkamer
                       template:
                         - conditional_media
-                        - icon_spotify
+                        - icon_sonos
 
                   - type: conditional
                     conditions:
