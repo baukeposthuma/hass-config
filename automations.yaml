@@ -201,7 +201,6 @@
   - service: switch.turn_off
     target:
       entity_id:
-      - switch.hue_motion_sensor_1_motion
       - switch.woonkamer_sensor_motion
       - switch.keuken_sensor_motion
       - switch.hue_motion_sensor_1_motion_2
@@ -225,7 +224,6 @@
     data: {}
     target:
       entity_id:
-      - switch.hue_motion_sensor_1_motion
       - switch.woonkamer_sensor_motion
       - switch.keuken_sensor_motion
   mode: single
