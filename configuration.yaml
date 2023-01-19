@@ -47,6 +47,7 @@ lovelace: # Lovelace Resources
     ]
 
 automation: !include automations.yaml
+script: !include scripts.yaml
 
 wake_on_lan: # enables `wake_on_lan` integration
 
