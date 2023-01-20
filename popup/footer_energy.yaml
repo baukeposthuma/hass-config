@@ -9,94 +9,353 @@ browser_mod:
         #popup header
         .:
     content:
-      type: grid
-      columns: 2
-      square: false
+      type: custom:layout-card
+      layout_type: custom:grid-layout
+      layout:
+        #default
+        margin: 24px
+        grid-gap: 16px
+        grid-template-columns: 1fr 1fr 1fr 1fr
+        grid-template-rows: auto repeat(4, 1fr)
+        grid-template-areas: |
+          ". . . ."
+          "energyTotal energyTotal energyTotal energyTotal"
+          "solar solar solar solar"
+          "energyConsumption energyConsumption energyConsumption energyConsumption"
+          "gas gas gas gas"
+        mediaquery:
+          #phone
+          "(max-width: 800px)":
+            grid-template-columns: 1fr
+            grid-template-rows: repeat(5, fit-content(100%))
       cards:
-
-        #solar
+        - type: custom:mushroom-entity-card
+          name: Stroom totaal
+          entity: sensor.p1_meter_active_power
+          icon_color: purple
+          card_mod:
+            style: |
+              ha-card {
+                background-color: rgba(115, 115, 115, 0.1);
+                border: 0.12vw solid rgba(115, 115, 115, 0.2);
+              }
+        - type: custom:mushroom-entity-card
+          name: Zonnepanelen
+          entity: sensor.solar_production
+          icon_color: green
+          card_mod:
+            style: |
+              ha-card {
+                background-color: rgba(115, 115, 115, 0.1);
+                border: 0.12vw solid rgba(115, 115, 115, 0.2);
+              }
+        - type: custom:mushroom-entity-card
+          name: Stroomverbruik
+          entity: sensor.energy_netto_consumption
+          icon_color: purple
+          card_mod:
+            style: |
+              ha-card {
+                background-color: rgba(115, 115, 115, 0.1);
+                border: 0.12vw solid rgba(115, 115, 115, 0.2);
+              }
+        - type: custom:mushroom-entity-card
+          name: Gasverbruik
+          entity: sensor.p1_meter_total_gas
+          icon_color: red
+          card_mod:
+            style: |
+              ha-card {
+                background-color: rgba(115, 115, 115, 0.1);
+                border: 0.12vw solid rgba(115, 115, 115, 0.2);
+              }
+        # Energy Usage Total
         - type: custom:apexcharts-card
           graph_span: 30sec
-          header:
-            title: Zonnepanelen
-            show: true
-            show_states: true
-            colorize_states: true
-          all_series_config:
-            stroke_width: 2
-            opacity: 0.3
-            type: area
-          color_list: ['red', 'green', 'blue']
-          series:
-            - entity: sensor.kwh_meter_active_power_l1
-              unit: kWh
-              type: area
-              color: rgba(20,230,44,1)
-              curve: smooth
-              color_threshold:
-                - value: 5
-                  color: rgb(20,230,44)
-                  opacity: 0
-                - value: 6.5
-                  color: rgb(20,230,44)
-                  opacity: 1
-
-        #consumption
-        - type: custom:apexcharts-card
-          graph_span: 30sec
+          view_layout:
+            grid-area: energyTotal
+          apex_config:
+            chart:
+              height: 220px
+            fill:
+              type: gradient
+              gradient:
+                type: vertical
+                opacityFrom: 0.9
+                opacityTo: 0
+                stops:
+                  - 0
+                  - 99
+                  - 100
+            grid:
+              borderColor: 'rgba(115, 115, 115, 0.2)'
+              strokeDashArray: 0
+            xaxis:
+              labels:
+                show: false
+            stroke:
+              width: 4
+            tooltip:
+              style:
+                fontSize: 14px
+              x:
+                format: dddd HH:mm
           header:
             title: Stroomverbruik
             show: true
             show_states: true
             colorize_states: true
-          all_series_config:
-            stroke_width: 2
-            opacity: 0.3
-            type: area
-          color_list: ['red', 'green', 'blue']
           series:
             - entity: sensor.p1_meter_active_power
-              unit: kWh
+              unit: W
               type: area
-              color: rgba(130,50,255,1)
+              color: rgb(130,50,255)
               curve: smooth
+              show:
+                name_in_header: false
+          yaxis:
+            - min: 0
+              max: ~300
 
-        #gas
+        # Solar
         - type: custom:apexcharts-card
-          graph_span: 12h
-          header:
-            title: Gasverbruik
-            show: true
-            show_states: true
-            colorize_states: true
-          all_series_config:
-            stroke_width: 2
-            opacity: 0.3
-            type: area
-          color_list: ['red', 'green', 'blue']
-          series:
-            - entity: sensor.p1_meter_total_gas
-              unit: m³
-              type: area
-              color: rgba(255,40,110,1)
-              curve: smooth
-
-        #netto grid
-        - type: custom:apexcharts-card
+          layout: minimal
           graph_span: 30sec
+          view_layout:
+            grid-area: solar
+          apex_config:
+            chart:
+              height: 220px
+            fill:
+              type: gradient
+              gradient:
+                type: vertical
+                opacityFrom: 0.9
+                opacityTo: 0
+                stops:
+                  - 0
+                  - 99
+                  - 100
+            stroke:
+              width: 4
+            tooltip:
+              style:
+                fontSize: 14px
+              x:
+                format: dddd HH:mm
           header:
-            title: Stroom totaal
+            title: Zonnepanelen
             show: true
             show_states: true
             colorize_states: true
-          all_series_config:
-            stroke_width: 2
-            opacity: 0.3
-            type: area
-          color_list: ['red', 'green', 'blue']
           series:
-            - entity: sensor.p1_meter_active_power
-              unit: kWh
+            - entity: sensor.solar_production
+              unit: W
               type: area
-              color: rgba(130,50,255,1)
+              color: rgb(20,230,44)
               curve: smooth
+              show:
+                name_in_header: false
+          yaxis:
+            - min: 0
+              max: ~400
+
+        # Energy Netto
+        - type: custom:apexcharts-card
+          layout: minimal
+          graph_span: 30sec
+          view_layout:
+            grid-area: energyConsumption
+          apex_config:
+            chart:
+              height: 220px
+            fill:
+              type: gradient
+              gradient:
+                type: vertical
+                opacityFrom: 0.9
+                opacityTo: 0
+                stops:
+                  - 0
+                  - 99
+                  - 100
+            stroke:
+              width: 4
+            tooltip:
+              style:
+                fontSize: 14px
+              x:
+                format: dddd HH:mm
+          header:
+            title: Netto stroomverbruik
+            show: true
+            show_states: true
+            colorize_states: true
+          series:
+            - entity: sensor.energy_netto_consumption
+              unit: W
+              type: area
+              color: rgb(130,50,255)
+              curve: smooth
+              show:
+                name_in_header: false
+          yaxis:
+            - min: 0
+              max: ~400
+
+    # content:
+    #   type: custom:layout-card
+    #   layout_type: custom:grid-layout
+    #   layout:
+    #     #default
+    #     margin: 0
+    #     grid-gap: 16px
+    #     grid-template-columns: 1fr 1fr
+    #     grid-template-rows: auto
+    #     grid-template-areas: |
+    #       "energyTotal        energyTotal"
+    #       "solar              solar"
+    #       "energyConsumption  energyConsumption"
+    #       "gas                gas"
+    #       "drawer             drawer"
+    #     mediaquery:
+    #       #phone
+    #       "(max-width: 800px)":
+    #         grid-template-columns: 1fr
+    #         grid-template-rows: repeat(5, fit-content(100%))
+    #         grid-template-areas: |
+    #           "energyTotal"
+    #           "solar"
+    #           "energyConsumption"
+    #           "gas"
+    #           "drawer"
+    #   cards:
+    #     # Solar
+    #     - type: custom:apexcharts-card
+    #       apex_config:
+    #         chart:
+    #           height: 200px
+    #       view_layout:
+    #         grid-area: solar
+    #       graph_span: 30sec
+    #       header:
+    #         title: Zonnepanelen
+    #         show: true
+    #         show_states: true
+    #         colorize_states: true
+    #       all_series_config:
+    #         stroke_width: 2
+    #         opacity: 0.3
+    #         type: area
+    #       experimental:
+    #         color_threshold: true
+    #       series:
+    #         - entity: sensor.solar_production
+    #           unit: w
+    #           type: area
+    #           color: rgba(20,230,44,1)
+    #           curve: smooth
+    #           color_threshold:
+    #             - value: 6.3
+    #               color: rgb(20,230,44)
+    #               opacity: 0.1
+    #             - value: 6.5
+    #               color: rgb(20,230,44)
+    #               opacity: 0.8
+    #           show:
+    #             name_in_header: false
+    #       yaxis:
+    #         - min: 0
+
+    #     # Energy Usage Total
+    #     - type: custom:apexcharts-card
+    #       apex_config:
+    #         chart:
+    #           height: 200px
+    #       view_layout:
+    #         grid-area: energyTotal
+    #       graph_span: 30sec
+    #       header:
+    #         title: Stroomverbruik
+    #         show: true
+    #         show_states: true
+    #         colorize_states: true
+    #       all_series_config:
+    #         stroke_width: 2
+    #         opacity: 0.3
+    #         type: area
+    #       experimental:
+    #         color_threshold: true
+    #       series:
+    #         - entity: sensor.p1_meter_active_power
+    #           unit: w
+    #           type: area
+    #           color: rgba(130,50,255,1)
+    #           curve: smooth
+    #           color_threshold:
+    #             - value: 0
+    #               color: rgb(130,50,255)
+    #             - value: -1
+    #               color: rgb(20,230,44)
+    #           show:
+    #               name_in_header: false
+    #       yaxis:
+    #         - min: 0
+    #           max: ~400
+
+    #     # Gas
+    #     - type: custom:apexcharts-card
+    #       apex_config:
+    #         chart:
+    #           height: 200px
+    #       view_layout:
+    #         grid-area: gas
+    #       graph_span: 12h
+    #       header:
+    #         title: Gasverbruik
+    #         show: true
+    #         show_states: true
+    #         colorize_states: true
+    #       all_series_config:
+    #         stroke_width: 2
+    #         opacity: 0.3
+    #         type: area
+    #       series:
+    #         - entity: sensor.p1_meter_total_gas
+    #           unit: m³
+    #           type: area
+    #           color: rgba(255,40,110,1)
+    #           curve: smooth
+    #           show:
+    #             name_in_header: false
+    #       yaxis:
+    #         - min: 0
+
+    #     #netto grid
+    #     - type: custom:apexcharts-card
+    #       apex_config:
+    #         chart:
+    #           height: 200px
+    #       view_layout:
+    #         grid-area: energyConsumption
+    #       graph_span: 30sec
+    #       header:
+    #         title: Stroom totaal
+    #         show: true
+    #         show_states: true
+    #         colorize_states: true
+    #       all_series_config:
+    #         stroke_width: 2
+    #         opacity: 0.3
+    #         type: area
+    #       series:
+    #         - entity: sensor.energy_netto_consumption
+    #           unit: w
+    #           type: area
+    #           color: rgba(130,50,255,1)
+    #           curve: smooth
+    #           show:
+    #             name_in_header: false
+    #       yaxis:
+    #         - min: 0
+    #           max: ~400
