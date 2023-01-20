@@ -17,7 +17,7 @@ homeassistant:
 default_config:
 
 http:
-  ssl_certificate: /ssl/certificate.pem
+  ssl_certificate: /ssl/fullchain.pem
   ssl_key: /ssl/privkey.pem
   login_attempts_threshold: 5
   ip_ban_enabled: true
