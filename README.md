@@ -4,7 +4,7 @@
 
 If you like anything here, be sure to :star2: my repo!
 
-![dashboard](https://raw.githubusercontent.com/baukeposthuma/hass-config/master/www/img/dashoard.png)
+![dashboard](https://raw.githubusercontent.com/baukeposthuma/hass-config/master/www/img/dashboard.png)
 
 ## Installation
 
