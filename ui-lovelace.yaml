@@ -580,11 +580,11 @@ views:
             template: person
 
           - type: custom:button-card
-            entity: script.home_arrive
-            name: Thuis
+            entity: script.turn_off_all_lights_and_devices
+            name: Alles uit
             template:
               - base
-              - icon_home
+              - icon_closet
 
       #################################################
       #                                               #
