@@ -25,5 +25,3 @@ No, because this is not a custom card or integration
 * Loading animation for slow responding entities
 * Adding tap audio feedback to the UI for wall-mounted tablet
 * Icon [CSS animations](https://www.w3schools.com/css/css3_animations.asp) based on entity state
-
-![animations](https://raw.githubusercontent.com/matt8707/hass-config/master/www/img/animations.gif)
