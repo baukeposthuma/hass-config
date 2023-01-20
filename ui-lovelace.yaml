@@ -318,6 +318,26 @@ views:
                         ]]]
                       circle_input_unit: '°C'
 
+                  - type: custom:button-card
+                    entity: climate.bathroom_floor_thermostat
+                    name: Badkamer Vloerverwarming
+                    double_tap_action:
+                      !include popup/bathroom_floor_climate.yaml
+                    template:
+                      - base
+                      - icon_climate
+                      - circle
+                    variables:
+                      circle_input: >
+                        [[[
+                          if (entity) {
+                              return entity.state === 'cool'
+                                  ? Math.round(entity.attributes.temperature).toString()
+                                  : Math.round(entity.attributes.current_temperature).toString();
+                          }
+                        ]]]
+                      circle_input_unit: '°C'
+
       #################################################
       #                                               #
       #                     MEDIA                     #

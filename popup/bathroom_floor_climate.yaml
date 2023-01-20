@@ -1,0 +1,15 @@
+action: fire-dom-event
+browser_mod:
+  service: browser_mod.popup
+  data:
+    title: Klimaat
+    card_mod:
+      style:
+        #popup header
+        .:
+    content:
+      type: vertical-stack
+      cards:
+
+        - type: thermostat
+          entity: climate.bathroom_floor_thermostat
