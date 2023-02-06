@@ -141,24 +141,10 @@ views:
 
           - type: custom:button-card
             entity: light.werkkamer_anouk_group
-            name: Kamer
+            name: Studio
             template:
               - light
               - icon_hue
-
-          - type: custom:button-card
-            entity: light.hue_ambiance_candle_1
-            name: Bureaulamp
-            template:
-              - light
-              - icon_shade
-
-          - type: custom:button-card
-            entity: light.streaming_group
-            name: Streaminglamp
-            template:
-              - light
-              - icon_shade
 
           - type: custom:button-card
             entity: switch.playstation_5
@@ -529,20 +515,6 @@ views:
                     template:
                       - light
                       - icon_bathroom
-
-              - type: grid
-                columns: 2
-                cards:
-
-                  - type: custom:button-card
-                    entity: switch.gosund_fan_switch
-                    name: Ventilator
-                    double_tap_action:
-                      !include popup/studio_flakt.yaml
-                    template:
-                      - base
-                      - icon_fan2
-                      - loader
 
       #################################################
       #                                               #
