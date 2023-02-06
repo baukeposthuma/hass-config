@@ -14,8 +14,6 @@ homeassistant:
       friendly_name: Werkkamer
     light.werkkamer_anouk_group:
       friendly_name: Studio
-    light.streaming_group:
-      friendly_name: Streamlight
     light.logeerkamer_group:
       friendly_name: Logeerkamer
     light.hal_group:
@@ -69,6 +67,7 @@ light:
       - light.hue_ambiance_spot_1
       - light.hue_ambiance_spot_2
       - light.hue_ambiance_spot_3
+      - light.hue_go_1
 
   - platform: group
     name: werkkamer_bauke_group
@@ -87,11 +86,6 @@ light:
       - light.hue_on_off_plug_1_2
       - light.hue_ambiance_candle_1
       - light.hue_ambiance_candle_3
-
-  - platform: group
-    name: streaming_group
-    entities:
-      - light.hue_go_1
 
   - platform: group
     name: logeerkamer_group
