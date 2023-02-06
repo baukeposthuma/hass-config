@@ -72,7 +72,7 @@ automation:
       entity_id: sensor.galaxy_tab_a8_battery
       below: 50
     action:
-      service: notify.all_devices
+      service: notify.notify
       data:
         title: Laadt de tablet op...
         message: >
