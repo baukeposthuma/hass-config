@@ -11,7 +11,7 @@ action: fire-dom-event
 browser_mod:
   service: browser_mod.popup
   data:
-    title: UniFi Dream Machine
+    title: FRITZ!Box 7590
     card_mod:
       style:
         #popup header
@@ -25,32 +25,60 @@ browser_mod:
             class: content
           entities:
 
-            - entity: binary_sensor.template_udm_internet
-              secondary_info: last-changed
+            - type: custom:mushroom-entity-card
+              entity: binary_sensor.fritz_box_7590_connection
+              icon_color: green
+              tap_action:
+                action: none
 
-            - entity: sensor.template_udm_cpu_temp
-              name: CPU Temperatur
+            - type: custom:mushroom-entity-card
+              entity: sensor.fritz_box_7590_external_ip
+              icon_color: grey
+              tap_action:
+                action: none
 
-            - type: custom:bar-card
-              width: 55%
-              height: 2em
-              decimal: 0
-              unit_of_measurement: '%'
-              positions:
-                icon: outside
-                indicator: 'off'
-                name: outside
-              severity:
-                - color: '#6d2525'
-                  from: 90
-                  to: 999
-              entity_row: true
-              entities:
-                - entity: sensor.template_udm_cpu
-                - entity: sensor.template_udm_mem
-                - entity: sensor.template_udm_disk
+            - type: custom:mod-card
+              card_mod:
+                style:
+                  hui-horizontal-stack-card$: |
+                    #root {
+                      justify-content: space-evenly !important;
+                    }
+              card:
+                type: horizontal-stack
+                cards:
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.fritz_box_7590_download_throughput
+                    name: Download Throughput
+                    icon_color: green
+                    fill_container: true
+                    layout: vertical
+                    tap_action:
+                      action: more-info
 
-            - entity: sensor.template_udm_uptime
+                  - type: custom:mushroom-entity-card
+                    entity: sensor.fritz_box_7590_upload_throughput
+                    name: Upload Throughput
+                    icon_color: yellow
+                    fill_container: true
+                    layout: vertical
+                    tap_action:
+                      action: more-info
+
+            - type: custom:mushroom-entity-card
+              entity: switch.fritz_box_7590_wi_fi_banouk_2_4ghz
+              tap_action:
+                action: none
+
+            - type: custom:mushroom-entity-card
+              entity: switch.fritz_box_7590_wi_fi_banouk_5ghz
+              tap_action:
+                action: none
+            
+            - type: custom:mushroom-entity-card
+              entity: switch.fritz_box_7590_wi_fi_banouk_gasten
+              tap_action:
+                action: none
 
         - type: custom:mod-card
           card_mod:
@@ -64,17 +92,21 @@ browser_mod:
             type: horizontal-stack
             cards:
               - type: custom:button-card
-                name: Nätverksenheter
+                entity: button.fritz_box_7590_reboot
+                name: Reboot
                 icon: mdi:devices
-                tap_action:
-                  action: url
-                  url_path: https://192.168.1.1/network/default/clients
                 template: icon_name
 
               - type: custom:button-card
-                name: System
-                icon: mdi:cog
-                tap_action:
-                  action: url
-                  url_path: https://192.168.1.1/settings/system
+                entity: button.fritz_box_7590_reboot
+                name: Cleanup
+                icon: mdi:wifi-refresh
                 template: icon_name
+
+              - type: custom:button-card
+                entity: switch.fritz_box_7590_wi_fi_banouk_gasten
+                name: Banouk Gasten
+                icon: mdi:qrcode
+                template: icon_name
+                tap_action:
+                  !include ./guest_wifi_qr.yaml
