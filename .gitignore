@@ -9,6 +9,7 @@ home-assistant.log*
 home-assistant_v2.*
 blueprints
 deps
+ip_bans.yaml
 
 secrets.yaml
 
