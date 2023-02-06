@@ -1,5 +1,5 @@
 automation:
-  - alias: floor_pump_malfunction_alert
+  - alias: notify_floor_heating_pump_malfunction
     id: d7f9w48fq0429fe29ehf01dkm2kdaj82
     trigger:
       - platform: state
@@ -20,7 +20,7 @@ automation:
           title: Vloerverwarming
           message: Er is een probleem met de vloerverwarmingspomp
   - id: '1664198952463'
-    alias: Vloerverwarmingspomp
+    alias: floor_heating_pump
     description: ''
     trigger:
     - platform: state
