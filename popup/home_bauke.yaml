@@ -70,7 +70,7 @@ browser_mod:
                 template: icon_name
                 tap_action:
                   action: call-service
-                  service: notify.mobile_app_iphone
+                  service: notify.mobile_app_iphone_van_bauke
                   service_data:
                     title: Vind mijn iPhone
                     message: Hier ben ik!
