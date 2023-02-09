@@ -41,12 +41,11 @@ template:
             {{ recently_added }}
           {% endif %}
         options: >
-          {% set recently_added = ['Recent toegevoegd'] %}
           {% set media_players = [
             states.media_player.woonkamer,
             states.media_player.lg_tv,
             states.media_player.spotify ] %}
-          {{ recently_added + media_players | map(attribute='name') | list }}
+          {{ media_players | map(attribute='name') | list }}
         select_option:
           service: select.select_option
           target:
@@ -56,6 +55,15 @@ template:
               {{ option }}
 
 automation:
+  - id: '16884829476049'
+    alias: Turn On LG TV with WakeOnLan
+    trigger:
+    - platform: webostv.turn_on
+      entity_id: media_player.lg_tv
+    action:
+    - service: wake_on_lan.send_magic_packet
+      data:
+        mac: 74:40:BE:B6:8B:E8
   - id: '1667600127731'
     alias: Turn Movie Mode on from LG TV
     description: 'Turn Movie Mode when I watch a movie on LG TV'

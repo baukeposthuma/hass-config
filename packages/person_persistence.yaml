@@ -14,44 +14,126 @@ person:
     id: bauke
     device_trackers:
       - device_tracker.iphone_van_bauke
-
   - name: Anouk
     id: anouk
     device_trackers:
       - device_tracker.iphone_van_anouk
 
-mqtt:
-  sensor:
-    - name: bauke_last_changed
-      state_topic: homeassistant/persistence/bauke
-      value_template: >
-        {{ value | replace(' ', 'T') }}
+notify:
+  - platform: group
+    name: Family
+    services:
+      - service: iphone_van_bauke
+      - service: iphone_van_anouk
 
-    - name: anouk_last_changed
-      state_topic: homeassistant/persistence/anouk
-      value_template: >
-        {{ value | replace(' ', 'T') }}
+# mqtt:
+#   sensor:
+#     - name: bauke_last_changed
+#       state_topic: homeassistant/persistence/bauke
+#       value_template: >
+#         {{ value | replace(' ', 'T') }}
 
-automation:
-  - alias: person_home
-    id: '8423590985012'
-    mode: parallel
-    trigger:
-      platform: state
-      entity_id:
-        - person.bauke
-        - person.anouk
-      from:
-        - home
-        - not_home
-      to:
-        - home
-        - not_home
-    action:
-      service: mqtt.publish
-      data:
-        topic_template: >
-          homeassistant/persistence/{{ trigger.to_state.name | lower }}
-        payload_template: >
-          {{ now() }}
-        retain: true
+#     - name: anouk_last_changed
+#       state_topic: homeassistant/persistence/anouk
+#       value_template: >
+#         {{ value | replace(' ', 'T') }}
+
+# automation:
+#   - alias: person_home
+#     id: '8423590985012'
+#     mode: parallel
+#     trigger:
+#       platform: state
+#       entity_id:
+#         - person.bauke
+#         - person.anouk
+#       from:
+#         - home
+#         - not_home
+#       to:
+#         - home
+#         - not_home
+#     action:
+#       service: mqtt.publish
+#       data:
+#         topic_template: >
+#           homeassistant/persistence/{{ trigger.to_state.name | lower }}
+#         payload_template: >
+#           {{ now() }}
+#         retain: true
+
+# Sleeping bayesian sensor
+binary_sensor:
+  - name: 'Bauke sleeping'
+    platform: bayesian
+    probability_threshold: 0.85
+    prior: 0.5
+    observations:
+      - entity_id: 'device_tracker.iphone_van_bauke'
+        prob_given_true: 0.99
+        prob_given_false: 0.5
+        platform: 'state'
+        to_state: 'home'
+      - entity_id: 'sun.sun'
+        prob_given_true: 0.9
+        prob_given_false: 0.2
+        platform: 'state'
+        to_state: 'below_horizon'
+      - entity_id: 'sensor.last_motion'
+        prob_given_true: 0.9
+        prob_given_false: 0.3
+        platform: 'state'
+        to_state: 'Slaapkamer sensor Motion'
+      - entity_id: 'sensor.iphone_van_bauke_battery_state'
+        prob_given_true: 0.95
+        prob_given_false: 0.5
+        platform: 'state'
+        to_state: 'Charging'
+  - name: 'Anouk sleeping'
+    platform: bayesian
+    prior: 0.5
+    probability_threshold: 0.85
+    observations:
+      - entity_id: 'device_tracker.iphone_van_anouk'
+        prob_given_true: 0.99
+        prob_given_false: 0.5
+        platform: 'state'
+        to_state: 'home'
+      - entity_id: 'sun.sun'
+        prob_given_true: 0.9
+        prob_given_false: 0.2
+        platform: 'state'
+        to_state: 'below_horizon'
+      - entity_id: 'sensor.last_motion'
+        prob_given_true: 0.9
+        prob_given_false: 0.3
+        platform: 'state'
+        to_state: 'Slaapkamer sensor Motion'
+      - entity_id: 'sensor.iphone_van_anouk_battery_state'
+        prob_given_true: 0.95
+        prob_given_false: 0.5
+        platform: 'state'
+        to_state: 'Charging'
+
+template:
+  - sensor:
+      - name: "Last Motion"
+        icon: mdi:motion-sensor
+        state: >
+          {% set sensors = [
+            states.binary_sensor.badkamer_sensor_motion,
+            states.binary_sensor.hue_motion_sensor_1_motion,
+            states.binary_sensor.hal_sensor_motion,
+            states.binary_sensor.keuken_sensor_motion,
+            states.binary_sensor.overloop_sensor_motion,
+            states.binary_sensor.hue_motion_sensor_1_motion_2,
+            states.binary_sensor.toilet_sensor_motion,
+            states.binary_sensor.hue_outdoor_motion_sensor_1_motion,
+            states.binary_sensor.hue_outdoor_motion_sensor_2_motion,
+            states.binary_sensor.werkkamer_anouk_sensor_motion,
+            states.binary_sensor.hue_motion_sensor_1_motion_3,
+            states.binary_sensor.woonkamer_sensor_motion
+          ] %}
+          {% set time = sensors | map(attribute='last_changed') | max %}
+          {% set sensor = (sensors | selectattr('last_changed', 'eq', time) | list)[0] %}
+          {{sensor.name}}

@@ -1,19 +1,30 @@
 - id: 5915b26e208d473792ef74e0e693172c
-  alias: Turn off heating when room's window is left open
+  alias: WINDOW_LEFT_OPEN
+  description: ''
   trigger:
   - platform: state
     entity_id:
     - binary_sensor.werkkamer_bauke_open_window
+    - binary_sensor.badkamer_open_window
+    - binary_sensor.logeerkamer_open_window
+    - binary_sensor.slaapkamer_open_window
+    - binary_sensor.werkkamer_anouk_open_window
+    - binary_sensor.woonkamer_open_window
     to: 'on'
     for:
       hours: 0
       minutes: 0
       seconds: 0
+  condition:
+  - condition: state
+    entity_id: input_boolean.heating_open_window_detection
+    state: 'on'
   action:
-  - service: notify.mobile_app_iphone_van_bauke
+  - service: notify.notify
     data:
-      title: Test
-      message: Window has been left open
+      title: Verwarming
+      message: Open raam gedetecteerd in {{ 'de'+ area_name('trigger.entity_id') if
+        trigger.entity_id is defined else 'onbekende ruimte'}}
 - id: '1636147330331'
   alias: Schakel Tado uit als er niemand thuis is
   description: ''
@@ -66,9 +77,6 @@
     zone: zone.home
     event: enter
     id: dasd5u76ias8ud
-  - platform: template
-    value_template: '{{ is_state(''person.bauke'', ''home'') or is_state(''person.anouk'',
-      ''home'') }}'
   condition:
   - condition: state
     entity_id: input_boolean.heating_geolocation
@@ -210,6 +218,7 @@
     target:
       entity_id:
       - light.all_group
+      - light.espressomachine
   mode: single
 - id: '1658505514384'
   alias: sleep_mode_off
@@ -241,6 +250,11 @@
       state: 'on'
       entity_id: schedule.livingroom_music_schedule
     then:
+    - service: media_player.volume_set
+      data:
+        volume_level: 0.1
+      target:
+        entity_id: media_player.woonkamer
     - service: media_player.media_play
       data: {}
       target:
@@ -498,4 +512,267 @@
         - switch.keuken_sensor_motion
         - switch.hue_motion_sensor_1_motion
       data: {}
+  mode: single
+- id: '1673136521824'
+  alias: SLEEP_MODE_AUTOMATIC (TESTING)
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.hue_motion_sensor_1_motion_2
+  condition:
+  - condition: time
+    after: '23:00:00'
+    before: 06:00:00
+  - condition: and
+    conditions:
+    - condition: template
+      value_template: ''
+  action: []
+  mode: single
+- id: '1673453436968'
+  alias: SMOKE_ALARM_ERROR
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.rookmelder_entree_alarm
+    attribute: linkquality
+    to: '0'
+  - platform: state
+    entity_id:
+    - switch.rookmelder_hal_alarm
+    attribute: linkquality
+    to: '0'
+  - platform: state
+    entity_id:
+    - switch.rookmelder_overloop_alarm
+    attribute: linkquality
+    to: '0'
+  condition: []
+  action:
+  - service: notify.mobile_app_iphone_van_bauke
+    data:
+      title: Rookmelder
+      message: De rookmelder in de {{ area_name(trigger.entity_id) }} is buiten bereik
+  mode: single
+- id: '1673457099530'
+  alias: SMOKE_ALARM_SMOKE_DETECTED
+  description: ''
+  trigger:
+  - type: smoke
+    platform: device
+    device_id: fc94441be8c9f808c45345de27c04cb0
+    entity_id: binary_sensor.rookmelder_entree_smoke
+    domain: binary_sensor
+  - type: smoke
+    platform: device
+    device_id: df06efb5000324afcb128bc292de1a7d
+    entity_id: binary_sensor.rookmelder_hal_smoke
+    domain: binary_sensor
+  - type: smoke
+    platform: device
+    device_id: 4ba779a040c1088303a4f41e867c712f
+    entity_id: binary_sensor.rookmelder_overloop_smoke
+    domain: binary_sensor
+  - type: smoke
+    platform: device
+    device_id: cfdcfd75618ab2d682697993c4457f12
+    entity_id: binary_sensor.rookmelder_cv_kast
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      title: Rookmelder
+      message: Er is rook gedetecteerd in de {{ area_name(trigger.entity_id) }}
+      data:
+        push:
+          sound:
+            name: default
+            critical: 1
+            volume: 1
+  mode: single
+- id: '1673735955790'
+  alias: When arriving home
+  description: Main automation for when someone arrives home
+  trigger:
+  - platform: zone
+    entity_id: person.anouk
+    zone: zone.home
+    event: enter
+    id: sjdsab7yiu3h42j
+  - platform: zone
+    entity_id: person.bauke
+    zone: zone.home
+    event: enter
+    id: dasd5u76ias8ud
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      message: "{% if trigger %}\n  Welkom thuis {{ state_attr(trigger.entity_id,
+        'friendly_name') }}!\n{% else %}\n  Welkom thuis!\n{% endif %}\n"
+  - service: script.turn_on_outdoor_lights_for_5_minutes
+    data: {}
+  - if:
+    - condition: state
+      entity_id: input_boolean.heating_geolocation
+      state: 'on'
+    - condition: state
+      entity_id: climate.woonkamer
+      state: away
+      attribute: preset_mode
+    then:
+    - service: climate.set_preset_mode
+      data:
+        preset_mode: home
+      target:
+        area_id: woonkamer
+  mode: single
+- id: '1673736147327'
+  alias: When leaving home
+  description: Main automation for last person leaves the home
+  trigger:
+  - platform: zone
+    entity_id: person.anouk
+    zone: zone.home
+    event: leave
+  - platform: zone
+    entity_id: person.bauke
+    zone: zone.home
+    event: leave
+  condition: []
+  action:
+  - if:
+    - condition: not
+      conditions:
+      - condition: zone
+        entity_id: person.bauke
+        zone: zone.home
+      - condition: zone
+        entity_id: person.anouk
+        zone: zone.home
+    then:
+    - service: notify.notify
+      data:
+        title: "{% if trigger %}\n  Tot ziens {{ state_attr(trigger.entity_id, 'friendly_name')
+          }}!\n{% else %}\n  Tot ziens!\n{% endif %}\n"
+        message: De verwarming en alle apparaten worden uitgeschakeld
+    - service: light.turn_off
+      data: {}
+      target:
+        entity_id: light.espressomachine
+    - service: script.turn_off_all_lights
+      data: {}
+    - condition: state
+      entity_id: input_boolean.heating_geolocation
+      state: 'on'
+    - service: climate.set_preset_mode
+      data:
+        preset_mode: away
+      target:
+        area_id: woonkamer
+    else:
+    - service: notify.notify
+      data:
+        message: "{% if trigger %}\n  Tot ziens {{ state_attr(trigger.entity_id, 'friendly_name')
+          }}!\n{% else %}\n  Tot ziens!\n{% endif %}\n"
+  mode: single
+- id: '1673737497198'
+  alias: Sleep mode on by charging state
+  description: Turn on Sleep Mode based on iPhone's charging state
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.iphone_van_bauke_battery_state
+    - sensor.iphone_van_anouk_battery_state
+    to: Charging
+  condition:
+  - condition: time
+    after: '22:00:00'
+    before: 05:00:00
+  - condition: state
+    entity_id: input_boolean.sleeping_mode
+    state: 'off'
+  - condition: or
+    conditions:
+    - condition: and
+      conditions:
+      - condition: zone
+        entity_id: person.bauke
+        zone: zone.home
+      - condition: state
+        entity_id: sensor.iphone_van_bauke_battery_state
+        state: Charging
+      - condition: zone
+        entity_id: person.anouk
+        zone: zone.home
+      - condition: state
+        entity_id: sensor.iphone_van_anouk_battery_state
+        state: Charging
+    - condition: or
+      conditions:
+      - condition: and
+        conditions:
+        - condition: zone
+          entity_id: person.bauke
+          zone: zone.home
+        - condition: not
+          conditions:
+          - condition: zone
+            entity_id: person.anouk
+            zone: zone.home
+        - condition: state
+          entity_id: sensor.iphone_van_bauke_battery_state
+          state: Charging
+      - condition: and
+        conditions:
+        - condition: zone
+          entity_id: person.anouk
+          zone: zone.home
+        - condition: not
+          conditions:
+          - condition: zone
+            entity_id: person.bauke
+            zone: zone.home
+        - condition: state
+          entity_id: sensor.iphone_van_anouk_battery_state
+          state: Charging
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.sleeping_mode
+  mode: single
+- id: '1675094284563'
+  alias: SMOKE_ALARM_BATTERY_LOW
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.rookmelder_entree_alarm
+    attribute: battery_low
+    to: 'true'
+  - platform: state
+    entity_id:
+    - switch.rookmelder_hal_alarm
+    attribute: battery_low
+    to: 'true'
+  - platform: state
+    entity_id:
+    - switch.rookmelder_overloop_alarm
+    attribute: battery_low
+    to: 'true'
+  - platform: state
+    entity_id:
+    - sensor.rookmelder_cv_kast_battery_state
+    to: low
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      title: Rookmelder
+      message: De batterij van de rookmelder in de {{ area_name(trigger.entity_id)
+        }} is bijna leeg
   mode: single
