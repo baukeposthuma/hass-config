@@ -1,7 +1,7 @@
 action: fire-dom-event
 browser_mod:
   command: popup
-  title: Playstation 5
+  title: Playstation 4
   style:
     hui-entities-card:
       $calendar-card$ : |
@@ -31,7 +31,7 @@ browser_mod:
       class: content
     entities:
 
-      - entity: switch.playstation_5
+      - entity: switch.playstation_4
         secondary_info: last-changed
 
       - type: custom:calendar-card

@@ -147,7 +147,7 @@ views:
               - icon_hue
 
           - type: custom:button-card
-            entity: switch.playstation_5
+            entity: media_player.playstation_4
             name: Playstation
             double_tap_action:
               !include popup/livingroom_playstation.yaml

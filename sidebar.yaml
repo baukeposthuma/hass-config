@@ -75,7 +75,7 @@
           ] %}
 
           {% set devices = [
-            states.switch.playstation_5,
+            states.switch.playstation_4,
             states.media_player.lg_tv,
             states.media_player.woonkamer,
             states.light.espressomachine,
