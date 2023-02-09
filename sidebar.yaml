@@ -147,8 +147,8 @@
               <div class='notification-icon green'>{{'\u267B'}}</div>
               <div class='notification-content'>
                 <h3 class='notification-header'>Afvalcollectie</h3>
-              {{ waste_type.capitalize() }} wordt {{ collection_day_string }} opgehaald
-            </div>
+                {{ waste_type.capitalize() }} wordt {{ collection_day_string }} opgehaald
+              </div>
             </div>
           {% endif %}
         washer: >
@@ -215,6 +215,8 @@
           {% set entities = states.sensor 
             | selectattr('entity_id', 'search', 'battery')
             | rejectattr('entity_id', 'search', 'iphone')
+            | rejectattr('entity_id', 'search', 'vivianne')
+            | rejectattr('entity_id', 'search', 'robin')
             | map(attribute = 'entity_id') | list %}
           {% for sensor in entities if states(sensor) != 'unknown' and states(sensor) !=
           'unavailable' and states(sensor) != 'None' and states(sensor) != 'middle' and states(sensor) != 'high' and states(sensor) | int(default=0) <= 5 %}

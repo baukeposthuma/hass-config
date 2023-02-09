@@ -9,22 +9,29 @@ input_boolean:
     initial: false
     icon: mdi:home
     
+homeassistant:
+  customize:
+    person.guest1:
+      entity_picture: !secret guest_1_profile_photo
+    person.guest2:
+      entity_picture: !secret guest_2_profile_photo
+
 person:
-  - name: Robin
+  - name: !secret guest_1_name
     id: guest1
     device_trackers:
-      - device_tracker.robin
-  - name: Vivianne
+      - !secret guest_1_device_tracker
+  - name: !secret guest_2_name
     id: guest2
     device_trackers:
-      - device_tracker.vivianne
+      - !secret guest_2_device_tracker
       
 notify:
   - platform: group
     name: "Guests"
     services:
-      - service: robin
-      - service: vivianne
+      - service: !secret guest_1_device_name
+      - service: !secret guest_2_device_name
 
 automation:
   - alias: guest_leave

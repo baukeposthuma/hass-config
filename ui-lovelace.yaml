@@ -512,7 +512,7 @@ views:
                     template:
                       - base
                       - icon_fan
-
+      
       #################################################
       #                                               #
       #                     HOME                      #
@@ -566,12 +566,7 @@ views:
                 type: custom:button-card
                 entity: person.guest1
                 name: Robin
-                triggers_update:
-                  - sensor.bauke_last_changed
-                double_tap_action:
-                  !include popup/home_bauke.yaml
-                variables:
-                  retain: sensor.bauke_last_changed
+                double_tap_action: none
                 template: person
     
           - type: conditional
@@ -582,12 +577,7 @@ views:
                type: custom:button-card
                entity: person.guest2
                name: Vivianne
-               triggers_update:
-                 - sensor.anouk_last_changed
-               double_tap_action:
-                 !include popup/home_anouk.yaml
-               variables:
-                 retain: sensor.anouk_last_changed
+               double_tap_action: none
                template: person
 
           - type: custom:button-card
