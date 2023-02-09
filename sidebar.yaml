@@ -138,37 +138,77 @@
             Kan het weer niet lezen...
           {% endif %}
         waste: >
-          {% set waste_collection_today = states('sensor.afvalwijzer_today') %}
-          {% set waste_collection_tomorrow = states('sensor.afvalwijzer_tomorrow') %}
+          {% set waste_collection = states('sensor.afvalwijzer_day_after_tomorrow') %}
           {% set waste_type = states('sensor.afvalwijzer_next_type') %}
           {% set collection_day_string = (waste_collection_today != 'Geen') | iif('vandaag', 'morgen', '') %}
           {% set waste_moved = states('input_boolean.waste_moved') %}
-          {% if (waste_collection_today != 'Geen' or waste_collection_tomorrow != 'Geen') and waste_moved == 'off' %}
+          {% if not waste_collection == 'Geen' and waste_moved == 'off' %}
             <div class='notification'>
-              <h3 class='notification-header'>{{'\u267B'}} Afvalcollectie</h3>
+              <div class='notification-icon green'>{{'\u267B'}}</div>
+              <div class='notification-content'>
+                <h3 class='notification-header'>Afvalcollectie</h3>
               {{ waste_type.capitalize() }} wordt {{ collection_day_string }} opgehaald
+            </div>
             </div>
           {% endif %}
         washer: >
           {% set washer_job_state = states('sensor.wasmachine_washer_job_state') %}
-          {% set washer_job_completed_states = ['none', 'finished']  %}
+          {% set washer_machine_state = states('sensor.wasmachine_washer_machine_state') %}
           {% set washer_completion_time = states('sensor.wasmachine_washer_completion_time') %}          
           {% set completion_time = as_timestamp(washer_completion_time) | timestamp_custom('%H:%M') %}
-          {% if washer_job_state not in washer_job_completed_states %}
+          {% if not washer_machine_state == 'stop' %}
             <div class='notification'>
-              <h3 class='notification-header'>{{'\U0001F4A6'}} Wasmachine</h3>
-              Klaar om {{ completion_time }}
+              <div class='notification-icon'>{{'\U0001F4A6'}}</div>
+              <div class='notification-content'>
+                <h3 class='notification-header'>Wasmachine</h3>
+                <h4 class='notification-subtitle'>
+                  {% if washer_job_state == 'delayWash' %}
+                    Wasprogramma uitgesteld
+                  {% elif washer_machine_state == 'pause' %}
+                    Gepauzeerd
+                  {% elif washer_job_state == 'weightSensing' %}
+                    Was aan het wegen
+                  {% elif washer_job_state == 'wash' %}
+                    Wassen
+                  {% elif washer_job_state == 'rinse' %}
+                    Spoelen
+                  {% elif washer_job_state == 'spin' %}
+                    Centrifugeren
+                  {% elif washer_job_state == 'finish' %}
+                    Klaar
+                  {% endif %}
+                </h4>
+                Eindtijd {{ completion_time }}
+              </div>
             </div>
           {% endif %}
         dryer: >
           {% set dryer_job_state = states('sensor.droger_dryer_job_state') %}
-          {% set dryer_job_completed_states = ['none', 'finished']  %}
+          {% set dryer_machine_state = states('sensor.droger_dryer_machine_state') %}
           {% set dryer_completion_time = states('sensor.droger_dryer_completion_time') %}          
           {% set completion_time = as_timestamp(dryer_completion_time) | timestamp_custom('%H:%M') %}
-          {% if dryer_job_state not in dryer_job_completed_states %}
+          {% if not dryer_machine_state == 'stop' %}
             <div class='notification'>
-              <h3 class='notification-header'>{{'\U0001F9FA'}} Droger</h3>
-              Klaar om {{ completion_time }}
+              <div class='notification-icon orange'>{{'\U0001F9FA'}}</div>
+              <div class='notification-content'>
+                <h3 class='notification-header'>Droger</h3>
+                <h4 class='notification-subtitle'>
+                  {% if dryer_job_state == 'delayWash' %}
+                    Droogprogramma uitgesteld
+                  {% elif dryer_machine_state == 'pause' %}
+                    Gepauzeerd
+                  {% elif dryer_job_state == 'weightSensing' %}
+                    Was aan het wegen
+                  {% elif dryer_job_state == 'drying' %}
+                    Drogen
+                  {% elif dryer_job_state == 'cooling' %}
+                    Koelen
+                  {% elif dryer_job_state == 'finished' %}
+                    Klaar
+                  {% endif %}
+                </h4>
+                Eindtijd {{ completion_time }}
+              </div>
             </div>
           {% endif %}
         battery: >

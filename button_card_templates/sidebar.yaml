@@ -62,18 +62,39 @@ sidebar:
     }
     .notification {
       color: rgba(255, 255, 255, 0.8);
-      line-height: 1;
-      padding: 6%;
-      border-radius: 0.75vw;
+      border-radius: 1.28571429rem;
       background: rgba(115, 115, 115, 0.25);
+      display: grid;
+      grid-template-columns: 3rem auto;
+      grid-template-areas: "icon main";
+      column-gap: 4%;
+      padding: 4%;
     }
-    . notification > b {
-      color: rgba(255, 255, 255, 0.8);
+    .notification-icon {
+      display: flex;
+      grid-area: icon;
+      align-self: center;
+      justify-content: center;
+      height: 3rem;
+      width: 3rem;
+      font-size: 2rem;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: .7rem;
+      line-height: 3rem;
     }
-    .notification-header {
-      color: rgba(255, 255, 255, 0.8);
-      margin: 0 0 4px 0;
+    .notification-icon.green {
+      background-color: rgba(76, 175, 80, 0.2);
+      color: rgb(76, 175, 80);
+    }
+    .notification-icon.orange {
+      background-color: rgba(255, 152, 0, 0.2);
+      color: rgb(255, 152, 0);
+    }
+    .notification-header,
+    .notification-subtitle {
+      margin: 0;
       font-size: inherit;
+      font-weight: 600;
     }
     /* portrait */
     @media screen and (max-width: 1200px) {
