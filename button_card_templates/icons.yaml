@@ -697,7 +697,7 @@ icon_bathroom:
         `;
       ]]]
 
-icon_fan2:
+icon_fan:
   styles:
     custom_fields:
       icon:
@@ -949,7 +949,6 @@ icon_closet:
       ]]]
 
 icon_away:
-  state_display: Auto
   styles:
     card:
       - transition: all 0.3s ease-out
