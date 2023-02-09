@@ -7,6 +7,7 @@ homeassistant:
   unit_system: metric
   temperature_unit: C
   time_zone: Europe/Amsterdam
+  country: NL
   currency: EUR
   external_url: !secret hass_external_url
   internal_url: https://homeassistant.local:8123
