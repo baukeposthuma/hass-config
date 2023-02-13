@@ -241,6 +241,13 @@ views:
             template:
               - light
               - icon_spot
+          
+          - type: custom:button-card
+            entity: light.overloop_group
+            name: Overloop
+            template:
+              - light
+              - icon_spot
 
       #################################################
       #                                               #
