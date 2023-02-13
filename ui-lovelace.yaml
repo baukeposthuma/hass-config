@@ -370,6 +370,14 @@ views:
                       - base
                       - icon_climate
                       - circle
+                    lock:
+                      enabled: >
+                        [[[
+                          if (states['input_boolean.guest_mode'].state == 'on') {
+                              return true
+                          }
+                        ]]]
+                      unlock: hold
                     variables:
                       circle_input: >
                         [[[
@@ -390,6 +398,14 @@ views:
                       - base
                       - icon_climate
                       - circle
+                    lock:
+                      enabled: >
+                        [[[
+                          if (states['input_boolean.guest_mode'].state == 'on') {
+                              return true
+                          }
+                        ]]]
+                      unlock: hold
                     variables:
                       circle_input: >
                         [[[
@@ -410,6 +426,14 @@ views:
                       - base
                       - icon_climate
                       - circle
+                    lock:
+                      enabled: >
+                        [[[
+                          if (states['input_boolean.guest_mode'].state == 'on') {
+                              return true
+                          }
+                        ]]]
+                      unlock: hold
                     variables:
                       circle_input: >
                         [[[
@@ -430,6 +454,14 @@ views:
                       - base
                       - icon_climate
                       - circle
+                    lock:
+                      enabled: >
+                        [[[
+                          if (states['input_boolean.guest_mode'].state == 'on') {
+                              return true
+                          }
+                        ]]]
+                      unlock: hold
                     variables:
                       circle_input: >
                         [[[
@@ -454,6 +486,14 @@ views:
                       - base
                       - icon_climate
                       - circle
+                    lock:
+                      enabled: >
+                        [[[
+                          if (states['input_boolean.guest_mode'].state == 'on') {
+                              return true
+                          }
+                        ]]]
+                      unlock: hold
                     variables:
                       circle_input: >
                         [[[
@@ -474,6 +514,14 @@ views:
                       - base
                       - icon_climate
                       - circle
+                    lock:
+                      enabled: >
+                        [[[
+                          if (states['input_boolean.guest_mode'].state == 'on') {
+                              return true
+                          }
+                        ]]]
+                      unlock: hold
                     variables:
                       circle_input: >
                         [[[
@@ -494,6 +542,14 @@ views:
                       - base
                       - icon_climate
                       - circle
+                    lock:
+                      enabled: >
+                        [[[
+                          if (states['input_boolean.guest_mode'].state == 'on') {
+                              return true
+                          }
+                        ]]]
+                      unlock: hold
                     variables:
                       circle_input: >
                         [[[
@@ -512,7 +568,15 @@ views:
                     template:
                       - base
                       - icon_fan
-      
+                    lock:
+                      enabled: >
+                        [[[
+                          if (states['input_boolean.guest_mode'].state == 'on') {
+                              return true
+                          }
+                        ]]]
+                      unlock: hold
+        
       #################################################
       #                                               #
       #                     HOME                      #
@@ -529,7 +593,7 @@ views:
           - type: conditional
             conditions:
               - entity: input_boolean.guest_mode
-                state: 'off'
+                state_not: 'on'
             card:
               type: custom:button-card
               entity: person.bauke
@@ -545,7 +609,7 @@ views:
           - type: conditional
             conditions:
               - entity: input_boolean.guest_mode
-                state: 'off'
+                state_not: 'on'
             card:
               type: custom:button-card
               entity: person.anouk
