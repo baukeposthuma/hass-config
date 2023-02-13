@@ -181,39 +181,62 @@ views:
         title: 1ᵉ Verdieping
         view_layout:
           grid-area: studio
-        columns: 2
+        columns: 1
         cards:
 
-          - type: custom:button-card
-            entity: light.werkkamer_anouk_group
-            name: Studio
-            template:
-              - light
-              - icon_hue
+          - type: custom:swipe-card
+            parameters:
+              speed: 550
+              spaceBetween: 40
+              threshold: 5
+            cards:
 
-          - type: custom:button-card
-            entity: media_player.playstation_4
-            name: Playstation
-            double_tap_action:
-              !include popup/livingroom_playstation.yaml
-            template:
-              - base
-              - icon_ps5
-              - loader
+              - type: grid
+                columns: 2
+                cards:
 
-          - type: custom:button-card
-            entity: light.slaapkamer_group
-            name: Slaapkamer
-            template:
-              - light
-              - icon_spot
+                  - type: custom:button-card
+                    entity: light.werkkamer_anouk_group
+                    name: Studio
+                    template:
+                      - light
+                      - icon_hue
 
-          - type: custom:button-card
-            entity: light.badkamer_group
-            name: Badkamer
-            template:
-              - light
-              - icon_bathroom
+                  - type: custom:button-card
+                    entity: media_player.playstation_4
+                    name: Playstation
+                    double_tap_action:
+                      !include popup/livingroom_playstation.yaml
+                    template:
+                      - base
+                      - icon_ps5
+                      - loader
+
+                  - type: custom:button-card
+                    entity: light.slaapkamer_group
+                    name: Slaapkamer
+                    template:
+                      - light
+                      - icon_spot
+
+                  - type: custom:button-card
+                    entity: light.badkamer_group
+                    name: Badkamer
+                    template:
+                      - light
+                      - icon_bathroom
+
+              - type: grid
+                columns: 2
+                cards:
+
+                  - type: custom:button-card
+                    entity: light.hal_group
+                    name: Hal
+                    template:
+                      - light
+                      - icon_spot
+
 
       #################################################
       #                                               #
