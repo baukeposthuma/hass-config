@@ -32,8 +32,8 @@
           {% elif time <= 17 %} Goedemiddag {{'\U0001F44B\U0001F3FB'}}
           {% elif time <= 19 %} Goedenavond {{'\U0001F44B\U0001F3FB'}}
           {% elif time <= 22 %} Goedenavond {{'\U0001F60C'}}
-          {% elif time <= 23 %} Goedenavond {{'\U0001F974'}}
-          {% else %} Goedenavond {{'\U0001F974'}}
+          {% elif time <= 23 %} Goedenavond {{'\U0001F62A'}}
+          {% else %} Goedenavond {{'\U0001F62A'}}
           {% endif %}
           </b>
         active: >
