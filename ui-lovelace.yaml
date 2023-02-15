@@ -675,7 +675,7 @@ views:
                template: person
 
           - type: custom:button-card
-            entity: input_boolean.sleeping_mode
+            entity: input_boolean.sleep_mode
             name: Slaap
             template:
               - base

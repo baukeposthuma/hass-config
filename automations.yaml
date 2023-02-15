@@ -202,7 +202,7 @@
   description: Turn off motion sensors on ground floor when Sleeping mode is on
   trigger:
   - platform: state
-    entity_id: input_boolean.sleeping_mode
+    entity_id: input_boolean.sleep_mode
     to: 'on'
   condition: []
   action:
@@ -225,7 +225,7 @@
   description: Turn on motion sensors on ground floor when Sleeping mode is off
   trigger:
   - platform: state
-    entity_id: input_boolean.sleeping_mode
+    entity_id: input_boolean.sleep_mode
     to: 'off'
   condition: []
   action:
@@ -393,12 +393,12 @@
     - service: input_boolean.turn_on
       data: {}
       target:
-        entity_id: input_boolean.sleeping_mode
+        entity_id: input_boolean.sleep_mode
     else:
     - service: input_boolean.turn_off
       data: {}
       target:
-        entity_id: input_boolean.sleeping_mode
+        entity_id: input_boolean.sleep_mode
   mode: single
 - id: '1666642536617'
   alias: security_garden_motion_detected
@@ -414,7 +414,7 @@
     after: '22:00:00'
     before: 08:00:00
   - condition: state
-    entity_id: input_boolean.sleeping_mode
+    entity_id: input_boolean.sleep_mode
     state: 'on'
   action:
   - service: notify.notify
@@ -437,13 +437,13 @@
     after: 07:30:00
     before: '10:30:00'
   - condition: state
-    entity_id: input_boolean.sleeping_mode
+    entity_id: input_boolean.sleep_mode
     state: 'on'
   action:
   - service: input_boolean.turn_off
     data: {}
     target:
-      entity_id: input_boolean.sleeping_mode
+      entity_id: input_boolean.sleep_mode
   mode: single
 - id: '1667244491244'
   alias: tv_livingroom_pause_music
@@ -693,7 +693,7 @@
     after: '22:00:00'
     before: 05:00:00
   - condition: state
-    entity_id: input_boolean.sleeping_mode
+    entity_id: input_boolean.sleep_mode
     state: 'off'
   - condition: or
     conditions:
@@ -743,7 +743,7 @@
   - service: input_boolean.turn_on
     data: {}
     target:
-      entity_id: input_boolean.sleeping_mode
+      entity_id: input_boolean.sleep_mode
   mode: single
 - id: '1675094284563'
   alias: SMOKE_ALARM_BATTERY_LOW
