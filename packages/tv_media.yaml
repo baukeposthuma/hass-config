@@ -76,6 +76,11 @@ automation:
       - Netflix
       - Hayu - Watch Reality TV
       - Videoland
+      - HBO Max
+      - Pathé Thuis
+      - Rakuten TV
+      - Disney+
+      - Prime Video
       for:
         hours: 0
         minutes: 0
