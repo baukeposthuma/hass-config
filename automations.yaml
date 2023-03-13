@@ -348,7 +348,7 @@
   action:
   - service: notify.notify
     data:
-      message: Beweging gedetecteerd in de tuin
+      message: Beweging gedetecteerd in de tuin, zijn de katten nog buiten?
       title: Beveiliging
   mode: single
 - id: '1667243249878'
