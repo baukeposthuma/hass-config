@@ -1,29 +1,28 @@
 turn_on_outdoor_lights_for_5_minutes:
   alias: Turn on outdoor lights for 5 minutes
-  sequence: 
-    - service: scene.turn_on
-      target:
-        entity_id: scene.voordeur_helder
-      metadata: {}
-    - service: scene.turn_on
-      target:
-        entity_id: scene.achtertuin_helder
-      metadata: {}
-    - delay:
-        hours: 0
-        minutes: 5
-        seconds: 0
-        milliseconds: 0
-    - service: light.turn_off
-      data:
-        transition: 3
-      target:
-        entity_id:
-          - light.voordeur_group
-          - light.tuin_group
+  sequence:
+  - service: scene.turn_on
+    target:
+      entity_id: scene.voordeur_helder
+    metadata: {}
+  - service: scene.turn_on
+    target:
+      entity_id: scene.achtertuin_helder
+    metadata: {}
+  - delay:
+      hours: 0
+      minutes: 5
+      seconds: 0
+      milliseconds: 0
+  - service: light.turn_off
+    data:
+      transition: 3
+    target:
+      entity_id:
+      - light.voordeur_group
+      - light.tuin_group
   mode: restart
   icon: mdi:outdoor-lamp
-
 turn_off_all_lights:
   alias: Turn off all lights
   sequence:
@@ -34,7 +33,6 @@ turn_off_all_lights:
       entity_id: light.all_group
   mode: restart
   icon: mdi:lightbulb-group
-  
 turn_off_all_lights_and_devices:
   alias: Turn off all lights and devices
   sequence:
@@ -47,3 +45,29 @@ turn_off_all_lights_and_devices:
       - light.espressomachine
   mode: single
   icon: mdi:location-exit
+turn_off_motion_sensors_for_pet_accessible_rooms:
+  alias: Turn off motion sensors (for pet-accessible rooms)
+  sequence:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id:
+      - switch.woonkamer_sensor_motion
+      - switch.hal_sensor_motion
+      - switch.overloop_sensor_motion
+      - switch.keuken_sensor_motion
+  mode: single
+  icon: mdi:motion-sensor-off
+turn_on_motion_sensors_for_pet_accessible_rooms:
+  alias: Turn on motion sensors (for pet-accessible rooms)
+  sequence:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id:
+      - switch.woonkamer_sensor_motion
+      - switch.hal_sensor_motion
+      - switch.overloop_sensor_motion
+      - switch.keuken_sensor_motion
+  mode: single
+  icon: mdi:motion-sensor

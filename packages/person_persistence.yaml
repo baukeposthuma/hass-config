@@ -26,6 +26,102 @@ notify:
       - service: iphone_van_bauke
       - service: iphone_van_anouk
 
+automation:
+  - id: '1673735955790'
+    alias: When arriving home
+    description: Main automation for when a family member arrives home
+    trigger:
+      - platform: zone
+        entity_id: 
+          - person.bauke
+          - person.anouk
+        zone: zone.home
+        event: enter
+    condition: []
+    action:
+      - service: notify.family
+        data:
+          message: |
+            {% if trigger %}
+              Welkom thuis {{ state_attr(trigger.entity_id, 'friendly_name') }}!
+            {% else %}
+              Welkom thuis!
+            {% endif %}
+      - service: script.turn_on_outdoor_lights_for_5_minutes
+        data: {}
+      - service: script.turn_on_motion_sensors_for_pet_accessible_rooms
+        data: {}
+      - if:
+        - condition: state
+          entity_id: input_boolean.heating_geolocation
+          state: 'on'
+        - condition: state
+          entity_id: climate.woonkamer
+          state: away
+          attribute: preset_mode
+        then:
+          - service: climate.set_preset_mode
+            data:
+              preset_mode: home
+            target:
+              area_id: woonkamer
+    mode: single
+  - id: '1673736147327'
+    alias: When leaving home
+    description: Main automation for when last family member leaves the home
+    trigger:
+      - platform: zone
+        entity_id: 
+          - person.bauke
+          - person.anouk
+        zone: zone.home
+        event: leave
+    condition: []
+    action:
+      - if:
+        - condition: not
+          conditions:
+            - condition: zone
+              entity_id: 
+                - person.bauke
+              zone: zone.home
+            - condition: zone
+              entity_id: 
+                - person.anouk
+              zone: zone.home
+        then:
+          - service: notify.family
+            data:
+              title: |
+                {% if trigger %}
+                  Tot ziens {{ state_attr(trigger.entity_id, 'friendly_name') }}!
+                {% else %}
+                  Tot ziens!
+                {% endif %}
+              message: De verwarming en alle apparaten worden uitgeschakeld
+          - service: script.turn_off_motion_sensors_for_pet_accessible_rooms
+            data: {}
+          - service: script.turn_off_all_lights_and_devices
+            data: {}
+          - condition: state
+            entity_id: input_boolean.heating_geolocation
+            state: 'on'
+          - service: climate.set_preset_mode
+            data:
+              preset_mode: away
+            target:
+              area_id: woonkamer
+        else:
+          - service: notify.family
+            data:
+              message: |
+                {% if trigger %}
+                  Tot ziens {{ state_attr(trigger.entity_id, 'friendly_name') }}!
+                {% else %}
+                  Tot ziens!
+                {% endif %}
+    mode: single
+
 # mqtt:
 #   sensor:
 #     - name: bauke_last_changed

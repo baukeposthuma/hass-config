@@ -3,11 +3,6 @@ input_boolean:
     name: Guest mode
     initial: false
     icon: mdi:bed
-
-  guest_home:
-    name: Guest home state
-    initial: false
-    icon: mdi:home
     
 homeassistant:
   customize:
@@ -28,76 +23,109 @@ person:
       
 notify:
   - platform: group
-    name: "Guests"
+    name: Guests
     services:
       - service: !secret guest_1_device_name
       - service: !secret guest_2_device_name
 
 automation:
-  - alias: guest_leave
-    id: '3840027582367'
-    description: 'When guests leave the home'
-    trigger:
-      - platform: state
-        entity_id: input_boolean.guest_home
-        to: 'off'
-    action:
-      - service: script.leave_home
-    mode: restart
-  - alias: guest_arrive
-    id: '8340728312935'
-    description: 'When guests arrive home'
-    trigger:
-      - platform: state
-        entity_id: input_boolean.guest_home
-        to: 'on'
-    action:
-      - service: script.arrive_home
-    mode: single
-  - alias: guest_leave_geolocation
-    id: '57382849534053'
-    description: 'When guests leave the home based on GPS'
+  - id: '37324783945023'
+    alias: "Guest mode: When arriving home"
+    description: Main automation for when a guest arrives home
     trigger:
       - platform: zone
-        entity_id: person.guest1
+        entity_id: 
+          - person.guest1
+          - person.guest2
         zone: zone.home
-        event: leave
-        id: dsjfufg8eug8fi
-      - platform: zone
-        entity_id: person.guest2
-        zone: zone.home
-        event: leave
-        id: hfjdk9dfhgu8sw
+        event: enter
     condition:
-      - condition: not
-        conditions:
-          - condition: zone
-            entity_id: person.bauke
-            zone: zone.home
-          - condition: zone
-            entity_id: person.anouk
-            zone: zone.home
+      - condition: state
+        entity_id: input_boolean.guest_mode
+        state: "on"
     action:
-      - service: input_boolean.turn_off
-        target:
-          entity_id: input_boolean.guest_home
+      - service: notify.notify
+        data:
+          message: |
+            {% if trigger %}
+              Welkom thuis {{ state_attr(trigger.entity_id, 'friendly_name') }}!
+            {% else %}
+              Welkom thuis!
+            {% endif %}
+      - service: script.turn_on_outdoor_lights_for_5_minutes
+        data: {}
+      - service: script.turn_on_motion_sensors_for_pet_accessible_rooms
+        data: {}
+      - if:
+        - condition: state
+          entity_id: input_boolean.heating_geolocation
+          state: 'on'
+        - condition: state
+          entity_id: climate.woonkamer
+          state: away
+          attribute: preset_mode
+        then:
+          - service: climate.set_preset_mode
+            data:
+              preset_mode: home
+            target:
+              area_id: woonkamer
     mode: single
-  - alias: guest_arrive_geolocation
-    id: '473843849572394'
-    description: 'When guests arrive home based on GPS'
+  - id: '8452855392473'
+    alias: "Guest mode: When leaving home"
+    description: Main automation for when the last guest leaves the home
     trigger:
       - platform: zone
-        entity_id: person.guest1
+        entity_id: 
+          - person.guest1
+          - person.guest2
         zone: zone.home
-        event: enter
-        id: fhdjujf7eph8x9
-      - platform: zone
-        entity_id: person.guest2
-        zone: zone.home
-        event: enter
-        id: kvo0rvardu37dc
+        event: leave
+    condition:
+      - condition: state
+        entity_id: input_boolean.guest_mode
+        state: "on"
     action:
-      - service: input_boolean.turn_on
-        target:
-          entity_id: input_boolean.guest_home
+      - if:
+        - condition: not
+          conditions:
+            - condition: zone
+              entity_id: 
+                - person.guest1
+              zone: zone.home
+            - condition: zone
+              entity_id: 
+                - person.guest2
+              zone: zone.home
+        then:
+          - service: notify.notify
+            data:
+              title: |
+                {% if trigger %}
+                  Tot ziens {{ state_attr(trigger.entity_id, 'friendly_name') }}!
+                {% else %}
+                  Tot ziens!
+                {% endif %}
+              message: De verwarming en alle apparaten worden uitgeschakeld
+          - service: script.turn_off_motion_sensors_for_pet_accessible_rooms
+            data: {}
+          - service: script.turn_off_all_lights_and_devices
+            data: {}
+          - condition: state
+            entity_id: input_boolean.heating_geolocation
+            state: 'on'
+          - service: climate.set_preset_mode
+            data:
+              preset_mode: away
+            target:
+              area_id: woonkamer
+        else:
+          - service: notify.family
+            data:
+              message: |
+                {% if trigger %}
+                  Tot ziens {{ state_attr(trigger.entity_id, 'friendly_name') }}!
+                {% else %}
+                  Tot ziens!
+                {% endif %}
     mode: single
