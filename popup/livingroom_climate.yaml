@@ -18,8 +18,6 @@ browser_mod:
           card_mod:
             class: content
           entities:
-            - entity: switch.vloerverwarmingspomp
-              name: Vloerverwarmingspomp
             - entity: sensor.woonkamer_temperature
               name: Kamertemperatuur
             - entity: sensor.woonkamer_humidity
