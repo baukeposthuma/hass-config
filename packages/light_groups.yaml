@@ -27,41 +27,6 @@ homeassistant:
     light.voordeur_group:
       friendly_name: Voordeur
 
-adaptive_lighting:
-  - name: Badkamer
-    lights:
-      - light.badkamer_group
-  - name: Keuken
-    lights:
-      - light.keuken_group
-  - name: Woonkamer
-    lights:
-      - light.woonkamer_group
-  - name: Entree
-    lights:
-      - light.entree_group
-  - name: Slaapkamer
-    lights:
-      - light.slaapkamer_group
-  - name: Werkkamer
-    lights:
-      - light.werkkamer_bauke_group
-  - name: Studio
-    lights:
-      - light.werkkamer_anouk_group
-  - name: Logeerkamer
-    lights:
-      - light.logeerkamer_group
-  - name: Hal
-    lights:
-      - light.hal_group
-  - name: Overloop
-    lights:
-      - light.overloop_group
-  - name: Toilet
-    lights:
-      - light.toilet_group
-
 light:
   - platform: group
     name: badkamer_group
